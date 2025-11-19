@@ -71,5 +71,71 @@ export {
 
 // Priority 4: Overlay Components
 export { Popover, PopoverTrigger, PopoverContent } from './components/Popover/Popover';
+export {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+    DialogClose
+} from './components/Dialog/Dialog';
+export {
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogAction,
+    AlertDialogCancel
+} from './components/AlertDialog/AlertDialog';
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './components/Tooltip/Tooltip';
+export {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuCheckboxItem,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuShortcut,
+    DropdownMenuSub,
+    DropdownMenuSubTrigger,
+    DropdownMenuSubContent
+} from './components/DropdownMenu/DropdownMenu';
+export {
+    Drawer,
+    DrawerTrigger,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerClose
+} from './components/Drawer/Drawer';
+export { HoverCard, HoverCardTrigger, HoverCardContent } from './components/HoverCard/HoverCard';
+export {
+    ContextMenu,
+    ContextMenuTrigger,
+    ContextMenuContent,
+    ContextMenuItem,
+    ContextMenuCheckboxItem,
+    ContextMenuRadioGroup,
+    ContextMenuRadioItem,
+    ContextMenuLabel,
+    ContextMenuSeparator,
+    ContextMenuShortcut,
+    ContextMenuSub,
+    ContextMenuSubTrigger,
+    ContextMenuSubContent
+} from './components/ContextMenu/ContextMenu';
+
+// Priority 6: Data Display Components
+export { Avatar } from './components/Avatar/Avatar';
 
 // Add more component exports as they are implemented

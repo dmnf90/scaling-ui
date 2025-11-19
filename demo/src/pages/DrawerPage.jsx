@@ -1,0 +1,182 @@
+import React from 'react';
+import {
+    Drawer,
+    DrawerTrigger,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerClose,
+    Button,
+    Tabs,
+    TabsList,
+    TabsTrigger,
+    TabsContent,
+    Label,
+    Input
+} from '../../../src/index.js';
+
+function Section({ title, children }) {
+    return (
+        <div className="mb-12">
+            <h2 className="text-2xl font-semibold mb-4">{title}</h2>
+            {children}
+        </div>
+    );
+}
+
+function CodeBlock({ code }) {
+    return (
+        <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
+            <code className="text-sm">{code}</code>
+        </pre>
+    );
+}
+
+function Demo({ children, className = '' }) {
+    return (
+        <div className={`flex flex-wrap gap-4 items-center p-6 border border-border rounded-lg ${className}`}>
+            {children}
+        </div>
+    );
+}
+
+function Example({ preview, code, className = '' }) {
+    return (
+        <Tabs defaultValue="preview" className="mb-4">
+            <TabsList>
+                <TabsTrigger value="preview">Preview</TabsTrigger>
+                <TabsTrigger value="code">Code</TabsTrigger>
+            </TabsList>
+            <TabsContent value="preview">
+                <Demo className={className}>{preview}</Demo>
+            </TabsContent>
+            <TabsContent value="code">
+                <CodeBlock code={code} />
+            </TabsContent>
+        </Tabs>
+    );
+}
+
+export default function DrawerPage() {
+    return (
+        <div className="max-w-5xl">
+            <div className="mb-8">
+                <h1 className="text-4xl font-bold mb-2">Drawer</h1>
+                <p className="text-lg text-muted-foreground">
+                    A panel that slides in from the edge of the screen.
+                </p>
+            </div>
+
+            <Section title="Installation">
+                <CodeBlock code={`import { Drawer, DrawerTrigger, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription, DrawerFooter, DrawerClose } from 'scaling-ui';`} />
+            </Section>
+
+            <Section title="From Right (Default)">
+                <Example
+                    preview={
+                        <Drawer>
+                            <DrawerTrigger asChild>
+                                <Button variant="outline">Open Drawer</Button>
+                            </DrawerTrigger>
+                            <DrawerContent>
+                                <DrawerClose />
+                                <DrawerHeader>
+                                    <DrawerTitle>Drawer Title</DrawerTitle>
+                                    <DrawerDescription>
+                                        This drawer slides in from the right side.
+                                    </DrawerDescription>
+                                </DrawerHeader>
+                                <div className="p-6">
+                                    <p className="text-sm text-muted-foreground">
+                                        Drawer content goes here.
+                                    </p>
+                                </div>
+                                <DrawerFooter>
+                                    <Button>Submit</Button>
+                                    <DrawerClose asChild>
+                                        <Button variant="outline">Cancel</Button>
+                                    </DrawerClose>
+                                </DrawerFooter>
+                            </DrawerContent>
+                        </Drawer>
+                    }
+                    code={`<Drawer>
+    <DrawerTrigger asChild>
+        <Button variant="outline">Open Drawer</Button>
+    </DrawerTrigger>
+    <DrawerContent>
+        <DrawerClose />
+        <DrawerHeader>
+            <DrawerTitle>Drawer Title</DrawerTitle>
+            <DrawerDescription>
+                This drawer slides in from the right side.
+            </DrawerDescription>
+        </DrawerHeader>
+        <div className="p-6">
+            <p>Drawer content goes here.</p>
+        </div>
+        <DrawerFooter>
+            <Button>Submit</Button>
+            <DrawerClose asChild>
+                <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+        </DrawerFooter>
+    </DrawerContent>
+</Drawer>`}
+                />
+            </Section>
+
+            <Section title="Different Sides">
+                <Example
+                    className="gap-2"
+                    preview={
+                        <>
+                            <Drawer>
+                                <DrawerTrigger asChild>
+                                    <Button variant="outline" size="sm">Top</Button>
+                                </DrawerTrigger>
+                                <DrawerContent side="top">
+                                    <DrawerClose />
+                                    <DrawerHeader>
+                                        <DrawerTitle>Top Drawer</DrawerTitle>
+                                    </DrawerHeader>
+                                    <div className="p-6">Content from top</div>
+                                </DrawerContent>
+                            </Drawer>
+                            <Drawer>
+                                <DrawerTrigger asChild>
+                                    <Button variant="outline" size="sm">Left</Button>
+                                </DrawerTrigger>
+                                <DrawerContent side="left">
+                                    <DrawerClose />
+                                    <DrawerHeader>
+                                        <DrawerTitle>Left Drawer</DrawerTitle>
+                                    </DrawerHeader>
+                                    <div className="p-6">Content from left</div>
+                                </DrawerContent>
+                            </Drawer>
+                            <Drawer>
+                                <DrawerTrigger asChild>
+                                    <Button variant="outline" size="sm">Bottom</Button>
+                                </DrawerTrigger>
+                                <DrawerContent side="bottom">
+                                    <DrawerClose />
+                                    <DrawerHeader>
+                                        <DrawerTitle>Bottom Drawer</DrawerTitle>
+                                    </DrawerHeader>
+                                    <div className="p-6">Content from bottom</div>
+                                </DrawerContent>
+                            </Drawer>
+                        </>
+                    }
+                    code={`// Top, Bottom, Left, or Right
+<DrawerContent side="left">
+    {/* ... */}
+</DrawerContent>`}
+                />
+            </Section>
+        </div>
+    );
+}

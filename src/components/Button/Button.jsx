@@ -1,3 +1,4 @@
+import React from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
@@ -39,7 +40,7 @@ const buttonVariants = cva(
  * @param {string} props.className - Additional CSS classes
  * @param {function} props.onClick - Click handler
  */
-export function Button({
+export const Button = React.forwardRef(function Button({
   className,
   variant = 'primary',
   size = 'md',
@@ -47,9 +48,10 @@ export function Button({
   loading = false,
   children,
   ...props
-}) {
+}, ref) {
   return (
     <button
+      ref={ref}
       className={cn(buttonVariants({ variant, size }), className)}
       disabled={disabled || loading}
       {...props}
@@ -79,4 +81,4 @@ export function Button({
       {children}
     </button>
   );
-}
+});

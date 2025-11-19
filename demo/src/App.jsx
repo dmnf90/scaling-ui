@@ -28,9 +28,19 @@ import BreadcrumbPage from './pages/BreadcrumbPage';
 import MenubarPage from './pages/MenubarPage';
 import PaginationPage from './pages/PaginationPage';
 import SidebarPage from './pages/SidebarPage';
+import DialogPage from './pages/DialogPage';
+import AlertDialogPage from './pages/AlertDialogPage';
+import TooltipPage from './pages/TooltipPage';
+import DropdownMenuPage from './pages/DropdownMenuPage';
+import DrawerPage from './pages/DrawerPage';
+import HoverCardPage from './pages/HoverCardPage';
+import ContextMenuPage from './pages/ContextMenuPage';
+import AvatarPage from './pages/AvatarPage';
 
 // Component navigation data
 const components = [
+    {name: 'Alert Dialog', path: '/alert-dialog'},
+    {name: 'Avatar', path: '/avatar'},
     {name: 'Badge', path: '/badge'},
     {name: 'Breadcrumb', path: '/breadcrumb'},
     {name: 'Button', path: '/button'},
@@ -38,9 +48,14 @@ const components = [
     {name: 'Card', path: '/card'},
     {name: 'Checkbox', path: '/checkbox'},
     {name: 'Combobox', path: '/combobox'},
+    {name: 'Context Menu', path: '/context-menu'},
     {name: 'Date Picker', path: '/date-picker'},
+    {name: 'Dialog', path: '/dialog'},
+    {name: 'Drawer', path: '/drawer'},
+    {name: 'Dropdown Menu', path: '/dropdown-menu'},
     {name: 'Field', path: '/field'},
     {name: 'Form', path: '/form'},
+    {name: 'Hover Card', path: '/hover-card'},
     {name: 'Input', path: '/input'},
     {name: 'Input Group', path: '/input-group'},
     {name: 'Input OTP', path: '/input-otp'},
@@ -58,6 +73,7 @@ const components = [
     {name: 'Switch', path: '/switch'},
     {name: 'Tabs', path: '/tabs'},
     {name: 'Textarea', path: '/textarea'},
+    {name: 'Tooltip', path: '/tooltip'},
 ];
 
 function Sidebar() {
@@ -126,6 +142,8 @@ function App() {
             <Layout>
                 <Routes>
                     <Route path="/" element={<HomePage/>}/>
+                    <Route path="/alert-dialog" element={<AlertDialogPage/>}/>
+                    <Route path="/avatar" element={<AvatarPage/>}/>
                     <Route path="/badge" element={<BadgePage/>}/>
                     <Route path="/breadcrumb" element={<BreadcrumbPage/>}/>
                     <Route path="/button" element={<ButtonPage/>}/>
@@ -133,9 +151,14 @@ function App() {
                     <Route path="/card" element={<CardPage/>}/>
                     <Route path="/checkbox" element={<CheckboxPage/>}/>
                     <Route path="/combobox" element={<ComboboxPage/>}/>
+                    <Route path="/context-menu" element={<ContextMenuPage/>}/>
                     <Route path="/date-picker" element={<DatePickerPage/>}/>
+                    <Route path="/dialog" element={<DialogPage/>}/>
+                    <Route path="/drawer" element={<DrawerPage/>}/>
+                    <Route path="/dropdown-menu" element={<DropdownMenuPage/>}/>
                     <Route path="/field" element={<FieldPage/>}/>
                     <Route path="/form" element={<FormPage/>}/>
+                    <Route path="/hover-card" element={<HoverCardPage/>}/>
                     <Route path="/input" element={<InputPage/>}/>
                     <Route path="/input-group" element={<InputGroupPage/>}/>
                     <Route path="/input-otp" element={<InputOTPPage/>}/>
@@ -153,6 +176,7 @@ function App() {
                     <Route path="/switch" element={<SwitchPage/>}/>
                     <Route path="/tabs" element={<TabsPage/>}/>
                     <Route path="/textarea" element={<TextareaPage/>}/>
+                    <Route path="/tooltip" element={<TooltipPage/>}/>
                 </Routes>
             </Layout>
         </BrowserRouter>

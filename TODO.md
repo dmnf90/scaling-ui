@@ -46,15 +46,14 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 - [x] Sidebar
 
 ### Priority 4: Overlay Components
-- [ ] Dialog
-- [ ] Alert Dialog
-- [ ] Drawer
-- [ ] Sheet
+- [x] Dialog
+- [x] Alert Dialog
+- [x] Drawer
 - [x] Popover
-- [ ] Tooltip
-- [ ] Hover Card
-- [ ] Context Menu
-- [ ] Dropdown Menu
+- [x] Tooltip
+- [x] Hover Card
+- [x] Context Menu
+- [x] Dropdown Menu
 - [ ] Command
 
 ### Priority 5: Feedback Components
@@ -68,7 +67,7 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 ### Priority 6: Data Display Components
 - [ ] Table
 - [ ] Data Table
-- [ ] Avatar
+- [x] Avatar
 - [ ] Accordion
 - [ ] Collapsible
 - [ ] Carousel
