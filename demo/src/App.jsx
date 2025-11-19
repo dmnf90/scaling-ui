@@ -2,11 +2,34 @@ import React from 'react';
 import {BrowserRouter, Routes, Route, Link, useLocation} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ButtonPage from './pages/ButtonPage';
+import TabsPage from './pages/TabsPage';
+import SpinnerPage from './pages/SpinnerPage';
+import SeparatorPage from './pages/SeparatorPage';
+import BadgePage from './pages/BadgePage';
+import LabelPage from './pages/LabelPage';
+import CardPage from './pages/CardPage';
+import InputPage from './pages/InputPage';
+import TextareaPage from './pages/TextareaPage';
+import CheckboxPage from './pages/CheckboxPage';
+import SwitchPage from './pages/SwitchPage';
+import RadioGroupPage from './pages/RadioGroupPage';
+import SelectPage from './pages/SelectPage';
 
 // Component navigation data
 const components = [
+    {name: 'Badge', path: '/badge'},
     {name: 'Button', path: '/button'},
-    // More components will be added here as they're implemented
+    {name: 'Card', path: '/card'},
+    {name: 'Checkbox', path: '/checkbox'},
+    {name: 'Input', path: '/input'},
+    {name: 'Label', path: '/label'},
+    {name: 'Radio Group', path: '/radio-group'},
+    {name: 'Select', path: '/select'},
+    {name: 'Separator', path: '/separator'},
+    {name: 'Spinner', path: '/spinner'},
+    {name: 'Switch', path: '/switch'},
+    {name: 'Tabs', path: '/tabs'},
+    {name: 'Textarea', path: '/textarea'},
 ];
 
 function Sidebar() {
@@ -75,7 +98,19 @@ function App() {
             <Layout>
                 <Routes>
                     <Route path="/" element={<HomePage/>}/>
+                    <Route path="/badge" element={<BadgePage/>}/>
                     <Route path="/button" element={<ButtonPage/>}/>
+                    <Route path="/card" element={<CardPage/>}/>
+                    <Route path="/checkbox" element={<CheckboxPage/>}/>
+                    <Route path="/input" element={<InputPage/>}/>
+                    <Route path="/label" element={<LabelPage/>}/>
+                    <Route path="/radio-group" element={<RadioGroupPage/>}/>
+                    <Route path="/select" element={<SelectPage/>}/>
+                    <Route path="/separator" element={<SeparatorPage/>}/>
+                    <Route path="/spinner" element={<SpinnerPage/>}/>
+                    <Route path="/switch" element={<SwitchPage/>}/>
+                    <Route path="/tabs" element={<TabsPage/>}/>
+                    <Route path="/textarea" element={<TextareaPage/>}/>
                 </Routes>
             </Layout>
         </BrowserRouter>

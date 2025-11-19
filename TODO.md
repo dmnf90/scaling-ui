@@ -14,17 +14,17 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 
 ### Priority 1: Core Components (Most Used)
 - [x] Button
-- [ ] Input
-- [ ] Label
-- [ ] Textarea
-- [ ] Select
-- [ ] Checkbox
-- [ ] Radio Group
-- [ ] Switch
-- [ ] Card
-- [ ] Badge
-- [ ] Separator
-- [ ] Spinner
+- [x] Input
+- [x] Label
+- [x] Textarea
+- [x] Select
+- [x] Checkbox
+- [x] Radio Group
+- [x] Switch
+- [x] Card
+- [x] Badge
+- [x] Separator
+- [x] Spinner
 
 ### Priority 2: Form & Input Components
 - [ ] Form
@@ -40,7 +40,7 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 ### Priority 3: Navigation Components
 - [ ] Navigation Menu
 - [ ] Breadcrumb
-- [ ] Tabs
+- [x] Tabs
 - [ ] Menubar
 - [ ] Pagination
 - [ ] Sidebar
