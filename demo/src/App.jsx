@@ -81,7 +81,7 @@ function Sidebar() {
 
     return (
         <div className="w-64 bg-gray-50/75 border-r border-border h-screen fixed left-0 top-0 overflow-y-auto">
-            <div className="p-4 border-b border-border">
+            <div className="px-4 py-2 border-b border-border">
                 <div className="flex flex-col items-center">
                     <img src="/logo-scaling.svg" alt="Scaling" className="w-[120px]" />
                     <p className="text-xs text-muted-foreground">UI Component Library</p>
