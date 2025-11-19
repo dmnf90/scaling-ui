@@ -15,10 +15,10 @@
     "dist"
   ],
   "scripts": {
-    "dev": "vite demo",
+    "dev": "cd demo && vite",
     "build": "vite build",
-    "build:demo": "vite build demo",
-    "preview": "vite preview demo"
+    "build:demo": "cd demo && vite build",
+    "preview": "cd demo && vite preview"
   },
   "peerDependencies": {
     "react": "^18.0.0",
@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.17",
-    "@vitejs/plugin-react": "^5.1.1",
+    "@vitejs/plugin-react-swc": "^4.2.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.1",
