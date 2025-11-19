@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from '../../../src/components/Button/Button';
+import { Button } from '../../../src/index.js';
 
 function Section({ title, children }) {
   return (
@@ -37,7 +37,7 @@ export default function ButtonPage() {
       </div>
 
       <Section title="Installation">
-        <CodeBlock code={`import { Button } from 'scaling-components';`} />
+        <CodeBlock code={`import { Button } from 'scaling-ui';`} />
       </Section>
 
       <Section title="Variants">

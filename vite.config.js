@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react-swc';
 import tailwindcss from '@tailwindcss/vite';
 import {resolve} from 'path';
 
-export default defineConfig(({command, mode}) => {
+export default defineConfig(() => {
     // Check if we're building the demo or the library
     const isDemo = process.env.npm_lifecycle_script?.includes('demo') ||
         process.argv.some(arg => arg.includes('demo'));
@@ -26,8 +26,8 @@ export default defineConfig(({command, mode}) => {
         build: {
             lib: {
                 entry: resolve(__dirname, 'src/index.js'),
-                name: 'ScalingComponents',
-                fileName: 'scaling-components',
+                name: 'ScalingUI',
+                fileName: 'scaling-ui',
                 formats: ['es'],
             },
             rollupOptions: {

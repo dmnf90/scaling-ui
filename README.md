@@ -15,7 +15,7 @@ A minimal, clean React component library built with Tailwind CSS v4. Designed to
 ## Installation
 
 ```bash
-npm install scaling-components
+npm install scaling-ui
 ```
 
 ## Usage
@@ -23,8 +23,8 @@ npm install scaling-components
 Import the components and styles:
 
 ```jsx
-import { Button } from 'scaling-components';
-import 'scaling-components/styles.css';
+import { Button } from 'scaling-ui';
+import 'scaling-ui/styles.css';
 
 function App() {
   return (
@@ -86,7 +86,7 @@ Clone the repository and install dependencies:
 
 ```bash
 git clone <your-repo-url>
-cd scaling-components
+cd scaling-ui
 npm install
 ```
 

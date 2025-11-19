@@ -17,13 +17,13 @@ export default function HomePage() {
 
         <h3>Installation</h3>
         <pre className="bg-muted p-4 rounded-lg">
-          <code>npm install scaling-components</code>
+          <code>npm install scaling-ui</code>
         </pre>
 
         <h3>Usage</h3>
         <pre className="bg-muted p-4 rounded-lg">
-          <code>{`import { Button } from 'scaling-components';
-import 'scaling-components/styles.css';
+          <code>{`import { Button } from 'scaling-ui';
+import 'scaling-ui/styles.css';
 
 function App() {
   return <Button>Click me</Button>;

@@ -13,7 +13,7 @@ function Sidebar() {
     const location = useLocation();
 
     return (
-        <div className="w-64 bg-card border-r border-border h-screen fixed left-0 top-0 overflow-y-auto">
+        <div className="w-64 bg-gray-50/75 border-r border-border h-screen fixed left-0 top-0 overflow-y-auto">
             <div className="p-6 border-b border-border">
                 <div className="flex flex-col items-center">
                     <img src="/logo-scaling.svg" alt="Scaling" className="w-[150px]" />

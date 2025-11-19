@@ -1,13 +1,13 @@
 {
-  "name": "scaling-components",
+  "name": "scaling-ui",
   "version": "0.1.0",
   "description": "A minimal, clean React component library built with Tailwind CSS",
   "type": "module",
-  "main": "./dist/scaling-components.js",
-  "module": "./dist/scaling-components.js",
+  "main": "./dist/scaling-ui.js",
+  "module": "./dist/scaling-ui.js",
   "exports": {
     ".": {
-      "import": "./dist/scaling-components.js"
+      "import": "./dist/scaling-ui.js"
     },
     "./styles.css": "./dist/style.css"
   },
