@@ -37,6 +37,9 @@ build
 coverage
 .nyc_output
 
+# Vercel
+.vercel
+
 # Package manager
 package-lock.json
 yarn.lock
