@@ -216,7 +216,7 @@ export default function SidebarPage() {
                     preview={
                         <SidebarProvider>
                             <SidebarLayout className="h-[400px] border border-border rounded-lg overflow-hidden">
-                                <Sidebar variant="fixed" className="bg-gray-50" className="bg-gray-50">
+                                <Sidebar variant="fixed" className="bg-gray-50">
                                     <SidebarHeader>
                                         <h3 className="font-semibold">My App</h3>
                                     </SidebarHeader>
