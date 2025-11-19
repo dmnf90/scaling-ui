@@ -1,3 +1,5 @@
+import './styles.css';
+
 // Main library entry point - export all components here
 export { Button } from './components/Button/Button';
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/Tabs/Tabs';
@@ -59,6 +61,10 @@ export {
 export { Pagination } from './components/Pagination/Pagination';
 export {
     Sidebar,
+    SidebarProvider,
+    SidebarLayout,
+    SidebarInset,
+    SidebarTrigger,
     SidebarHeader,
     SidebarContent,
     SidebarFooter,
