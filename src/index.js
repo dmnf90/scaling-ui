@@ -23,6 +23,52 @@ export { Combobox } from './components/Combobox/Combobox';
 export { Calendar } from './components/Calendar/Calendar';
 export { DatePicker } from './components/DatePicker/DatePicker';
 
+// Priority 3: Navigation Components
+export {
+    NavigationMenu,
+    NavigationMenuItem,
+    NavigationMenuTrigger,
+    NavigationMenuContent,
+    NavigationMenuLink,
+    NavigationMenuList
+} from './components/NavigationMenu/NavigationMenu';
+export {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbSeparator,
+    BreadcrumbEllipsis,
+    BreadcrumbPage
+} from './components/Breadcrumb/Breadcrumb';
+export {
+    Menubar,
+    MenubarMenu,
+    MenubarTrigger,
+    MenubarContent,
+    MenubarItem,
+    MenubarSeparator,
+    MenubarCheckboxItem,
+    MenubarRadioGroup,
+    MenubarRadioItem,
+    MenubarLabel,
+    MenubarSub,
+    MenubarSubTrigger,
+    MenubarSubContent,
+    MenubarShortcut
+} from './components/Menubar/Menubar';
+export { Pagination } from './components/Pagination/Pagination';
+export {
+    Sidebar,
+    SidebarHeader,
+    SidebarContent,
+    SidebarFooter,
+    SidebarNav,
+    SidebarNavItem,
+    SidebarToggle,
+    SidebarGroup,
+    SidebarGroupLabel
+} from './components/Sidebar/Sidebar';
+
 // Priority 4: Overlay Components
 export { Popover, PopoverTrigger, PopoverContent } from './components/Popover/Popover';
 

@@ -38,12 +38,12 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 - [x] Slider
 
 ### Priority 3: Navigation Components
-- [ ] Navigation Menu
-- [ ] Breadcrumb
+- [x] Navigation Menu
+- [x] Breadcrumb
 - [x] Tabs
-- [ ] Menubar
-- [ ] Pagination
-- [ ] Sidebar
+- [x] Menubar
+- [x] Pagination
+- [x] Sidebar
 
 ### Priority 4: Overlay Components
 - [ ] Dialog
