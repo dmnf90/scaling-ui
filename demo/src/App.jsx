@@ -14,18 +14,36 @@ import CheckboxPage from './pages/CheckboxPage';
 import SwitchPage from './pages/SwitchPage';
 import RadioGroupPage from './pages/RadioGroupPage';
 import SelectPage from './pages/SelectPage';
+import FieldPage from './pages/FieldPage';
+import FormPage from './pages/FormPage';
+import InputGroupPage from './pages/InputGroupPage';
+import InputOTPPage from './pages/InputOTPPage';
+import SliderPage from './pages/SliderPage';
+import ComboboxPage from './pages/ComboboxPage';
+import PopoverPage from './pages/PopoverPage';
+import CalendarPage from './pages/CalendarPage';
+import DatePickerPage from './pages/DatePickerPage';
 
 // Component navigation data
 const components = [
     {name: 'Badge', path: '/badge'},
     {name: 'Button', path: '/button'},
+    {name: 'Calendar', path: '/calendar'},
     {name: 'Card', path: '/card'},
     {name: 'Checkbox', path: '/checkbox'},
+    {name: 'Combobox', path: '/combobox'},
+    {name: 'Date Picker', path: '/date-picker'},
+    {name: 'Field', path: '/field'},
+    {name: 'Form', path: '/form'},
     {name: 'Input', path: '/input'},
+    {name: 'Input Group', path: '/input-group'},
+    {name: 'Input OTP', path: '/input-otp'},
     {name: 'Label', path: '/label'},
+    {name: 'Popover', path: '/popover'},
     {name: 'Radio Group', path: '/radio-group'},
     {name: 'Select', path: '/select'},
     {name: 'Separator', path: '/separator'},
+    {name: 'Slider', path: '/slider'},
     {name: 'Spinner', path: '/spinner'},
     {name: 'Switch', path: '/switch'},
     {name: 'Tabs', path: '/tabs'},
@@ -100,13 +118,22 @@ function App() {
                     <Route path="/" element={<HomePage/>}/>
                     <Route path="/badge" element={<BadgePage/>}/>
                     <Route path="/button" element={<ButtonPage/>}/>
+                    <Route path="/calendar" element={<CalendarPage/>}/>
                     <Route path="/card" element={<CardPage/>}/>
                     <Route path="/checkbox" element={<CheckboxPage/>}/>
+                    <Route path="/combobox" element={<ComboboxPage/>}/>
+                    <Route path="/date-picker" element={<DatePickerPage/>}/>
+                    <Route path="/field" element={<FieldPage/>}/>
+                    <Route path="/form" element={<FormPage/>}/>
                     <Route path="/input" element={<InputPage/>}/>
+                    <Route path="/input-group" element={<InputGroupPage/>}/>
+                    <Route path="/input-otp" element={<InputOTPPage/>}/>
                     <Route path="/label" element={<LabelPage/>}/>
+                    <Route path="/popover" element={<PopoverPage/>}/>
                     <Route path="/radio-group" element={<RadioGroupPage/>}/>
                     <Route path="/select" element={<SelectPage/>}/>
                     <Route path="/separator" element={<SeparatorPage/>}/>
+                    <Route path="/slider" element={<SliderPage/>}/>
                     <Route path="/spinner" element={<SpinnerPage/>}/>
                     <Route path="/switch" element={<SwitchPage/>}/>
                     <Route path="/tabs" element={<TabsPage/>}/>

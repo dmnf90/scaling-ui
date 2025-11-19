@@ -13,4 +13,17 @@ export { Switch } from './components/Switch/Switch';
 export { RadioGroup, RadioGroupItem } from './components/RadioGroup/RadioGroup';
 export { Select } from './components/Select/Select';
 
+// Priority 2: Form & Input Components
+export { Field } from './components/Field/Field';
+export { Form } from './components/Form/Form';
+export { InputGroup } from './components/InputGroup/InputGroup';
+export { InputOTP } from './components/InputOTP/InputOTP';
+export { Slider } from './components/Slider/Slider';
+export { Combobox } from './components/Combobox/Combobox';
+export { Calendar } from './components/Calendar/Calendar';
+export { DatePicker } from './components/DatePicker/DatePicker';
+
+// Priority 4: Overlay Components
+export { Popover, PopoverTrigger, PopoverContent } from './components/Popover/Popover';
+
 // Add more component exports as they are implemented

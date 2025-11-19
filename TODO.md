@@ -27,15 +27,15 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 - [x] Spinner
 
 ### Priority 2: Form & Input Components
-- [ ] Form
-- [ ] Field
-- [ ] Input Group
-- [ ] Input OTP
+- [x] Form
+- [x] Field
+- [x] Input Group
+- [x] Input OTP
 - [ ] Native Select
-- [ ] Combobox
-- [ ] Date Picker
-- [ ] Calendar
-- [ ] Slider
+- [x] Combobox
+- [x] Date Picker
+- [x] Calendar
+- [x] Slider
 
 ### Priority 3: Navigation Components
 - [ ] Navigation Menu
@@ -50,7 +50,7 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 - [ ] Alert Dialog
 - [ ] Drawer
 - [ ] Sheet
-- [ ] Popover
+- [x] Popover
 - [ ] Tooltip
 - [ ] Hover Card
 - [ ] Context Menu
