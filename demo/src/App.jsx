@@ -1,5 +1,5 @@
 import React from 'react';
-import {BrowserRouter, Routes, Route, Link, useLocation} from 'react-router-dom';
+import {BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ButtonPage from './pages/ButtonPage';
 import TabsPage from './pages/TabsPage';
@@ -37,102 +37,228 @@ import HoverCardPage from './pages/HoverCardPage';
 import ContextMenuPage from './pages/ContextMenuPage';
 import AvatarPage from './pages/AvatarPage';
 
-// Component navigation data
-const components = [
-    {name: 'Alert Dialog', path: '/alert-dialog'},
-    {name: 'Avatar', path: '/avatar'},
-    {name: 'Badge', path: '/badge'},
-    {name: 'Breadcrumb', path: '/breadcrumb'},
-    {name: 'Button', path: '/button'},
-    {name: 'Calendar', path: '/calendar'},
-    {name: 'Card', path: '/card'},
-    {name: 'Checkbox', path: '/checkbox'},
-    {name: 'Combobox', path: '/combobox'},
-    {name: 'Context Menu', path: '/context-menu'},
-    {name: 'Date Picker', path: '/date-picker'},
-    {name: 'Dialog', path: '/dialog'},
-    {name: 'Drawer', path: '/drawer'},
-    {name: 'Dropdown Menu', path: '/dropdown-menu'},
-    {name: 'Field', path: '/field'},
-    {name: 'Form', path: '/form'},
-    {name: 'Hover Card', path: '/hover-card'},
-    {name: 'Input', path: '/input'},
-    {name: 'Input Group', path: '/input-group'},
-    {name: 'Input OTP', path: '/input-otp'},
-    {name: 'Label', path: '/label'},
-    {name: 'Menubar', path: '/menubar'},
-    {name: 'Navigation Menu', path: '/navigation-menu'},
-    {name: 'Pagination', path: '/pagination'},
-    {name: 'Popover', path: '/popover'},
-    {name: 'Radio Group', path: '/radio-group'},
-    {name: 'Select', path: '/select'},
-    {name: 'Separator', path: '/separator'},
-    {name: 'Sidebar', path: '/sidebar'},
-    {name: 'Slider', path: '/slider'},
-    {name: 'Spinner', path: '/spinner'},
-    {name: 'Switch', path: '/switch'},
-    {name: 'Tabs', path: '/tabs'},
-    {name: 'Textarea', path: '/textarea'},
-    {name: 'Tooltip', path: '/tooltip'},
-];
+// Import Sidebar components
+import {
+    Sidebar,
+    SidebarProvider,
+    SidebarLayout,
+    SidebarInset,
+    SidebarHeader,
+    SidebarContent,
+    SidebarFooter,
+    SidebarNav,
+    SidebarNavItem,
+    SidebarGroup,
+    SidebarGroupLabel,
+    SidebarTrigger,
+} from '../../src/index.js';
 
-function Sidebar() {
+// Import Lucide icons
+import {
+    Home,
+    User,
+    Tag,
+    MousePointerClick,
+    LayoutGrid,
+    Type,
+    Minus,
+    Loader2,
+    PanelTop,
+    Calendar,
+    CheckSquare,
+    Search,
+    CalendarDays,
+    FileText,
+    FileEdit,
+    Box,
+    KeyRound,
+    SlidersHorizontal,
+    ToggleLeft,
+    Circle,
+    List,
+    AlignLeft,
+    ArrowRight,
+    Menu,
+    ChevronsLeft,
+    PanelLeft,
+    MessageSquare,
+    AlertCircle,
+    Info,
+    MessageCircle,
+    ChevronDown,
+    SidebarClose,
+    Eye,
+    MoreVertical,
+} from 'lucide-react';
+
+// Component navigation data organized by category
+const componentsByCategory = {
+    core: [
+        {name: 'Avatar', path: '/avatar', icon: User},
+        {name: 'Badge', path: '/badge', icon: Tag},
+        {name: 'Button', path: '/button', icon: MousePointerClick},
+        {name: 'Card', path: '/card', icon: LayoutGrid},
+        {name: 'Label', path: '/label', icon: Type},
+        {name: 'Separator', path: '/separator', icon: Minus},
+        {name: 'Spinner', path: '/spinner', icon: Loader2},
+        {name: 'Tabs', path: '/tabs', icon: PanelTop},
+    ],
+    forms: [
+        {name: 'Calendar', path: '/calendar', icon: Calendar},
+        {name: 'Checkbox', path: '/checkbox', icon: CheckSquare},
+        {name: 'Combobox', path: '/combobox', icon: Search},
+        {name: 'Date Picker', path: '/date-picker', icon: CalendarDays},
+        {name: 'Field', path: '/field', icon: FileText},
+        {name: 'Form', path: '/form', icon: FileEdit},
+        {name: 'Input', path: '/input', icon: Type},
+        {name: 'Input Group', path: '/input-group', icon: Box},
+        {name: 'Input OTP', path: '/input-otp', icon: KeyRound},
+        {name: 'Radio Group', path: '/radio-group', icon: Circle},
+        {name: 'Select', path: '/select', icon: List},
+        {name: 'Slider', path: '/slider', icon: SlidersHorizontal},
+        {name: 'Switch', path: '/switch', icon: ToggleLeft},
+        {name: 'Textarea', path: '/textarea', icon: AlignLeft},
+    ],
+    navigation: [
+        {name: 'Breadcrumb', path: '/breadcrumb', icon: ArrowRight},
+        {name: 'Menubar', path: '/menubar', icon: Menu},
+        {name: 'Navigation Menu', path: '/navigation-menu', icon: Menu},
+        {name: 'Pagination', path: '/pagination', icon: ChevronsLeft},
+        {name: 'Sidebar', path: '/sidebar', icon: PanelLeft},
+    ],
+    overlays: [
+        {name: 'Alert Dialog', path: '/alert-dialog', icon: AlertCircle},
+        {name: 'Context Menu', path: '/context-menu', icon: MoreVertical},
+        {name: 'Dialog', path: '/dialog', icon: MessageSquare},
+        {name: 'Drawer', path: '/drawer', icon: SidebarClose},
+        {name: 'Dropdown Menu', path: '/dropdown-menu', icon: ChevronDown},
+        {name: 'Hover Card', path: '/hover-card', icon: Eye},
+        {name: 'Popover', path: '/popover', icon: MessageCircle},
+        {name: 'Tooltip', path: '/tooltip', icon: Info},
+    ],
+};
+
+function NavigationSidebar() {
     const location = useLocation();
 
     return (
-        <div className="w-64 bg-gray-50/75 border-r border-border h-screen fixed left-0 top-0 overflow-y-auto">
-            <div className="px-4 py-2 border-b border-border">
+        <Sidebar variant="responsive" className="lg:!fixed lg:inset-y-0 lg:left-0 lg:h-screen lg:z-50">
+            <SidebarHeader>
                 <div className="flex flex-col items-center">
                     <img src="/logo-scaling.svg" alt="Scaling" className="w-[120px]" />
                     <p className="text-xs text-muted-foreground">UI Component Library</p>
                 </div>
-            </div>
+            </SidebarHeader>
 
-            <div className="p-6 pt-3">
-                <nav>
-                    <Link
-                        to="/"
-                        className={`block px-3 py-2 rounded-md text-sm mb-1 ${
-                            location.pathname === '/'
-                                ? 'bg-accent text-accent-foreground'
-                                : 'text-foreground hover:bg-accent hover:text-accent-foreground'
-                        }`}
+            <SidebarContent>
+                <SidebarNav>
+                    <SidebarNavItem
+                        href="/"
+                        icon={Home}
+                        active={location.pathname === '/'}
                     >
                         Home
-                    </Link>
+                    </SidebarNavItem>
 
                     <div className="mt-4">
-                        <h2 className="px-3 text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                            Components
-                        </h2>
-                        {components.map((component) => (
-                            <Link
-                                key={component.path}
-                                to={component.path}
-                                className={`block px-3 py-1 rounded-md text-sm mb-1 ${
-                                    location.pathname === component.path
-                                        ? 'bg-accent text-accent-foreground'
-                                        : 'text-foreground hover:bg-accent hover:text-accent-foreground'
-                                }`}
-                            >
-                                {component.name}
-                            </Link>
-                        ))}
+                        <SidebarGroup collapsible defaultOpen={false}>
+                            <SidebarGroupLabel>Core</SidebarGroupLabel>
+                            <SidebarNav>
+                                {componentsByCategory.core.map((component) => (
+                                    <SidebarNavItem
+                                        key={component.path}
+                                        href={component.path}
+                                        icon={component.icon}
+                                        active={location.pathname === component.path}
+                                    >
+                                        {component.name}
+                                    </SidebarNavItem>
+                                ))}
+                            </SidebarNav>
+                        </SidebarGroup>
+
+                        <SidebarGroup collapsible defaultOpen={false}>
+                            <SidebarGroupLabel>Forms</SidebarGroupLabel>
+                            <SidebarNav>
+                                {componentsByCategory.forms.map((component) => (
+                                    <SidebarNavItem
+                                        key={component.path}
+                                        href={component.path}
+                                        icon={component.icon}
+                                        active={location.pathname === component.path}
+                                    >
+                                        {component.name}
+                                    </SidebarNavItem>
+                                ))}
+                            </SidebarNav>
+                        </SidebarGroup>
+
+                        <SidebarGroup collapsible defaultOpen={false}>
+                            <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+                            <SidebarNav>
+                                {componentsByCategory.navigation.map((component) => (
+                                    <SidebarNavItem
+                                        key={component.path}
+                                        href={component.path}
+                                        icon={component.icon}
+                                        active={location.pathname === component.path}
+                                    >
+                                        {component.name}
+                                    </SidebarNavItem>
+                                ))}
+                            </SidebarNav>
+                        </SidebarGroup>
+
+                        <SidebarGroup collapsible defaultOpen={false}>
+                            <SidebarGroupLabel>Overlays</SidebarGroupLabel>
+                            <SidebarNav>
+                                {componentsByCategory.overlays.map((component) => (
+                                    <SidebarNavItem
+                                        key={component.path}
+                                        href={component.path}
+                                        icon={component.icon}
+                                        active={location.pathname === component.path}
+                                    >
+                                        {component.name}
+                                    </SidebarNavItem>
+                                ))}
+                            </SidebarNav>
+                        </SidebarGroup>
                     </div>
-                </nav>
-            </div>
-        </div>
+                </SidebarNav>
+            </SidebarContent>
+
+            <SidebarFooter>
+                <div className="text-xs text-muted-foreground space-y-1">
+                    <p>Scaling UI v0.1.0</p>
+                    <p className="text-[10px]">Built with React + Tailwind</p>
+                </div>
+            </SidebarFooter>
+        </Sidebar>
     );
 }
 
 function Layout({children}) {
     return (
-        <div className="min-h-screen bg-background">
-            <Sidebar/>
-            <main className="ml-64 p-8">
-                {children}
-            </main>
-        </div>
+        <SidebarProvider defaultOpen={false}>
+            <SidebarLayout className="min-h-screen">
+                <NavigationSidebar />
+                <SidebarInset className="lg:ml-64">
+                    {/* Mobile header with trigger - hidden on desktop */}
+                    <header className="lg:hidden sticky top-0 bg-background border-b border-border z-10">
+                        <div className="flex items-center gap-3 p-4">
+                            <SidebarTrigger />
+                            <img src="/logo-scaling.svg" alt="Scaling" className="h-6" />
+                        </div>
+                    </header>
+
+                    {/* Main content */}
+                    <main className="p-8">
+                        {children}
+                    </main>
+                </SidebarInset>
+            </SidebarLayout>
+        </SidebarProvider>
     );
 }
 
