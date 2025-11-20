@@ -282,14 +282,16 @@ export function SidebarNavItem({
     active,
     className,
     href,
+    as,
     ...props
 }) {
     const context = useContext(SidebarContext);
-    const Component = href ? 'a' : 'button';
+    const Component = as || (href ? 'a' : 'button');
 
     return (
         <Component
             href={href}
+            to={href}
             className={cn(
                 'flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-all duration-200 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none',
                 active && 'bg-accent text-accent-foreground',
@@ -335,14 +337,31 @@ export function SidebarToggle({ className, ...props }) {
     );
 }
 
-export function SidebarGroup({ children, className, collapsible = false, defaultOpen = true, ...props }) {
-    const [isOpen, setIsOpen] = useState(defaultOpen);
+export function SidebarGroup({
+    children,
+    className,
+    collapsible = false,
+    defaultOpen = true,
+    open: controlledOpen,
+    onOpenChange,
+    ...props
+}) {
+    const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
     const sidebarContext = useContext(SidebarContext);
     const contentRef = useRef(null);
 
+    // Determine if controlled or uncontrolled
+    const isControlled = controlledOpen !== undefined;
+    const isOpen = isControlled ? controlledOpen : uncontrolledOpen;
+
     const toggleOpen = () => {
         if (collapsible) {
-            setIsOpen(!isOpen);
+            const newValue = !isOpen;
+            if (isControlled) {
+                onOpenChange?.(newValue);
+            } else {
+                setUncontrolledOpen(newValue);
+            }
         }
     };
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import {BrowserRouter, Routes, Route, useLocation} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import {BrowserRouter, Routes, Route, useLocation, Link} from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ButtonPage from './pages/ButtonPage';
 import TabsPage from './pages/TabsPage';
@@ -140,6 +140,28 @@ const componentsByCategory = {
 
 function NavigationSidebar() {
     const location = useLocation();
+    const [openGroups, setOpenGroups] = useState({
+        core: false,
+        forms: false,
+        navigation: false,
+        overlays: false
+    });
+
+    // On initial mount, find and open the group containing the active route
+    useEffect(() => {
+        const activeGroup = Object.entries(componentsByCategory).find(([_, components]) =>
+            components.some(component => component.path === location.pathname)
+        );
+
+        if (activeGroup) {
+            const [groupName] = activeGroup;
+            setOpenGroups(prev => ({ ...prev, [groupName]: true }));
+        }
+    }, []); // Empty deps - only run on initial mount
+
+    const handleGroupToggle = (groupName) => (isOpen) => {
+        setOpenGroups(prev => ({ ...prev, [groupName]: isOpen }));
+    };
 
     return (
         <Sidebar variant="responsive" className="lg:!fixed lg:inset-y-0 lg:left-0 lg:h-screen lg:z-50">
@@ -153,6 +175,7 @@ function NavigationSidebar() {
             <SidebarContent>
                 <SidebarNav>
                     <SidebarNavItem
+                        as={Link}
                         href="/"
                         icon={Home}
                         active={location.pathname === '/'}
@@ -161,12 +184,17 @@ function NavigationSidebar() {
                     </SidebarNavItem>
 
                     <div className="mt-4">
-                        <SidebarGroup collapsible defaultOpen={false}>
+                        <SidebarGroup
+                            collapsible
+                            open={openGroups.core}
+                            onOpenChange={handleGroupToggle('core')}
+                        >
                             <SidebarGroupLabel>Core</SidebarGroupLabel>
                             <SidebarNav>
                                 {componentsByCategory.core.map((component) => (
                                     <SidebarNavItem
                                         key={component.path}
+                                        as={Link}
                                         href={component.path}
                                         icon={component.icon}
                                         active={location.pathname === component.path}
@@ -177,12 +205,17 @@ function NavigationSidebar() {
                             </SidebarNav>
                         </SidebarGroup>
 
-                        <SidebarGroup collapsible defaultOpen={false}>
+                        <SidebarGroup
+                            collapsible
+                            open={openGroups.forms}
+                            onOpenChange={handleGroupToggle('forms')}
+                        >
                             <SidebarGroupLabel>Forms</SidebarGroupLabel>
                             <SidebarNav>
                                 {componentsByCategory.forms.map((component) => (
                                     <SidebarNavItem
                                         key={component.path}
+                                        as={Link}
                                         href={component.path}
                                         icon={component.icon}
                                         active={location.pathname === component.path}
@@ -193,12 +226,17 @@ function NavigationSidebar() {
                             </SidebarNav>
                         </SidebarGroup>
 
-                        <SidebarGroup collapsible defaultOpen={false}>
+                        <SidebarGroup
+                            collapsible
+                            open={openGroups.navigation}
+                            onOpenChange={handleGroupToggle('navigation')}
+                        >
                             <SidebarGroupLabel>Navigation</SidebarGroupLabel>
                             <SidebarNav>
                                 {componentsByCategory.navigation.map((component) => (
                                     <SidebarNavItem
                                         key={component.path}
+                                        as={Link}
                                         href={component.path}
                                         icon={component.icon}
                                         active={location.pathname === component.path}
@@ -209,12 +247,17 @@ function NavigationSidebar() {
                             </SidebarNav>
                         </SidebarGroup>
 
-                        <SidebarGroup collapsible defaultOpen={false}>
+                        <SidebarGroup
+                            collapsible
+                            open={openGroups.overlays}
+                            onOpenChange={handleGroupToggle('overlays')}
+                        >
                             <SidebarGroupLabel>Overlays</SidebarGroupLabel>
                             <SidebarNav>
                                 {componentsByCategory.overlays.map((component) => (
                                     <SidebarNavItem
                                         key={component.path}
+                                        as={Link}
                                         href={component.path}
                                         icon={component.icon}
                                         active={location.pathname === component.path}
