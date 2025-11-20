@@ -371,10 +371,10 @@ export function SidebarGroup({
     // Separate label from other children
     const childrenArray = React.Children.toArray(children);
     const labelChild = childrenArray.find(
-        child => child.type?.name === 'SidebarGroupLabel'
+        child => child.type === SidebarGroupLabel
     );
     const otherChildren = childrenArray.filter(
-        child => child.type?.name !== 'SidebarGroupLabel'
+        child => child.type !== SidebarGroupLabel
     );
 
     return (

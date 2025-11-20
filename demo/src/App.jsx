@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {BrowserRouter, Routes, Route, useLocation, Link} from 'react-router-dom';
+import logoScaling from '../logo-scaling.svg';
 import HomePage from './pages/HomePage';
 import ButtonPage from './pages/ButtonPage';
 import TabsPage from './pages/TabsPage';
@@ -167,7 +168,7 @@ function NavigationSidebar() {
         <Sidebar variant="responsive" className="lg:!fixed lg:inset-y-0 lg:left-0 lg:h-screen lg:z-50">
             <SidebarHeader>
                 <div className="flex flex-col items-center">
-                    <img src="/logo-scaling.svg" alt="Scaling" className="w-[120px]" />
+                    <img src={logoScaling} alt="Scaling" className="w-[120px]" />
                     <p className="text-xs text-muted-foreground">UI Component Library</p>
                 </div>
             </SidebarHeader>
@@ -291,7 +292,7 @@ function Layout({children}) {
                     <header className="lg:hidden sticky top-0 bg-background border-b border-border z-10">
                         <div className="flex items-center gap-3 p-4">
                             <SidebarTrigger />
-                            <img src="/logo-scaling.svg" alt="Scaling" className="h-6" />
+                            <img src={logoScaling} alt="Scaling" className="h-6" />
                         </div>
                     </header>
 
