@@ -36,6 +36,7 @@ const buttonVariants = cva(
  * @param {'sm' | 'md' | 'lg' | 'icon'} props.size - Size variant
  * @param {boolean} props.disabled - Whether the button is disabled
  * @param {boolean} props.loading - Whether to show loading state
+ * @param {boolean} props.asChild - Render as child element (for composition with Link, etc.)
  * @param {React.ReactNode} props.children - Button content
  * @param {string} props.className - Additional CSS classes
  * @param {function} props.onClick - Click handler
@@ -46,13 +47,25 @@ export const Button = React.forwardRef(function Button({
   size = 'md',
   disabled = false,
   loading = false,
+  asChild = false,
   children,
   ...props
 }, ref) {
+  const buttonClassName = cn(buttonVariants({ variant, size }), className);
+
+  // If asChild is true and children is a valid element, clone it with Button styling
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      ref,
+      className: cn(buttonClassName, children.props.className),
+      ...props,
+    });
+  }
+
   return (
     <button
       ref={ref}
-      className={cn(buttonVariants({ variant, size }), className)}
+      className={buttonClassName}
       disabled={disabled || loading}
       {...props}
     >

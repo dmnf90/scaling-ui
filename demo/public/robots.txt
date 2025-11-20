@@ -1,0 +1,8 @@
+# Robots.txt for Scaling UI Component Library
+# https://ui.scaling.pt
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://ui.scaling.pt/sitemap.xml
