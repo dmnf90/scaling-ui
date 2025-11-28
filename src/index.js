@@ -140,6 +140,23 @@ export {
     ContextMenuSubTrigger,
     ContextMenuSubContent
 } from './components/ContextMenu/ContextMenu';
+export {
+    Command,
+    CommandDialog,
+    CommandInput,
+    CommandList,
+    CommandEmpty,
+    CommandGroup,
+    CommandItem,
+    CommandSeparator,
+    CommandShortcut
+} from './components/Command/Command';
+
+// Priority 5: Feedback Components
+export { Alert, AlertTitle, AlertDescription } from './components/Alert/Alert';
+export { Progress } from './components/Progress/Progress';
+export { Skeleton } from './components/Skeleton/Skeleton';
+export { Toaster, toast } from './components/Sonner/Sonner';
 
 // Priority 6: Data Display Components
 export { Avatar } from './components/Avatar/Avatar';

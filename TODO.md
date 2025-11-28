@@ -31,7 +31,6 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 - [x] Field
 - [x] Input Group
 - [x] Input OTP
-- [ ] Native Select
 - [x] Combobox
 - [x] Date Picker
 - [x] Calendar
@@ -54,14 +53,13 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 - [x] Hover Card
 - [x] Context Menu
 - [x] Dropdown Menu
-- [ ] Command
+- [x] Command
 
 ### Priority 5: Feedback Components
-- [ ] Alert
-- [ ] Toast
-- [ ] Sonner
-- [ ] Progress
-- [ ] Skeleton
+- [x] Alert
+- [x] Sonner (Toast)
+- [x] Progress
+- [x] Skeleton
 - [ ] Empty
 
 ### Priority 6: Data Display Components

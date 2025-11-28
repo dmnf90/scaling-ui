@@ -42,7 +42,12 @@ const DropdownMenuPage = lazy(() => import('./pages/DropdownMenuPage'));
 const DrawerPage = lazy(() => import('./pages/DrawerPage'));
 const HoverCardPage = lazy(() => import('./pages/HoverCardPage'));
 const ContextMenuPage = lazy(() => import('./pages/ContextMenuPage'));
+const CommandPage = lazy(() => import('./pages/CommandPage'));
 const AvatarPage = lazy(() => import('./pages/AvatarPage'));
+const AlertPage = lazy(() => import('./pages/AlertPage'));
+const ProgressPage = lazy(() => import('./pages/ProgressPage'));
+const SkeletonPage = lazy(() => import('./pages/SkeletonPage'));
+const SonnerPage = lazy(() => import('./pages/SonnerPage'));
 
 // Import Sidebar and Spinner components
 import {
@@ -98,7 +103,15 @@ import {
     SidebarClose,
     Eye,
     MoreVertical,
+    Terminal,
+    Bell,
+    BarChart2,
+    Loader,
+    BoxSelect,
 } from 'lucide-react';
+
+// Import Toaster for toast notifications
+import { Toaster } from '../../src/index.js';
 
 // Component navigation data organized by category
 const componentsByCategory = {
@@ -137,6 +150,7 @@ const componentsByCategory = {
     ],
     overlays: [
         {name: 'Alert Dialog', path: '/alert-dialog', icon: AlertCircle},
+        {name: 'Command', path: '/command', icon: Terminal},
         {name: 'Context Menu', path: '/context-menu', icon: MoreVertical},
         {name: 'Dialog', path: '/dialog', icon: MessageSquare},
         {name: 'Drawer', path: '/drawer', icon: SidebarClose},
@@ -144,6 +158,12 @@ const componentsByCategory = {
         {name: 'Hover Card', path: '/hover-card', icon: Eye},
         {name: 'Popover', path: '/popover', icon: MessageCircle},
         {name: 'Tooltip', path: '/tooltip', icon: Info},
+    ],
+    feedback: [
+        {name: 'Alert', path: '/alert', icon: AlertCircle},
+        {name: 'Progress', path: '/progress', icon: BarChart2},
+        {name: 'Skeleton', path: '/skeleton', icon: BoxSelect},
+        {name: 'Sonner', path: '/sonner', icon: Bell},
     ],
 };
 
@@ -153,7 +173,8 @@ function NavigationSidebar() {
         core: false,
         forms: false,
         navigation: false,
-        overlays: false
+        overlays: false,
+        feedback: false
     });
 
     // On initial mount, find and open the group containing the active route
@@ -285,6 +306,27 @@ function NavigationSidebar() {
                                 ))}
                             </SidebarNav>
                         </SidebarGroup>
+
+                        <SidebarGroup
+                            collapsible
+                            open={openGroups.feedback}
+                            onOpenChange={handleGroupToggle('feedback')}
+                        >
+                            <SidebarGroupLabel>Feedback</SidebarGroupLabel>
+                            <SidebarNav>
+                                {componentsByCategory.feedback.map((component) => (
+                                    <SidebarNavItem
+                                        key={component.path}
+                                        as={Link}
+                                        href={component.path}
+                                        icon={component.icon}
+                                        active={location.pathname === component.path}
+                                    >
+                                        {component.name}
+                                    </SidebarNavItem>
+                                ))}
+                            </SidebarNav>
+                        </SidebarGroup>
                     </div>
                 </SidebarNav>
             </SidebarContent>
@@ -319,6 +361,7 @@ function Layout({children}) {
                     </main>
                 </SidebarInset>
             </SidebarLayout>
+            <Toaster />
         </SidebarProvider>
     );
 }
@@ -350,6 +393,7 @@ function App() {
                         <Route path="/card" element={<><SEO title="Card" description="Card component for React - Composable container with header, content, and footer sections. Built with Tailwind CSS." path="/card" /><CardPage/></>}/>
                         <Route path="/checkbox" element={<><SEO title="Checkbox" description="Checkbox component for React - Form input for boolean values with checked and disabled states. Built with Tailwind CSS." path="/checkbox" /><CheckboxPage/></>}/>
                         <Route path="/combobox" element={<><SEO title="Combobox" description="Combobox component for React - Searchable dropdown with autocomplete functionality. Built with Tailwind CSS." path="/combobox" /><ComboboxPage/></>}/>
+                        <Route path="/command" element={<><SEO title="Command" description="Command component for React - Fast, composable command menu with search and keyboard navigation. Built with Tailwind CSS." path="/command" /><CommandPage/></>}/>
                         <Route path="/context-menu" element={<><SEO title="Context Menu" description="Context Menu component for React - Right-click menu with custom actions and submenus. Built with Tailwind CSS." path="/context-menu" /><ContextMenuPage/></>}/>
                         <Route path="/date-picker" element={<><SEO title="Date Picker" description="Date Picker component for React - Select dates with calendar popup and input field. Built with Tailwind CSS." path="/date-picker" /><DatePickerPage/></>}/>
                         <Route path="/dialog" element={<><SEO title="Dialog" description="Dialog component for React - Modal window for displaying content and collecting user input. Built with Tailwind CSS." path="/dialog" /><DialogPage/></>}/>
@@ -376,6 +420,10 @@ function App() {
                         <Route path="/tabs" element={<><SEO title="Tabs" description="Tabs component for React - Organize content into tabbed interface with controlled and uncontrolled modes. Built with Tailwind CSS." path="/tabs" /><TabsPage/></>}/>
                         <Route path="/textarea" element={<><SEO title="Textarea" description="Textarea component for React - Multi-line text input with resize options and character counting. Built with Tailwind CSS." path="/textarea" /><TextareaPage/></>}/>
                         <Route path="/tooltip" element={<><SEO title="Tooltip" description="Tooltip component for React - Display helpful text on hover with customizable positioning. Built with Tailwind CSS." path="/tooltip" /><TooltipPage/></>}/>
+                        <Route path="/alert" element={<><SEO title="Alert" description="Alert component for React - Display important messages with different severity variants. Built with Tailwind CSS." path="/alert" /><AlertPage/></>}/>
+                        <Route path="/progress" element={<><SEO title="Progress" description="Progress component for React - Show completion status with determinate and indeterminate modes. Built with Tailwind CSS." path="/progress" /><ProgressPage/></>}/>
+                        <Route path="/skeleton" element={<><SEO title="Skeleton" description="Skeleton component for React - Display loading placeholders while content is being fetched. Built with Tailwind CSS." path="/skeleton" /><SkeletonPage/></>}/>
+                        <Route path="/sonner" element={<><SEO title="Sonner" description="Sonner toast component for React - Beautiful toast notifications with multiple types and customization. Built with Tailwind CSS." path="/sonner" /><SonnerPage/></>}/>
                         </Routes>
                     </Suspense>
                 </Layout>
