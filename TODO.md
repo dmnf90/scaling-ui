@@ -60,19 +60,19 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 - [x] Sonner (Toast)
 - [x] Progress
 - [x] Skeleton
-- [ ] Empty
+- [x] Empty
 
 ### Priority 6: Data Display Components
-- [ ] Table
-- [ ] Data Table
+- [x] Table
+- [x] Data Table
 - [x] Avatar
-- [ ] Accordion
-- [ ] Collapsible
-- [ ] Carousel
-- [ ] Chart
-- [ ] Typography
-- [ ] Kbd
-- [ ] Item
+- [x] Accordion
+- [x] Collapsible
+- [x] Carousel
+- [ ] Chart (Skipped - requires charting library)
+- [x] Typography
+- [x] Kbd
+- [x] Item
 
 ### Priority 7: Layout & Utility Components
 - [ ] Aspect Ratio
@@ -89,6 +89,7 @@ For each component, complete the following:
 - [ ] Implement component with props-based API (no context)
 - [ ] Style with Tailwind CSS (minimal, clean design)
 - [ ] Add variants using class-variance-authority
+- [ ] Add dark/light versions
 - [ ] Export from `/src/index.js`
 - [ ] Create demo page in `/demo/src/pages/`
 - [ ] Add to navigation in `/demo/src/App.jsx`

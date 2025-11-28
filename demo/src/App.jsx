@@ -50,6 +50,17 @@ const AlertPage = lazy(() => import('./pages/AlertPage'));
 const ProgressPage = lazy(() => import('./pages/ProgressPage'));
 const SkeletonPage = lazy(() => import('./pages/SkeletonPage'));
 const SonnerPage = lazy(() => import('./pages/SonnerPage'));
+const EmptyPage = lazy(() => import('./pages/EmptyPage'));
+
+// Priority 6: Data Display Components
+const AccordionPage = lazy(() => import('./pages/AccordionPage'));
+const CarouselPage = lazy(() => import('./pages/CarouselPage'));
+const CollapsiblePage = lazy(() => import('./pages/CollapsiblePage'));
+const DataTablePage = lazy(() => import('./pages/DataTablePage'));
+const ItemPage = lazy(() => import('./pages/ItemPage'));
+const KbdPage = lazy(() => import('./pages/KbdPage'));
+const TablePage = lazy(() => import('./pages/TablePage'));
+const TypographyPage = lazy(() => import('./pages/TypographyPage'));
 
 // Import Sidebar and Spinner components
 import {
@@ -109,6 +120,15 @@ import {
     Bell,
     BarChart2,
     BoxSelect,
+    Inbox,
+    Rows3,
+    Table2,
+    ChevronDownSquare,
+    Layers,
+    GalleryHorizontal,
+    Keyboard,
+    TypeOutline,
+    ListTree,
 } from 'lucide-react';
 
 // Import Toaster for toast notifications
@@ -162,9 +182,20 @@ const componentsByCategory = {
     ],
     feedback: [
         {name: 'Alert', path: '/alert', icon: AlertCircle},
+        {name: 'Empty', path: '/empty', icon: Inbox},
         {name: 'Progress', path: '/progress', icon: BarChart2},
         {name: 'Skeleton', path: '/skeleton', icon: BoxSelect},
         {name: 'Sonner', path: '/sonner', icon: Bell},
+    ],
+    dataDisplay: [
+        {name: 'Accordion', path: '/accordion', icon: ChevronDownSquare},
+        {name: 'Carousel', path: '/carousel', icon: GalleryHorizontal},
+        {name: 'Collapsible', path: '/collapsible', icon: Layers},
+        {name: 'Data Table', path: '/data-table', icon: Table2},
+        {name: 'Item', path: '/item', icon: ListTree},
+        {name: 'Kbd', path: '/kbd', icon: Keyboard},
+        {name: 'Table', path: '/table', icon: Rows3},
+        {name: 'Typography', path: '/typography', icon: TypeOutline},
     ],
 };
 
@@ -175,7 +206,8 @@ function NavigationSidebar() {
         forms: false,
         navigation: false,
         overlays: false,
-        feedback: false
+        feedback: false,
+        dataDisplay: false
     });
 
     // On initial mount, find and open the group containing the active route
@@ -328,6 +360,27 @@ function NavigationSidebar() {
                                 ))}
                             </SidebarNav>
                         </SidebarGroup>
+
+                        <SidebarGroup
+                            collapsible
+                            open={openGroups.dataDisplay}
+                            onOpenChange={handleGroupToggle('dataDisplay')}
+                        >
+                            <SidebarGroupLabel>Data Display</SidebarGroupLabel>
+                            <SidebarNav>
+                                {componentsByCategory.dataDisplay.map((component) => (
+                                    <SidebarNavItem
+                                        key={component.path}
+                                        as={Link}
+                                        href={component.path}
+                                        icon={component.icon}
+                                        active={location.pathname === component.path}
+                                    >
+                                        {component.name}
+                                    </SidebarNavItem>
+                                ))}
+                            </SidebarNav>
+                        </SidebarGroup>
                     </div>
                 </SidebarNav>
             </SidebarContent>
@@ -403,6 +456,7 @@ function App() {
                         <Route path="/dialog" element={<><SEO title="Dialog" description="Dialog component for React - Modal window for displaying content and collecting user input. Built with Tailwind CSS." path="/dialog" /><DialogPage/></>}/>
                         <Route path="/drawer" element={<><SEO title="Drawer" description="Drawer component for React - Slide-in panel for navigation or additional content from screen edges. Built with Tailwind CSS." path="/drawer" /><DrawerPage/></>}/>
                         <Route path="/dropdown-menu" element={<><SEO title="Dropdown Menu" description="Dropdown Menu component for React - Floating menu with actions triggered by button click. Built with Tailwind CSS." path="/dropdown-menu" /><DropdownMenuPage/></>}/>
+                        <Route path="/empty" element={<><SEO title="Empty" description="Empty component for React - Display empty state with icon, title, description, and action button. Built with Tailwind CSS." path="/empty" /><EmptyPage/></>}/>
                         <Route path="/field" element={<><SEO title="Field" description="Field component for React - Form field wrapper with label, description, and error message support. Built with Tailwind CSS." path="/field" /><FieldPage/></>}/>
                         <Route path="/form" element={<><SEO title="Form" description="Form component for React - Complete form handling with validation and submission states. Built with Tailwind CSS." path="/form" /><FormPage/></>}/>
                         <Route path="/hover-card" element={<><SEO title="Hover Card" description="Hover Card component for React - Display rich content on hover with customizable positioning. Built with Tailwind CSS." path="/hover-card" /><HoverCardPage/></>}/>
@@ -428,6 +482,14 @@ function App() {
                         <Route path="/progress" element={<><SEO title="Progress" description="Progress component for React - Show completion status with determinate and indeterminate modes. Built with Tailwind CSS." path="/progress" /><ProgressPage/></>}/>
                         <Route path="/skeleton" element={<><SEO title="Skeleton" description="Skeleton component for React - Display loading placeholders while content is being fetched. Built with Tailwind CSS." path="/skeleton" /><SkeletonPage/></>}/>
                         <Route path="/sonner" element={<><SEO title="Sonner" description="Sonner toast component for React - Beautiful toast notifications with multiple types and customization. Built with Tailwind CSS." path="/sonner" /><SonnerPage/></>}/>
+                        <Route path="/accordion" element={<><SEO title="Accordion" description="Accordion component for React - Vertically stacked interactive headings that reveal content sections. Built with Tailwind CSS." path="/accordion" /><AccordionPage/></>}/>
+                        <Route path="/carousel" element={<><SEO title="Carousel" description="Carousel component for React - Image and content slider with navigation and auto-play. Built with Tailwind CSS." path="/carousel" /><CarouselPage/></>}/>
+                        <Route path="/collapsible" element={<><SEO title="Collapsible" description="Collapsible component for React - Interactive panel that expands and collapses content. Built with Tailwind CSS." path="/collapsible" /><CollapsiblePage/></>}/>
+                        <Route path="/data-table" element={<><SEO title="Data Table" description="Data Table component for React - Powerful table with sorting, filtering, pagination, and column visibility. Built with Tailwind CSS." path="/data-table" /><DataTablePage/></>}/>
+                        <Route path="/item" element={<><SEO title="Item" description="Item component for React - Versatile list item with icon, content, and actions. Built with Tailwind CSS." path="/item" /><ItemPage/></>}/>
+                        <Route path="/kbd" element={<><SEO title="Kbd" description="Kbd component for React - Display keyboard keys and shortcuts in styled inline elements. Built with Tailwind CSS." path="/kbd" /><KbdPage/></>}/>
+                        <Route path="/table" element={<><SEO title="Table" description="Table component for React - Responsive table with styled rows, headers, and cells. Built with Tailwind CSS." path="/table" /><TablePage/></>}/>
+                        <Route path="/typography" element={<><SEO title="Typography" description="Typography components for React - Styled text components for headings, paragraphs, and more. Built with Tailwind CSS." path="/typography" /><TypographyPage/></>}/>
                         </Routes>
                     </Suspense>
                 </Layout>

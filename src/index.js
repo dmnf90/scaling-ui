@@ -154,11 +154,62 @@ export {
 
 // Priority 5: Feedback Components
 export { Alert, AlertTitle, AlertDescription } from './components/Alert/Alert';
+export { Empty } from './components/Empty/Empty';
 export { Progress } from './components/Progress/Progress';
 export { Skeleton } from './components/Skeleton/Skeleton';
 export { Toaster, toast } from './components/Sonner/Sonner';
 
 // Priority 6: Data Display Components
+export {
+    Accordion,
+    AccordionItem,
+    AccordionTrigger,
+    AccordionContent
+} from './components/Accordion/Accordion';
 export { Avatar } from './components/Avatar/Avatar';
-
-// Add more component exports as they are implemented
+export {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselPrevious,
+    CarouselNext,
+    CarouselDots
+} from './components/Carousel/Carousel';
+export {
+    Collapsible,
+    CollapsibleTrigger,
+    CollapsibleContent
+} from './components/Collapsible/Collapsible';
+export { DataTable } from './components/DataTable/DataTable';
+export {
+    Item,
+    ItemIcon,
+    ItemContent,
+    ItemTitle,
+    ItemDescription,
+    ItemActions
+} from './components/Item/Item';
+export { Kbd } from './components/Kbd/Kbd';
+export {
+    Table,
+    TableHeader,
+    TableBody,
+    TableFooter,
+    TableRow,
+    TableHead,
+    TableCell,
+    TableCaption
+} from './components/Table/Table';
+export {
+    H1,
+    H2,
+    H3,
+    H4,
+    P,
+    Lead,
+    Large,
+    Small,
+    Muted,
+    InlineCode,
+    Blockquote
+} from './components/Typography/Typography';
