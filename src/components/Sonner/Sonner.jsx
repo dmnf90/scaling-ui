@@ -4,18 +4,18 @@ import { CheckCircle, XCircle, AlertTriangle, Info } from 'lucide-react';
 
 // Default theme with left border accent (! prefix required to override sonner defaults)
 const defaultTheme = {
-    success: '!border-l-4 !border-l-green-500',
-    error: '!border-l-4 !border-l-red-500',
-    warning: '!border-l-4 !border-l-yellow-500',
-    info: '!border-l-4 !border-l-blue-500',
+    success: '!border-l-4 !border-l-green-500 dark:!border-l-green-400',
+    error: '!border-l-4 !border-l-red-500 dark:!border-l-red-400',
+    warning: '!border-l-4 !border-l-yellow-500 dark:!border-l-yellow-400',
+    info: '!border-l-4 !border-l-blue-500 dark:!border-l-blue-400',
 };
 
 // Default colored icons for each toast type
 const defaultIcons = {
-    success: <CheckCircle className="h-4 w-4 text-green-500" />,
-    error: <XCircle className="h-4 w-4 text-red-500" />,
-    warning: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
-    info: <Info className="h-4 w-4 text-blue-500" />,
+    success: <CheckCircle className="h-4 w-4 text-green-500 dark:text-green-400" />,
+    error: <XCircle className="h-4 w-4 text-red-500 dark:text-red-400" />,
+    warning: <AlertTriangle className="h-4 w-4 text-yellow-500 dark:text-yellow-400" />,
+    info: <Info className="h-4 w-4 text-blue-500 dark:text-blue-400" />,
 };
 
 export function Toaster({

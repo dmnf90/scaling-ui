@@ -3,6 +3,7 @@ import {BrowserRouter, Routes, Route, useLocation, Link} from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async';
 import logoScaling from '../logo-scaling.svg';
 import SEO from './components/SEO';
+import ThemeToggle from './components/ThemeToggle';
 // Eager load HomePage for faster initial load
 import HomePage from './pages/HomePage';
 
@@ -332,9 +333,12 @@ function NavigationSidebar() {
             </SidebarContent>
 
             <SidebarFooter>
-                <div className="text-xs text-muted-foreground space-y-1">
-                    <p>Scaling UI v0.1.0</p>
-                    <p className="text-[10px]">Built with React + Tailwind</p>
+                <div className="space-y-3">
+                    <ThemeToggle />
+                    <div className="text-xs text-muted-foreground space-y-1">
+                        <p>Scaling UI v0.1.0</p>
+                        <p className="text-[10px]">Built with React + Tailwind</p>
+                    </div>
                 </div>
             </SidebarFooter>
         </Sidebar>

@@ -36,10 +36,10 @@ const statusVariants = cva(
                 xl: 'h-4 w-4 bottom-2 right-2',
             },
             status: {
-                online: 'bg-green-500',
-                offline: 'bg-gray-400',
-                away: 'bg-yellow-500',
-                busy: 'bg-red-500',
+                online: 'bg-green-500 dark:bg-green-400',
+                offline: 'bg-gray-400 dark:bg-gray-500',
+                away: 'bg-yellow-500 dark:bg-yellow-400',
+                busy: 'bg-red-500 dark:bg-red-400',
             },
         },
         defaultVariants: {

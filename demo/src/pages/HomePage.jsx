@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, Badge, Separator } from '../../../src/index.js';
-import { Layers, Zap, Palette, Code2, Github } from 'lucide-react';
+import { Layers, Zap, Code2, Github } from 'lucide-react';
+import tailwindLogo from '../../public/tailwindcss-logotype.svg';
+import tailwindLogoWhite from '../../public/tailwindcss-logotype-white.svg';
 
 export default function HomePage() {
     return (
@@ -79,8 +81,9 @@ export default function HomePage() {
 
                 <Card>
                     <CardHeader>
-                        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-                            <Palette className="w-6 h-6 text-primary" />
+                        <div className="mb-4 h-12 flex items-center">
+                            <img src={tailwindLogo} alt="Tailwind CSS" className="h-6 dark:hidden" />
+                            <img src={tailwindLogoWhite} alt="Tailwind CSS" className="h-6 hidden dark:block" />
                         </div>
                         <CardTitle>Built with Tailwind</CardTitle>
                         <CardDescription>
