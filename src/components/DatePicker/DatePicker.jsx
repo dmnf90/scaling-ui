@@ -32,6 +32,7 @@ export function DatePicker({
             </PopoverTrigger>
             <PopoverContent align="start" className="w-auto p-0">
                 <Calendar
+                    className={cn('min-w-[300px]')}
                     selected={selected}
                     onSelect={onSelect}
                 />

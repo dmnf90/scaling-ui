@@ -4,6 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import logoScaling from '../logo-scaling.svg';
 import SEO from './components/SEO';
 import ThemeToggle from './components/ThemeToggle';
+import packageJson from '../../package.json';
 // Eager load HomePage for faster initial load
 import HomePage from './pages/HomePage';
 
@@ -107,7 +108,6 @@ import {
     Terminal,
     Bell,
     BarChart2,
-    Loader,
     BoxSelect,
 } from 'lucide-react';
 
@@ -336,7 +336,7 @@ function NavigationSidebar() {
                 <div className="space-y-3">
                     <ThemeToggle />
                     <div className="text-xs text-muted-foreground space-y-1">
-                        <p>Scaling UI v0.1.0</p>
+                        <p>Scaling UI v{packageJson.version}</p>
                         <p className="text-[10px]">Built with React + Tailwind</p>
                     </div>
                 </div>
