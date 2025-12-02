@@ -1,11 +1,9 @@
-import React, { createContext, useContext, useState, useRef, useEffect, useId } from 'react';
+import React, { createContext, useContext, useState, useRef, useEffect, useLayoutEffect, useId } from 'react';
 import { createPortal } from 'react-dom';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { ChevronRight, ChevronLeft, Check } from 'lucide-react';
-import { useControllableState } from '../../lib/hooks/useControllableState.js';
-import { useClickOutside } from '../../lib/hooks/useClickOutside.js';
-import { useEscapeKey } from '../../lib/hooks/useEscapeKey.js';
+import { useControllableState, useClickOutside, useEscapeKey } from '../../lib/hooks/index.js';
 
 // Mobile detection hook
 const useIsMobile = () => {
@@ -117,16 +115,21 @@ export function DropdownMenu({
 export function DropdownMenuTrigger({ children, asChild, className, ...props }) {
     const context = useContext(DropdownMenuContext);
     const menubarContext = useContext(MenubarContext);
+    const touchHandled = useRef(false);
 
-    const handleClick = (e) => {
-        // Prevent double-firing on touch devices (touchend + click)
-        if (e.detail === 0) return; // Touch events have detail=0, skip if already handled by touchend
+    const handleClick = () => {
+        // Skip if we just handled this via touchend (prevents double-firing on touch)
+        if (touchHandled.current) {
+            touchHandled.current = false;
+            return;
+        }
         context?.setOpen(!context?.open);
     };
 
     // Handle touch end to ensure taps work on mobile in scroll containers
     const handleTouchEnd = (e) => {
         e.preventDefault();
+        touchHandled.current = true;
         context?.setOpen(!context?.open);
     };
 
@@ -152,12 +155,11 @@ export function DropdownMenuTrigger({ children, asChild, className, ...props }) 
 
     // Different styling for menubar vs regular dropdown
     const menubarTriggerClass = 'flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground';
-    const regularTriggerClass = className;
 
     return (
         <button
             type="button"
-            className={cn(context?.isInMenubar ? menubarTriggerClass : regularTriggerClass, context?.open && context?.isInMenubar && 'bg-accent text-accent-foreground')}
+            className={cn(context?.isInMenubar ? menubarTriggerClass : className, context?.open && context?.isInMenubar && 'bg-accent text-accent-foreground')}
             {...triggerProps}
             {...props}
         >
@@ -187,7 +189,7 @@ export function DropdownMenuContent({ children, className, align = 'start', side
     // Use escape key hook
     useEscapeKey(() => context?.setOpen(false), context?.open);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!context?.open) {
             setPositionReady(false);
             return;
@@ -266,28 +268,7 @@ export function DropdownMenuContent({ children, className, align = 'start', side
         );
     };
 
-    // In menubar context on desktop, use absolute positioning instead of portal
-    // On mobile, use portal to escape the overflow-x-auto container
-    if (context?.isInMenubar && !context?.isMobile) {
-        return (
-            <div
-                ref={contentRef}
-                className={cn(
-                    'absolute z-50 min-w-[12rem] rounded-md border border-border bg-popover text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95',
-                    !context?.isMobile && 'overflow-hidden p-1',
-                    align === 'start' && 'left-0',
-                    align === 'end' && 'right-0',
-                    'top-full mt-1.5',
-                    className
-                )}
-                role="menu"
-                {...props}
-            >
-                {mobileWrapper(<div className={context?.isMobile ? 'p-1' : undefined}>{children}</div>)}
-            </div>
-        );
-    }
-
+    // Always use portal to escape overflow clipping (works for desktop + mobile)
     return createPortal(
         <div
             ref={contentRef}

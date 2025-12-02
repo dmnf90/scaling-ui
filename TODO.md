@@ -35,6 +35,7 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 - [x] Date Picker
 - [x] Calendar
 - [x] Slider
+- [ ] Rich Text Editor (WYSIWYG editor with formatting toolbar)
 
 ### Priority 3: Navigation Components
 - [x] Navigation Menu

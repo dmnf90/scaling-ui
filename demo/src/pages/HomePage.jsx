@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Button, Badge, Separator } from '../../../src/index.js';
 import { Layers, Zap, Code2, Github } from 'lucide-react';
-import tailwindLogo from '../../public/tailwindcss-logotype.svg';
-import tailwindLogoWhite from '../../public/tailwindcss-logotype-white.svg';
+const tailwindLogo = '/tailwindcss-logotype.svg';
+const tailwindLogoWhite = '/tailwindcss-logotype-white.svg';
 
 export default function HomePage() {
     return (

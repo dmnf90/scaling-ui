@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import {
     File, FolderOpen, Save, Printer, Copy, Scissors, Clipboard, Undo, Redo,
-    Settings, Wrench, Code, List, Bookmark, History, Download, Minimize2, Maximize2,
+    Settings, Code, Bookmark, History, Download, Minimize2, Maximize2,
     HelpCircle, Info, RefreshCw, FileText, FileOutput, LogOut, Search, Replace,
-    Puzzle, Terminal, Bug, Monitor, PanelLeft, PanelRight
+    Puzzle, Terminal, Bug, Monitor, PanelLeft, PanelRight, Bold, Italic, Underline,
+    AlignLeft, AlignCenter, AlignRight, ListOrdered, Image, Link, FileIcon
 } from 'lucide-react';
 import {
     Menubar,
@@ -20,7 +21,8 @@ import {
     MenubarSubContent,
     MenubarShortcut
 } from '../../../src/index.js';
-import { Section, Demo, Example, CodeBlock } from '../components';
+import { Button, Input, Separator, Badge } from '../../../src/index.js';
+import { Section, Example, CodeBlock } from '../components';
 
 export default function MenubarPage() {
     const [showBookmarks, setShowBookmarks] = useState(true);
@@ -407,8 +409,9 @@ const [view, setView] = useState('grid');
                 <p className="text-muted-foreground mb-4">
                     On mobile devices, swipe horizontally to access all menu items. Submenus use a drill-down pattern with a back button.
                 </p>
-                <Demo>
-                    <Menubar>
+                <div className="w-full border border-border rounded-lg overflow-hidden bg-background shadow-sm">
+                    {/* Menubar */}
+                    <Menubar className="rounded-none border-0 border-b">
                         {/* File Menu */}
                         <MenubarMenu value="file">
                             <MenubarTrigger>File</MenubarTrigger>
@@ -610,8 +613,92 @@ const [view, setView] = useState('grid');
                             </MenubarContent>
                         </MenubarMenu>
                     </Menubar>
-                </Demo>
+
+                    {/* Toolbar */}
+                    <div className="flex items-center gap-1 p-2 border-b border-border bg-muted/30">
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Bold className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Italic className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Underline className="h-4 w-4" />
+                        </Button>
+                        <Separator orientation="vertical" className="h-6 mx-1" />
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <AlignLeft className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <AlignCenter className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <AlignRight className="h-4 w-4" />
+                        </Button>
+                        <Separator orientation="vertical" className="h-6 mx-1" />
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <ListOrdered className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Image className="h-4 w-4" />
+                        </Button>
+                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <Link className="h-4 w-4" />
+                        </Button>
+                    </div>
+
+                    {/* Main content area */}
+                    <div className="flex min-h-[350px]">
+                        {/* Sidebar */}
+                        <div className="w-48 border-r border-border p-3 bg-muted/20 hidden sm:block">
+                            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-3">Documents</div>
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2 p-2 rounded-md bg-accent text-accent-foreground text-sm">
+                                    <FileIcon className="h-4 w-4" />
+                                    <span className="truncate">Untitled.doc</span>
+                                </div>
+                                <div className="flex items-center gap-2 p-2 rounded-md hover:bg-accent/50 text-sm text-muted-foreground cursor-pointer">
+                                    <FileIcon className="h-4 w-4" />
+                                    <span className="truncate">Project Brief.doc</span>
+                                </div>
+                                <div className="flex items-center gap-2 p-2 rounded-md hover:bg-accent/50 text-sm text-muted-foreground cursor-pointer">
+                                    <FileIcon className="h-4 w-4" />
+                                    <span className="truncate">Meeting Notes.doc</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Editor area */}
+                        <div className="flex-1 p-4">
+                            <Input
+                                placeholder="Document title..."
+                                className="text-lg font-semibold border-0 shadow-none px-0 focus-visible:ring-0 mb-4"
+                                defaultValue="Welcome to Scaling UI"
+                            />
+                            <div className="text-muted-foreground leading-relaxed space-y-3">
+                                <p>
+                                    This is a mock document editor showcasing how the Menubar component integrates with a real application layout.
+                                </p>
+                                <p>
+                                    Use the menus above to explore File, Edit, Tools, Lists, Window, and Help options. On mobile devices, you can swipe horizontally to access all menu items.
+                                </p>
+                                <div>
+                                    <Badge variant="secondary" className="mr-2">Tip</Badge>
+                                    Try the submenus like Export or Find to see the drill-down navigation pattern on mobile.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Status bar */}
+                    <div className="flex items-center justify-between px-3 py-1.5 border-t border-border bg-muted/30 text-xs text-muted-foreground">
+                        <span>Words: 47 | Characters: 284</span>
+                        <span>Last saved: Just now</span>
+                    </div>
+                </div>
             </Section>
+
+            <div className="pb-32" />
         </div>
     );
 }
