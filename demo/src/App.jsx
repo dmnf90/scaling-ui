@@ -411,9 +411,9 @@ function NavigationSidebar() {
 function Layout({children}) {
     return (
         <SidebarProvider defaultOpen={false}>
-            <SidebarLayout className="h-screen">
+            <SidebarLayout className="h-dvh overflow-hidden">
                 <NavigationSidebar />
-                <SidebarInset className="lg:ml-64 flex flex-col h-screen">
+                <SidebarInset className="lg:ml-64 flex flex-col h-full overflow-hidden">
                     {/* Mobile header with trigger - fixed on mobile, hidden on desktop */}
                     <header className="lg:hidden fixed top-0 left-0 right-0 bg-background border-b border-border z-30">
                         <div className="flex items-center gap-3 p-4">

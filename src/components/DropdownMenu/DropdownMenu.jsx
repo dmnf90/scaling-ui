@@ -1,11 +1,23 @@
-import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
+import React, { createContext, useContext, useState, useRef, useEffect, useId } from 'react';
 import { createPortal } from 'react-dom';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
-import { ChevronRight, Check } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Check } from 'lucide-react';
 import { useControllableState } from '../../lib/hooks/useControllableState.js';
 import { useClickOutside } from '../../lib/hooks/useClickOutside.js';
 import { useEscapeKey } from '../../lib/hooks/useEscapeKey.js';
+
+// Mobile detection hook
+const useIsMobile = () => {
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 640);
+        check();
+        window.addEventListener('resize', check);
+        return () => window.removeEventListener('resize', check);
+    }, []);
+    return isMobile;
+};
 
 const DropdownMenuContext = createContext();
 const DropdownMenuSubContext = createContext();
@@ -16,7 +28,7 @@ const MenubarContext = createContext();
 // ============================================================================
 
 const menubarVariants = cva(
-    'flex h-9 items-center space-x-1 rounded-md border border-border bg-background p-1 shadow-sm'
+    'flex h-9 items-center space-x-1 rounded-md border border-border bg-background p-1 shadow-sm overflow-x-auto overflow-y-hidden scrollbar-none touch-manipulation'
 );
 
 /**
@@ -50,6 +62,16 @@ export function DropdownMenu({
     const menubarContext = useContext(MenubarContext);
     const triggerRef = useRef(null);
     const contentRef = useRef(null);
+    const isMobile = useIsMobile();
+
+    // Mobile submenu navigation stack
+    const [submenuStack, setSubmenuStack] = useState([]);
+    const pushSubmenu = (id, label) => setSubmenuStack(s => [...s, { id, label }]);
+    const popSubmenu = () => setSubmenuStack(s => s.slice(0, -1));
+    const activeSubmenu = submenuStack[submenuStack.length - 1]?.id || null;
+
+    // Mobile submenu content registry (for rendering as sibling)
+    const [mobileSubmenuContent, setMobileSubmenuContent] = useState(null);
 
     // When in menubar context, sync with menubar state
     const isInMenubar = menubarContext !== undefined && menubarContext !== null;
@@ -61,12 +83,30 @@ export function DropdownMenu({
             if (isInMenubar) {
                 menubarContext.setOpenMenu(newOpen ? value : null);
             }
+            // Reset submenu stack when menu closes
+            if (!newOpen) {
+                setSubmenuStack([]);
+            }
             onOpenChange?.(newOpen);
         },
     });
 
     return (
-        <DropdownMenuContext.Provider value={{ open, setOpen, triggerRef, contentRef, value, isInMenubar }}>
+        <DropdownMenuContext.Provider value={{
+            open,
+            setOpen,
+            triggerRef,
+            contentRef,
+            value,
+            isInMenubar,
+            isMobile,
+            submenuStack,
+            pushSubmenu,
+            popSubmenu,
+            activeSubmenu,
+            mobileSubmenuContent,
+            setMobileSubmenuContent
+        }}>
             <div className={isInMenubar ? 'relative' : undefined} {...props}>
                 {children}
             </div>
@@ -78,7 +118,15 @@ export function DropdownMenuTrigger({ children, asChild, className, ...props }) 
     const context = useContext(DropdownMenuContext);
     const menubarContext = useContext(MenubarContext);
 
-    const handleClick = () => {
+    const handleClick = (e) => {
+        // Prevent double-firing on touch devices (touchend + click)
+        if (e.detail === 0) return; // Touch events have detail=0, skip if already handled by touchend
+        context?.setOpen(!context?.open);
+    };
+
+    // Handle touch end to ensure taps work on mobile in scroll containers
+    const handleTouchEnd = (e) => {
+        e.preventDefault();
         context?.setOpen(!context?.open);
     };
 
@@ -92,6 +140,7 @@ export function DropdownMenuTrigger({ children, asChild, className, ...props }) 
     const triggerProps = {
         ref: context?.triggerRef,
         onClick: handleClick,
+        onTouchEnd: handleTouchEnd,
         onMouseEnter: context?.isInMenubar ? handleMouseEnter : undefined,
         'aria-expanded': context?.open,
         'aria-haspopup': 'true',
@@ -121,6 +170,7 @@ export function DropdownMenuContent({ children, className, align = 'start', side
     const context = useContext(DropdownMenuContext);
     const contentRef = useRef(null);
     const [position, setPosition] = useState({ top: 0, left: 0 });
+    const [positionReady, setPositionReady] = useState(false);
 
     // Use click outside hook
     useClickOutside(
@@ -138,7 +188,10 @@ export function DropdownMenuContent({ children, className, align = 'start', side
     useEscapeKey(() => context?.setOpen(false), context?.open);
 
     useEffect(() => {
-        if (!context?.open) return;
+        if (!context?.open) {
+            setPositionReady(false);
+            return;
+        }
 
         const updatePosition = () => {
             const trigger = context?.triggerRef?.current;
@@ -163,6 +216,7 @@ export function DropdownMenuContent({ children, className, align = 'start', side
             if (left < 8) left = 8;
 
             setPosition({ top, left });
+            setPositionReady(true);
         };
 
         updatePosition();
@@ -177,13 +231,50 @@ export function DropdownMenuContent({ children, className, align = 'start', side
 
     if (!context?.open) return null;
 
-    // In menubar context, use absolute positioning instead of portal
-    if (context?.isInMenubar) {
+    // Mobile content wrapper for slide animation
+    const mobileWrapper = (content) => {
+        if (!context?.isMobile) return content;
+        return (
+            <div className="relative overflow-hidden">
+                {/* Main content - slides left when submenu is active */}
+                <div
+                    className={cn(
+                        'transition-transform duration-200',
+                        context?.activeSubmenu && '-translate-x-full'
+                    )}
+                >
+                    {content}
+                </div>
+
+                {/* Submenu content - rendered as sibling, slides in from right */}
+                {context?.mobileSubmenuContent && (
+                    <div className="absolute inset-0 bg-popover slide-in-from-right">
+                        <button
+                            type="button"
+                            onClick={context.mobileSubmenuContent.onBack}
+                            className="flex items-center gap-2 w-full px-2 py-2 text-sm font-medium border-b border-border hover:bg-accent transition-colors"
+                        >
+                            <ChevronLeft className="h-4 w-4" />
+                            <span>{context.mobileSubmenuContent.label || 'Back'}</span>
+                        </button>
+                        <div className="p-1">
+                            {context.mobileSubmenuContent.children}
+                        </div>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    // In menubar context on desktop, use absolute positioning instead of portal
+    // On mobile, use portal to escape the overflow-x-auto container
+    if (context?.isInMenubar && !context?.isMobile) {
         return (
             <div
                 ref={contentRef}
                 className={cn(
-                    'absolute z-50 min-w-[12rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95',
+                    'absolute z-50 min-w-[12rem] rounded-md border border-border bg-popover text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95',
+                    !context?.isMobile && 'overflow-hidden p-1',
                     align === 'start' && 'left-0',
                     align === 'end' && 'right-0',
                     'top-full mt-1.5',
@@ -192,7 +283,7 @@ export function DropdownMenuContent({ children, className, align = 'start', side
                 role="menu"
                 {...props}
             >
-                {children}
+                {mobileWrapper(<div className={context?.isMobile ? 'p-1' : undefined}>{children}</div>)}
             </div>
         );
     }
@@ -201,7 +292,10 @@ export function DropdownMenuContent({ children, className, align = 'start', side
         <div
             ref={contentRef}
             className={cn(
-                'z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95',
+                'z-50 min-w-[8rem] rounded-md border border-border bg-popover text-popover-foreground shadow-md',
+                positionReady && 'animate-in fade-in-80 zoom-in-95',
+                !positionReady && 'opacity-0',
+                !context?.isMobile && 'overflow-hidden p-1',
                 className
             )}
             role="menu"
@@ -212,7 +306,7 @@ export function DropdownMenuContent({ children, className, align = 'start', side
             }}
             {...props}
         >
-            {children}
+            {mobileWrapper(<div className={context?.isMobile ? 'p-1' : undefined}>{children}</div>)}
         </div>,
         document.body
     );
@@ -336,11 +430,19 @@ export function DropdownMenuShortcut({ children, className, ...props }) {
 }
 
 export function DropdownMenuSub({ children, ...props }) {
+    const menuContext = useContext(DropdownMenuContext);
     const [isOpen, setIsOpen] = useState(false);
     const timeoutRef = useRef(null);
     const triggerRef = useRef(null);
+    const submenuId = useId();
+    const [label, setLabel] = useState('');
+
+    // On mobile, check if this submenu is active in the stack
+    const isActiveOnMobile = menuContext?.isMobile && menuContext?.activeSubmenu === submenuId;
 
     const handleMouseEnter = () => {
+        // Skip hover behavior on mobile
+        if (menuContext?.isMobile) return;
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
             timeoutRef.current = null;
@@ -349,6 +451,8 @@ export function DropdownMenuSub({ children, ...props }) {
     };
 
     const handleMouseLeave = () => {
+        // Skip hover behavior on mobile
+        if (menuContext?.isMobile) return;
         // Small delay to allow moving to submenu
         timeoutRef.current = setTimeout(() => {
             setIsOpen(false);
@@ -363,10 +467,21 @@ export function DropdownMenuSub({ children, ...props }) {
         };
     }, []);
 
+    // Determine if submenu should be open
+    const effectiveIsOpen = menuContext?.isMobile ? isActiveOnMobile : isOpen;
+
     return (
-        <DropdownMenuSubContext.Provider value={{ isOpen, setIsOpen, triggerRef }}>
+        <DropdownMenuSubContext.Provider value={{
+            isOpen: effectiveIsOpen,
+            setIsOpen,
+            triggerRef,
+            submenuId,
+            label,
+            setLabel,
+            isMobile: menuContext?.isMobile
+        }}>
             <div
-                className="relative"
+                className={menuContext?.isMobile ? undefined : 'relative'}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 {...props}
@@ -379,6 +494,29 @@ export function DropdownMenuSub({ children, ...props }) {
 
 export function DropdownMenuSubTrigger({ children, className, disabled, ...props }) {
     const context = useContext(DropdownMenuSubContext);
+    const menuContext = useContext(DropdownMenuContext);
+
+    // Extract text content from children for the label
+    const getTextContent = (node) => {
+        if (typeof node === 'string') return node;
+        if (Array.isArray(node)) return node.map(getTextContent).join('');
+        if (node?.props?.children) return getTextContent(node.props.children);
+        return '';
+    };
+
+    // Set label when children change
+    useEffect(() => {
+        const textLabel = getTextContent(children);
+        context?.setLabel?.(textLabel);
+    }, [children]);
+
+    const handleClick = () => {
+        if (disabled) return;
+        // On mobile, push this submenu onto the stack
+        if (context?.isMobile && menuContext?.pushSubmenu) {
+            menuContext.pushSubmenu(context.submenuId, context.label || 'Submenu');
+        }
+    };
 
     return (
         <div
@@ -388,6 +526,7 @@ export function DropdownMenuSubTrigger({ children, className, disabled, ...props
                 disabled && 'pointer-events-none opacity-50',
                 className
             )}
+            onClick={handleClick}
             {...props}
         >
             {children}
@@ -398,10 +537,30 @@ export function DropdownMenuSubTrigger({ children, className, disabled, ...props
 
 export function DropdownMenuSubContent({ children, className, ...props }) {
     const context = useContext(DropdownMenuSubContext);
+    const menuContext = useContext(DropdownMenuContext);
     const contentRef = useRef(null);
     const [position, setPosition] = useState({ top: 0, left: 0 });
 
+    // Mobile: register content with parent context for rendering as sibling
     useEffect(() => {
+        if (context?.isMobile && context?.isOpen) {
+            menuContext?.setMobileSubmenuContent?.({
+                label: context.label,
+                children,
+                onBack: () => menuContext?.popSubmenu?.()
+            });
+        }
+        return () => {
+            // Clean up when closing or unmounting
+            if (context?.isMobile && menuContext?.setMobileSubmenuContent) {
+                menuContext.setMobileSubmenuContent(null);
+            }
+        };
+    }, [context?.isOpen, context?.isMobile, context?.label]);
+
+    useEffect(() => {
+        // Skip position calculation on mobile
+        if (context?.isMobile) return;
         if (!context?.isOpen || !context?.triggerRef?.current) return;
 
         const updatePosition = () => {
@@ -425,10 +584,16 @@ export function DropdownMenuSubContent({ children, className, ...props }) {
         };
 
         updatePosition();
-    }, [context?.isOpen, context?.triggerRef]);
+    }, [context?.isOpen, context?.triggerRef, context?.isMobile]);
 
     if (!context?.isOpen) return null;
 
+    // Mobile: don't render here, content is rendered by DropdownMenuContent
+    if (context?.isMobile) {
+        return null;
+    }
+
+    // Desktop: existing portal/fixed positioning
     return createPortal(
         <div
             ref={contentRef}
