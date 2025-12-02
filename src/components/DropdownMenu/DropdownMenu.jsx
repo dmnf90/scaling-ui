@@ -9,6 +9,7 @@ const DropdownMenuSubContext = createContext();
 
 export function DropdownMenu({ children, open: controlledOpen, defaultOpen = false, onOpenChange, ...props }) {
     const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
+    const triggerRef = useRef(null);
     const isControlled = controlledOpen !== undefined;
     const open = isControlled ? controlledOpen : uncontrolledOpen;
 
@@ -20,7 +21,7 @@ export function DropdownMenu({ children, open: controlledOpen, defaultOpen = fal
     };
 
     return (
-        <DropdownMenuContext.Provider value={{ open, setOpen }}>
+        <DropdownMenuContext.Provider value={{ open, setOpen, triggerRef }}>
             <div {...props}>{children}</div>
         </DropdownMenuContext.Provider>
     );
@@ -28,7 +29,6 @@ export function DropdownMenu({ children, open: controlledOpen, defaultOpen = fal
 
 export function DropdownMenuTrigger({ children, asChild, className, ...props }) {
     const context = useContext(DropdownMenuContext);
-    const triggerRef = useRef(null);
 
     const handleClick = () => {
         context?.setOpen(!context?.open);
@@ -36,7 +36,7 @@ export function DropdownMenuTrigger({ children, asChild, className, ...props }) 
 
     if (asChild && React.isValidElement(children)) {
         return React.cloneElement(children, {
-            ref: triggerRef,
+            ref: context?.triggerRef,
             onClick: handleClick,
             'aria-expanded': context?.open,
             'aria-haspopup': 'true',
@@ -45,7 +45,7 @@ export function DropdownMenuTrigger({ children, asChild, className, ...props }) 
 
     return (
         <button
-            ref={triggerRef}
+            ref={context?.triggerRef}
             type="button"
             onClick={handleClick}
             aria-expanded={context?.open}
@@ -94,7 +94,7 @@ export function DropdownMenuContent({ children, className, align = 'start', side
         if (!context?.open) return;
 
         const updatePosition = () => {
-            const trigger = document.querySelector('[aria-expanded="true"]');
+            const trigger = context?.triggerRef?.current;
             if (!trigger || !contentRef.current) return;
 
             const triggerRect = trigger.getBoundingClientRect();
