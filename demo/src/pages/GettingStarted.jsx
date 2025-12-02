@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, Separator } from '../../../src/index.js';
 import { Github, PackageCheck } from 'lucide-react';
+import { CodeBlock } from '../components';
 
 export default function GettingStarted() {
     return (
@@ -21,9 +22,7 @@ export default function GettingStarted() {
                         <p className="text-muted-foreground mb-4">
                             Install Scaling UI via npm:
                         </p>
-                        <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                            <code>npm install scaling-ui</code>
-                        </pre>
+                        <CodeBlock code="npm install scaling-ui" language="bash" />
                     </CardContent>
                 </Card>
             </div>
@@ -38,14 +37,14 @@ export default function GettingStarted() {
                         <p className="text-muted-foreground mb-4">
                             Import components and styles in your React application:
                         </p>
-                        <pre className="bg-muted p-4 rounded-lg overflow-x-auto mb-4">
-                            <code>{`import { Button } from 'scaling-ui';
+                        <div className="mb-4">
+                            <CodeBlock code={`import { Button } from 'scaling-ui';
 import 'scaling-ui/styles.css';
 
 function App() {
     return <Button>Click me</Button>;
-}`}</code>
-                        </pre>
+}`} />
+                        </div>
                         <p className="text-sm text-muted-foreground">
                             Each component can be imported individually for optimal tree-shaking.
                         </p>

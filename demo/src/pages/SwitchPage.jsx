@@ -1,47 +1,6 @@
 import React, { useState } from 'react';
-import { Switch, Label, Tabs, TabsList, TabsTrigger, TabsContent } from '../../../src/index.js';
-
-function Section({ title, children }) {
-    return (
-        <div className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">{title}</h2>
-            {children}
-        </div>
-    );
-}
-
-function CodeBlock({ code }) {
-    return (
-        <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-            <code className="text-sm">{code}</code>
-        </pre>
-    );
-}
-
-function Demo({ children, className = '' }) {
-    return (
-        <div className={`flex flex-wrap gap-4 items-center p-6 border border-border rounded-lg ${className}`}>
-            {children}
-        </div>
-    );
-}
-
-function Example({ preview, code, className = '' }) {
-    return (
-        <Tabs defaultValue="preview" className="mb-4">
-            <TabsList>
-                <TabsTrigger value="preview">Preview</TabsTrigger>
-                <TabsTrigger value="code">Code</TabsTrigger>
-            </TabsList>
-            <TabsContent value="preview">
-                <Demo className={className}>{preview}</Demo>
-            </TabsContent>
-            <TabsContent value="code">
-                <CodeBlock code={code} />
-            </TabsContent>
-        </Tabs>
-    );
-}
+import { Switch, Label } from '../../../src/index.js';
+import { Section, Demo, Example, CodeBlock } from '../components';
 
 export default function SwitchPage() {
     const [enabled, setEnabled] = useState(false);

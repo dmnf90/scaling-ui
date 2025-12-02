@@ -1,30 +1,6 @@
 import React, { useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../../src/index.js';
-
-function Section({ title, children }) {
-    return (
-        <div className="mb-12">
-            <h2 className="text-2xl font-semibold mb-4">{title}</h2>
-            {children}
-        </div>
-    );
-}
-
-function CodeBlock({ code }) {
-    return (
-        <pre className="bg-muted p-4 rounded-lg overflow-x-auto mb-6">
-            <code className="text-sm">{code}</code>
-        </pre>
-    );
-}
-
-function Demo({ children, className = '' }) {
-    return (
-        <div className={`flex flex-wrap gap-4 items-center p-6 border border-border rounded-lg mb-4 ${className}`}>
-            {children}
-        </div>
-    );
-}
+import { Section, Demo, CodeBlock } from '../components';
 
 export default function TabsPage() {
     const [controlledValue, setControlledValue] = useState('tab1');

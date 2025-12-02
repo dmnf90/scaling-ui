@@ -114,5 +114,3 @@ For each component, complete the following:
 ## TODO Bug fixes to complete:
 
 - [ ] 
-- [ ] 
-- [ ] 
