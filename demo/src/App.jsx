@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy, useContext } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import {BrowserRouter, Routes, Route, useLocation, Link} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import logoScaling from '../logo-scaling.svg';
@@ -126,7 +126,6 @@ import {
     MessageCircle,
     ChevronDown,
     SidebarClose,
-    Eye,
     MoreVertical,
     Terminal,
     Bell,
@@ -412,19 +411,21 @@ function NavigationSidebar() {
 function Layout({children}) {
     return (
         <SidebarProvider defaultOpen={false}>
-            <SidebarLayout className="min-h-screen">
+            <SidebarLayout className="h-screen">
                 <NavigationSidebar />
-                <SidebarInset className="lg:ml-64">
-                    {/* Mobile header with trigger - hidden on desktop */}
-                    <header className="lg:hidden sticky top-0 bg-background border-b border-border z-10">
+                <SidebarInset className="lg:ml-64 flex flex-col h-screen">
+                    {/* Mobile header with trigger - fixed on mobile, hidden on desktop */}
+                    <header className="lg:hidden fixed top-0 left-0 right-0 bg-background border-b border-border z-30">
                         <div className="flex items-center gap-3 p-4">
                             <SidebarTrigger />
                             <img src={logoScaling} alt="Scaling" className="h-6" />
                         </div>
                     </header>
+                    {/* Spacer for fixed header on mobile */}
+                    <div className="lg:hidden h-[57px] shrink-0" />
 
                     {/* Main content */}
-                    <main className="p-8">
+                    <main className="flex-1 overflow-auto p-8">
                         {children}
                     </main>
                 </SidebarInset>
