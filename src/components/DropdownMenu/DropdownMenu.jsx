@@ -3,54 +3,113 @@ import { createPortal } from 'react-dom';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { ChevronRight, Check } from 'lucide-react';
+import { useControllableState } from '../../lib/hooks/useControllableState.js';
+import { useClickOutside } from '../../lib/hooks/useClickOutside.js';
+import { useEscapeKey } from '../../lib/hooks/useEscapeKey.js';
 
 const DropdownMenuContext = createContext();
 const DropdownMenuSubContext = createContext();
+const MenubarContext = createContext();
 
-export function DropdownMenu({ children, open: controlledOpen, defaultOpen = false, onOpenChange, ...props }) {
-    const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-    const triggerRef = useRef(null);
-    const isControlled = controlledOpen !== undefined;
-    const open = isControlled ? controlledOpen : uncontrolledOpen;
+// ============================================================================
+// MENUBAR COMPONENTS (horizontal menu bar container)
+// ============================================================================
 
-    const setOpen = (newOpen) => {
-        if (!isControlled) {
-            setUncontrolledOpen(newOpen);
-        }
-        onOpenChange?.(newOpen);
-    };
+const menubarVariants = cva(
+    'flex h-9 items-center space-x-1 rounded-md border border-border bg-background p-1 shadow-sm'
+);
+
+/**
+ * MenubarRoot - Horizontal container for multiple dropdown menus
+ * Manages which menu is currently open and handles hover-to-switch behavior
+ */
+export function MenubarRoot({ children, className, ...props }) {
+    const [openMenu, setOpenMenu] = useState(null);
 
     return (
-        <DropdownMenuContext.Provider value={{ open, setOpen, triggerRef }}>
-            <div {...props}>{children}</div>
+        <MenubarContext.Provider value={{ openMenu, setOpenMenu }}>
+            <div className={cn(menubarVariants(), className)} {...props}>
+                {children}
+            </div>
+        </MenubarContext.Provider>
+    );
+}
+
+// ============================================================================
+// DROPDOWN MENU COMPONENTS
+// ============================================================================
+
+export function DropdownMenu({
+    children,
+    open: controlledOpen,
+    defaultOpen = false,
+    onOpenChange,
+    value, // Optional: for menubar integration
+    ...props
+}) {
+    const menubarContext = useContext(MenubarContext);
+    const triggerRef = useRef(null);
+    const contentRef = useRef(null);
+
+    // When in menubar context, sync with menubar state
+    const isInMenubar = menubarContext !== undefined && menubarContext !== null;
+
+    const [open, setOpen] = useControllableState({
+        defaultValue: defaultOpen,
+        value: isInMenubar ? (menubarContext.openMenu === value) : controlledOpen,
+        onChange: (newOpen) => {
+            if (isInMenubar) {
+                menubarContext.setOpenMenu(newOpen ? value : null);
+            }
+            onOpenChange?.(newOpen);
+        },
+    });
+
+    return (
+        <DropdownMenuContext.Provider value={{ open, setOpen, triggerRef, contentRef, value, isInMenubar }}>
+            <div className={isInMenubar ? 'relative' : undefined} {...props}>
+                {children}
+            </div>
         </DropdownMenuContext.Provider>
     );
 }
 
 export function DropdownMenuTrigger({ children, asChild, className, ...props }) {
     const context = useContext(DropdownMenuContext);
+    const menubarContext = useContext(MenubarContext);
 
     const handleClick = () => {
         context?.setOpen(!context?.open);
     };
 
+    // In menubar context, also handle mouse enter to switch menus
+    const handleMouseEnter = () => {
+        if (context?.isInMenubar && menubarContext?.openMenu !== null) {
+            context?.setOpen(true);
+        }
+    };
+
+    const triggerProps = {
+        ref: context?.triggerRef,
+        onClick: handleClick,
+        onMouseEnter: context?.isInMenubar ? handleMouseEnter : undefined,
+        'aria-expanded': context?.open,
+        'aria-haspopup': 'true',
+    };
+
     if (asChild && React.isValidElement(children)) {
-        return React.cloneElement(children, {
-            ref: context?.triggerRef,
-            onClick: handleClick,
-            'aria-expanded': context?.open,
-            'aria-haspopup': 'true',
-        });
+        return React.cloneElement(children, triggerProps);
     }
+
+    // Different styling for menubar vs regular dropdown
+    const menubarTriggerClass = 'flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground';
+    const regularTriggerClass = className;
 
     return (
         <button
-            ref={context?.triggerRef}
             type="button"
-            onClick={handleClick}
-            aria-expanded={context?.open}
-            aria-haspopup="true"
-            className={className}
+            className={cn(context?.isInMenubar ? menubarTriggerClass : regularTriggerClass, context?.open && context?.isInMenubar && 'bg-accent text-accent-foreground')}
+            {...triggerProps}
             {...props}
         >
             {children}
@@ -63,32 +122,20 @@ export function DropdownMenuContent({ children, className, align = 'start', side
     const contentRef = useRef(null);
     const [position, setPosition] = useState({ top: 0, left: 0 });
 
-    useEffect(() => {
-        if (!context?.open) return;
-
-        const handleClickOutside = (event) => {
-            if (contentRef.current && !contentRef.current.contains(event.target)) {
-                const trigger = event.target.closest('[aria-haspopup="true"]');
-                if (!trigger) {
-                    context?.setOpen(false);
-                }
-            }
-        };
-
-        const handleEscape = (event) => {
-            if (event.key === 'Escape') {
+    // Use click outside hook
+    useClickOutside(
+        contentRef,
+        (event) => {
+            const trigger = event.target.closest('[aria-haspopup="true"]');
+            if (!trigger) {
                 context?.setOpen(false);
             }
-        };
+        },
+        context?.open
+    );
 
-        document.addEventListener('mousedown', handleClickOutside);
-        document.addEventListener('keydown', handleEscape);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('keydown', handleEscape);
-        };
-    }, [context?.open, context]);
+    // Use escape key hook
+    useEscapeKey(() => context?.setOpen(false), context?.open);
 
     useEffect(() => {
         if (!context?.open) return;
@@ -129,6 +176,26 @@ export function DropdownMenuContent({ children, className, align = 'start', side
     }, [context?.open, align, sideOffset]);
 
     if (!context?.open) return null;
+
+    // In menubar context, use absolute positioning instead of portal
+    if (context?.isInMenubar) {
+        return (
+            <div
+                ref={contentRef}
+                className={cn(
+                    'absolute z-50 min-w-[12rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95',
+                    align === 'start' && 'left-0',
+                    align === 'end' && 'right-0',
+                    'top-full mt-1.5',
+                    className
+                )}
+                role="menu"
+                {...props}
+            >
+                {children}
+            </div>
+        );
+    }
 
     return createPortal(
         <div
@@ -256,7 +323,7 @@ export function DropdownMenuLabel({ children, className, ...props }) {
 }
 
 export function DropdownMenuSeparator({ className, ...props }) {
-    return <div className={cn('-mx-1 my-1 h-px bg-border', className)} {...props} />;
+    return <div className={cn('-mx-1 my-1 h-px bg-border', className)} role="separator" {...props} />;
 }
 
 export function DropdownMenuShortcut({ children, className, ...props }) {
@@ -317,3 +384,24 @@ export function DropdownMenuSubContent({ children, className, ...props }) {
         </div>
     );
 }
+
+// ============================================================================
+// MENUBAR ALIASES (for backward compatibility and clear API)
+// ============================================================================
+
+export {
+    MenubarRoot as Menubar,
+    DropdownMenu as MenubarMenu,
+    DropdownMenuTrigger as MenubarTrigger,
+    DropdownMenuContent as MenubarContent,
+    DropdownMenuItem as MenubarItem,
+    DropdownMenuCheckboxItem as MenubarCheckboxItem,
+    DropdownMenuRadioGroup as MenubarRadioGroup,
+    DropdownMenuRadioItem as MenubarRadioItem,
+    DropdownMenuLabel as MenubarLabel,
+    DropdownMenuSeparator as MenubarSeparator,
+    DropdownMenuShortcut as MenubarShortcut,
+    DropdownMenuSub as MenubarSub,
+    DropdownMenuSubTrigger as MenubarSubTrigger,
+    DropdownMenuSubContent as MenubarSubContent,
+};

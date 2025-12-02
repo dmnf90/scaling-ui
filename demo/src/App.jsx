@@ -38,11 +38,11 @@ const MenubarPage = lazy(() => import('./pages/MenubarPage'));
 const PaginationPage = lazy(() => import('./pages/PaginationPage'));
 const SidebarPage = lazy(() => import('./pages/SidebarPage'));
 const DialogPage = lazy(() => import('./pages/DialogPage'));
-const AlertDialogPage = lazy(() => import('./pages/AlertDialogPage'));
+// AlertDialog merged into Dialog with dismissible={false} prop
 const TooltipPage = lazy(() => import('./pages/TooltipPage'));
 const DropdownMenuPage = lazy(() => import('./pages/DropdownMenuPage'));
 const DrawerPage = lazy(() => import('./pages/DrawerPage'));
-const HoverCardPage = lazy(() => import('./pages/HoverCardPage'));
+// HoverCard merged into Tooltip with variant="rich" prop
 const ContextMenuPage = lazy(() => import('./pages/ContextMenuPage'));
 const CommandPage = lazy(() => import('./pages/CommandPage'));
 const AvatarPage = lazy(() => import('./pages/AvatarPage'));
@@ -171,13 +171,11 @@ const componentsByCategory = {
         {name: 'Sidebar', path: '/sidebar', icon: PanelLeft},
     ],
     overlays: [
-        {name: 'Alert Dialog', path: '/alert-dialog', icon: AlertCircle},
         {name: 'Command', path: '/command', icon: Terminal},
         {name: 'Context Menu', path: '/context-menu', icon: MoreVertical},
         {name: 'Dialog', path: '/dialog', icon: MessageSquare},
         {name: 'Drawer', path: '/drawer', icon: SidebarClose},
         {name: 'Dropdown Menu', path: '/dropdown-menu', icon: ChevronDown},
-        {name: 'Hover Card', path: '/hover-card', icon: Eye},
         {name: 'Popover', path: '/popover', icon: MessageCircle},
         {name: 'Tooltip', path: '/tooltip', icon: Info},
     ],
@@ -443,7 +441,6 @@ function App() {
                         <Routes>
                         <Route path="/" element={<><SEO title="Home" description="A minimal, clean React component library built with Tailwind CSS. Browse 35+ production-ready components including buttons, forms, navigation, and overlays." path="/" /><HomePage/></>}/>
                         <Route path="/getting-started" element={<><SEO title="Getting Started" description="Learn how to install and use Scaling UI in your React project. Quick setup guide with examples." path="/getting-started" /><GettingStarted/></>}/>
-                        <Route path="/alert-dialog" element={<><SEO title="Alert Dialog" description="Alert Dialog component for React - Create modal dialogs that interrupt the user with important content and require an action. Built with Tailwind CSS." path="/alert-dialog" /><AlertDialogPage/></>}/>
                         <Route path="/avatar" element={<><SEO title="Avatar" description="Avatar component for React - Display user profile pictures and initials with customizable sizes and fallbacks. Built with Tailwind CSS." path="/avatar" /><AvatarPage/></>}/>
                         <Route path="/badge" element={<><SEO title="Badge" description="Badge component for React - Display small status indicators and labels with multiple variants. Built with Tailwind CSS." path="/badge" /><BadgePage/></>}/>
                         <Route path="/breadcrumb" element={<><SEO title="Breadcrumb" description="Breadcrumb component for React - Show navigation hierarchy and help users understand their location. Built with Tailwind CSS." path="/breadcrumb" /><BreadcrumbPage/></>}/>
@@ -461,7 +458,6 @@ function App() {
                         <Route path="/empty" element={<><SEO title="Empty" description="Empty component for React - Display empty state with icon, title, description, and action button. Built with Tailwind CSS." path="/empty" /><EmptyPage/></>}/>
                         <Route path="/field" element={<><SEO title="Field" description="Field component for React - Form field wrapper with label, description, and error message support. Built with Tailwind CSS." path="/field" /><FieldPage/></>}/>
                         <Route path="/form" element={<><SEO title="Form" description="Form component for React - Complete form handling with validation and submission states. Built with Tailwind CSS." path="/form" /><FormPage/></>}/>
-                        <Route path="/hover-card" element={<><SEO title="Hover Card" description="Hover Card component for React - Display rich content on hover with customizable positioning. Built with Tailwind CSS." path="/hover-card" /><HoverCardPage/></>}/>
                         <Route path="/input" element={<><SEO title="Input" description="Input component for React - Text input field with multiple sizes and validation states. Built with Tailwind CSS." path="/input" /><InputPage/></>}/>
                         <Route path="/input-group" element={<><SEO title="Input Group" description="Input Group component for React - Combine inputs with addons, icons, and buttons. Built with Tailwind CSS." path="/input-group" /><InputGroupPage/></>}/>
                         <Route path="/input-otp" element={<><SEO title="Input OTP" description="Input OTP component for React - One-time password input with automatic focus management. Built with Tailwind CSS." path="/input-otp" /><InputOTPPage/></>}/>

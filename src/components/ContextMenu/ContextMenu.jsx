@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { Check, ChevronRight, Circle } from 'lucide-react';
+import { useClickOutside } from '../../lib/hooks/useClickOutside.js';
+import { useEscapeKey } from '../../lib/hooks/useEscapeKey.js';
 
 // Context for managing context menu state
 const ContextMenuContext = createContext();
@@ -53,29 +54,18 @@ export function ContextMenuContent({ children, className, ...props }) {
     const contentRef = useRef(null);
     const [adjustedPosition, setAdjustedPosition] = useState({ top: 0, left: 0 });
 
-    useEffect(() => {
-        if (!context?.open) return;
+    // Use click outside hook
+    useClickOutside(
+        contentRef,
+        () => context?.setOpen(false),
+        context?.open
+    );
 
-        const handleClickOutside = (e) => {
-            if (contentRef.current && !contentRef.current.contains(e.target)) {
-                context?.setOpen(false);
-            }
-        };
-
-        const handleEscape = (e) => {
-            if (e.key === 'Escape') {
-                context?.setOpen(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        document.addEventListener('keydown', handleEscape);
-
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-            document.removeEventListener('keydown', handleEscape);
-        };
-    }, [context?.open]);
+    // Use escape key hook
+    useEscapeKey(
+        () => context?.setOpen(false),
+        context?.open
+    );
 
     useEffect(() => {
         if (!context?.open || !contentRef.current) return;

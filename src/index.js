@@ -42,6 +42,7 @@ export {
     BreadcrumbEllipsis,
     BreadcrumbPage
 } from './components/Breadcrumb/Breadcrumb';
+// Menubar is now exported from DropdownMenu (merged)
 export {
     Menubar,
     MenubarMenu,
@@ -57,7 +58,7 @@ export {
     MenubarSubTrigger,
     MenubarSubContent,
     MenubarShortcut
-} from './components/Menubar/Menubar';
+} from './components/DropdownMenu/DropdownMenu';
 export { Pagination } from './components/Pagination/Pagination';
 export {
     Sidebar,
@@ -77,6 +78,8 @@ export {
 
 // Priority 4: Overlay Components
 export { Popover, PopoverTrigger, PopoverContent } from './components/Popover/Popover';
+// Dialog now includes AlertDialog functionality via dismissible={false} prop
+// DialogAction and DialogCancel are for confirm/cancel buttons
 export {
     Dialog,
     DialogTrigger,
@@ -85,19 +88,11 @@ export {
     DialogTitle,
     DialogDescription,
     DialogFooter,
-    DialogClose
+    DialogClose,
+    DialogAction,
+    DialogCancel
 } from './components/Dialog/Dialog';
-export {
-    AlertDialog,
-    AlertDialogTrigger,
-    AlertDialogContent,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogAction,
-    AlertDialogCancel
-} from './components/AlertDialog/AlertDialog';
+// Tooltip now includes HoverCard functionality via variant="rich" prop
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from './components/Tooltip/Tooltip';
 export {
     DropdownMenu,
@@ -112,7 +107,8 @@ export {
     DropdownMenuShortcut,
     DropdownMenuSub,
     DropdownMenuSubTrigger,
-    DropdownMenuSubContent
+    DropdownMenuSubContent,
+    MenubarRoot // For creating horizontal menu bars
 } from './components/DropdownMenu/DropdownMenu';
 export {
     Drawer,
@@ -124,7 +120,6 @@ export {
     DrawerFooter,
     DrawerClose
 } from './components/Drawer/Drawer';
-export { HoverCard, HoverCardTrigger, HoverCardContent } from './components/HoverCard/HoverCard';
 export {
     ContextMenu,
     ContextMenuTrigger,
@@ -237,3 +232,23 @@ export {
     RechartsLegend,
     RechartsTooltip,
 } from './components/Chart/Chart';
+
+// Shared hooks for advanced users
+export {
+    useControllableState,
+    useClickOutside,
+    useEscapeKey,
+    useBodyScrollLock,
+    usePositioning
+} from './lib/hooks/index.js';
+
+// Shared menu components for building custom menus
+export {
+    MenuItem,
+    MenuCheckboxItem,
+    MenuRadioGroup,
+    MenuRadioItem,
+    MenuLabel,
+    MenuSeparator,
+    MenuShortcut
+} from './lib/menu/index.js';

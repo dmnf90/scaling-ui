@@ -1,8 +1,11 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { createContext, useContext, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { X } from 'lucide-react';
+import { useControllableState } from '../../lib/hooks/useControllableState.js';
+import { useEscapeKey } from '../../lib/hooks/useEscapeKey.js';
+import { useBodyScrollLock } from '../../lib/hooks/useBodyScrollLock.js';
 
 const DrawerContext = createContext();
 
@@ -34,16 +37,11 @@ export function Drawer({
     onOpenChange,
     ...props
 }) {
-    const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
-    const isControlled = controlledOpen !== undefined;
-    const open = isControlled ? controlledOpen : uncontrolledOpen;
-
-    const setOpen = (newOpen) => {
-        if (!isControlled) {
-            setUncontrolledOpen(newOpen);
-        }
-        onOpenChange?.(newOpen);
-    };
+    const [open, setOpen] = useControllableState({
+        defaultValue: defaultOpen,
+        value: controlledOpen,
+        onChange: onOpenChange,
+    });
 
     return (
         <DrawerContext.Provider value={{ open, setOpen }}>
@@ -88,30 +86,19 @@ export function DrawerContent({
     const context = useContext(DrawerContext);
     const contentRef = useRef(null);
 
-    useEffect(() => {
-        if (!context?.open) return;
+    // Lock body scroll when drawer is open
+    useBodyScrollLock(context?.open);
 
-        // Lock body scroll
-        const originalStyle = window.getComputedStyle(document.body).overflow;
-        document.body.style.overflow = 'hidden';
-
-        // Handle ESC key
-        const handleKeyDown = (e) => {
-            if (e.key === 'Escape') {
-                onEscapeKeyDown?.(e);
-                if (!e.defaultPrevented) {
-                    context?.setOpen(false);
-                }
+    // Handle ESC key
+    useEscapeKey(
+        (e) => {
+            onEscapeKeyDown?.(e);
+            if (!e.defaultPrevented) {
+                context?.setOpen(false);
             }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            document.body.style.overflow = originalStyle;
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [context?.open, onEscapeKeyDown, context]);
+        },
+        context?.open
+    );
 
     if (!context?.open) return null;
 
