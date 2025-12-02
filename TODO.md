@@ -69,7 +69,7 @@ This is a component library built with React and Tailwind CSS v4, designed to be
 - [x] Accordion
 - [x] Collapsible
 - [x] Carousel
-- [ ] Chart (Skipped - requires charting library)
+- [x] Chart (using Recharts v3)
 - [x] Typography
 - [x] Kbd
 - [x] Item

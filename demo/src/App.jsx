@@ -61,6 +61,7 @@ const ItemPage = lazy(() => import('./pages/ItemPage'));
 const KbdPage = lazy(() => import('./pages/KbdPage'));
 const TablePage = lazy(() => import('./pages/TablePage'));
 const TypographyPage = lazy(() => import('./pages/TypographyPage'));
+const ChartPage = lazy(() => import('./pages/ChartPage'));
 
 // Import Sidebar and Spinner components
 import {
@@ -190,6 +191,7 @@ const componentsByCategory = {
     dataDisplay: [
         {name: 'Accordion', path: '/accordion', icon: ChevronDownSquare},
         {name: 'Carousel', path: '/carousel', icon: GalleryHorizontal},
+        {name: 'Chart', path: '/chart', icon: BarChart2},
         {name: 'Collapsible', path: '/collapsible', icon: Layers},
         {name: 'Data Table', path: '/data-table', icon: Table2},
         {name: 'Item', path: '/item', icon: ListTree},
@@ -484,6 +486,7 @@ function App() {
                         <Route path="/sonner" element={<><SEO title="Sonner" description="Sonner toast component for React - Beautiful toast notifications with multiple types and customization. Built with Tailwind CSS." path="/sonner" /><SonnerPage/></>}/>
                         <Route path="/accordion" element={<><SEO title="Accordion" description="Accordion component for React - Vertically stacked interactive headings that reveal content sections. Built with Tailwind CSS." path="/accordion" /><AccordionPage/></>}/>
                         <Route path="/carousel" element={<><SEO title="Carousel" description="Carousel component for React - Image and content slider with navigation and auto-play. Built with Tailwind CSS." path="/carousel" /><CarouselPage/></>}/>
+                        <Route path="/chart" element={<><SEO title="Chart" description="Chart components for React - Beautiful, responsive charts with automatic theme support. Built with Recharts and Tailwind CSS." path="/chart" /><ChartPage/></>}/>
                         <Route path="/collapsible" element={<><SEO title="Collapsible" description="Collapsible component for React - Interactive panel that expands and collapses content. Built with Tailwind CSS." path="/collapsible" /><CollapsiblePage/></>}/>
                         <Route path="/data-table" element={<><SEO title="Data Table" description="Data Table component for React - Powerful table with sorting, filtering, pagination, and column visibility. Built with Tailwind CSS." path="/data-table" /><DataTablePage/></>}/>
                         <Route path="/item" element={<><SEO title="Item" description="Item component for React - Versatile list item with icon, content, and actions. Built with Tailwind CSS." path="/item" /><ItemPage/></>}/>

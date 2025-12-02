@@ -213,3 +213,27 @@ export {
     InlineCode,
     Blockquote
 } from './components/Typography/Typography';
+export {
+    ChartContainer,
+    ChartTooltip,
+    ChartTooltipContent,
+    ChartLegend,
+    ChartLegendContent,
+    getChartColor,
+    CHART_COLORS,
+    // Re-exported recharts components
+    LineChart,
+    Line,
+    BarChart,
+    Bar,
+    AreaChart,
+    Area,
+    PieChart,
+    Pie,
+    Cell,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    RechartsLegend,
+    RechartsTooltip,
+} from './components/Chart/Chart';
