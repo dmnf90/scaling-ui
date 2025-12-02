@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useRef } from 'react';
+import React, { createContext, useContext, useRef, useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
@@ -8,6 +8,25 @@ import { useEscapeKey } from '../../lib/hooks/useEscapeKey.js';
 import { useBodyScrollLock } from '../../lib/hooks/useBodyScrollLock.js';
 
 const DrawerContext = createContext();
+
+// Hook to detect mobile viewport
+function useIsMobile(breakpoint = 640) {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < breakpoint);
+        };
+
+        // Check initially
+        checkMobile();
+
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, [breakpoint]);
+
+    return isMobile;
+}
 
 const drawerOverlayVariants = cva(
     'fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0'
@@ -79,12 +98,15 @@ export function DrawerContent({
     children,
     className,
     side = 'right',
+    responsive = false,
+    responsiveSide,
     onEscapeKeyDown,
     onPointerDownOutside,
     ...props
 }) {
     const context = useContext(DrawerContext);
     const contentRef = useRef(null);
+    const isMobile = useIsMobile();
 
     // Lock body scroll when drawer is open
     useBodyScrollLock(context?.open);
@@ -111,6 +133,17 @@ export function DrawerContent({
         }
     };
 
+    // Determine effective side based on responsive settings
+    let effectiveSide = side;
+    if (responsive && isMobile) {
+        // Default mobile fallback: right -> bottom, left -> bottom
+        if (responsiveSide) {
+            effectiveSide = responsiveSide;
+        } else if (side === 'right' || side === 'left') {
+            effectiveSide = 'bottom';
+        }
+    }
+
     return createPortal(
         <div>
             <div
@@ -120,7 +153,7 @@ export function DrawerContent({
             />
             <div
                 ref={contentRef}
-                className={cn(drawerContentVariants({ side }), className)}
+                className={cn(drawerContentVariants({ side: effectiveSide }), className)}
                 data-state={context?.open ? 'open' : 'closed'}
                 role="dialog"
                 aria-modal="true"

@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 import { cn } from '../../lib/utils';
+
+const CollapsibleContext = createContext();
 
 export function Collapsible({
     open: controlledOpen,
@@ -22,39 +24,34 @@ export function Collapsible({
     };
 
     return (
-        <div
-            className={cn('', className)}
-            data-state={isOpen ? 'open' : 'closed'}
-            {...props}
-        >
-            {React.Children.map(children, (child) => {
-                if (React.isValidElement(child)) {
-                    if (child.type === CollapsibleTrigger) {
-                        return React.cloneElement(child, {
-                            onClick: () => handleOpenChange(!isOpen),
-                            'data-state': isOpen ? 'open' : 'closed',
-                        });
-                    }
-                    if (child.type === CollapsibleContent) {
-                        return React.cloneElement(child, {
-                            isOpen,
-                        });
-                    }
-                }
-                return child;
-            })}
-        </div>
+        <CollapsibleContext.Provider value={{ isOpen, toggle: () => handleOpenChange(!isOpen) }}>
+            <div
+                className={cn('', className)}
+                data-state={isOpen ? 'open' : 'closed'}
+                {...props}
+            >
+                {children}
+            </div>
+        </CollapsibleContext.Provider>
     );
 }
 
 export function CollapsibleTrigger({ asChild, className, children, onClick, ...props }) {
+    const context = useContext(CollapsibleContext);
+
+    const handleClick = (e) => {
+        onClick?.(e);
+        context?.toggle();
+    };
+
     if (asChild && React.isValidElement(children)) {
         return React.cloneElement(children, {
             onClick: (e) => {
                 children.props.onClick?.(e);
-                onClick?.(e);
+                handleClick(e);
             },
             className: cn(children.props.className, className),
+            'data-state': context?.isOpen ? 'open' : 'closed',
             ...props,
         });
     }
@@ -63,7 +60,8 @@ export function CollapsibleTrigger({ asChild, className, children, onClick, ...p
         <button
             type="button"
             className={cn('', className)}
-            onClick={onClick}
+            onClick={handleClick}
+            data-state={context?.isOpen ? 'open' : 'closed'}
             {...props}
         >
             {children}
@@ -71,7 +69,10 @@ export function CollapsibleTrigger({ asChild, className, children, onClick, ...p
     );
 }
 
-export function CollapsibleContent({ isOpen, className, children, ...props }) {
+export function CollapsibleContent({ className, children, ...props }) {
+    const context = useContext(CollapsibleContext);
+    const isOpen = context?.isOpen;
+
     return (
         <div
             className={cn(

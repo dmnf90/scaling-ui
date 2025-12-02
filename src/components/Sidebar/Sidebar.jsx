@@ -283,10 +283,22 @@ export function SidebarNavItem({
     className,
     href,
     as,
+    onClick,
     ...props
 }) {
     const context = useContext(SidebarContext);
     const Component = as || (href ? 'a' : 'button');
+
+    // Check if we're on mobile (viewport < lg breakpoint = 1024px)
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+
+    const handleClick = (e) => {
+        // Close sidebar on mobile when navigating
+        if (isMobile && context?.setOpen) {
+            context.setOpen(false);
+        }
+        onClick?.(e);
+    };
 
     return (
         <Component
@@ -298,6 +310,7 @@ export function SidebarNavItem({
                 context?.collapsed && 'justify-center px-2',
                 className
             )}
+            onClick={handleClick}
             {...props}
         >
             {Icon && <Icon className="h-5 w-5 shrink-0" />}

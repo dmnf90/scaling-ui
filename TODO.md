@@ -113,12 +113,6 @@ For each component, complete the following:
 
 ## TODO Bug fixes to complete:
 
-- [ ] Menubar demo page with submenu, is not displaying the submenus. Create a richer with submenu demo.
-- [ ] Dialog demo page, add an alert demo for delete account for example.
-- [ ] Drawer demo, from right, the component should have a property to be responsive, and to decide where the responside drawer should be. By default, the right side should become Bottom on mobile.
-- [ ] Collapsible demos aren't working. WHen I click on them, they won't work.
-- [ ] DatePicker on mobile looks horrible as it displays partially out of the screen, causing the viewport to be scrollable. It should be better
-- [ ] Carousel on mobile, if I am sliding horizontally, should prevent of scrolling vertically for better UX. Check the best practices on that, inspired on SHADCN behavior.
-- [ ] KDB special keys, the charactes should be larger, without making hte box bigger. Improve the readibility
-- [ ] Overall demo page: when I navigate from one page to another, it should scroll to top.
-- [ ] Demo page sidebar on mobile. If I click on a sidebar menu item to navigate to that page, should automatically close the sidebar.
+- [ ] 
+- [ ] 
+- [ ] 

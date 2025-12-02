@@ -218,7 +218,7 @@ export function DropdownMenuContent({ children, className, align = 'start', side
     );
 }
 
-export function DropdownMenuItem({ children, className, disabled, onClick, ...props }) {
+export function DropdownMenuItem({ children, className, disabled, inset, onClick, ...props }) {
     const context = useContext(DropdownMenuContext);
 
     const handleClick = (e) => {
@@ -234,6 +234,7 @@ export function DropdownMenuItem({ children, className, disabled, onClick, ...pr
             className={cn(
                 'relative flex cursor-pointer select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
                 disabled && 'pointer-events-none opacity-50',
+                inset && 'pl-8',
                 className
             )}
             onClick={handleClick}
@@ -336,13 +337,38 @@ export function DropdownMenuShortcut({ children, className, ...props }) {
 
 export function DropdownMenuSub({ children, ...props }) {
     const [isOpen, setIsOpen] = useState(false);
+    const timeoutRef = useRef(null);
+    const triggerRef = useRef(null);
+
+    const handleMouseEnter = () => {
+        if (timeoutRef.current) {
+            clearTimeout(timeoutRef.current);
+            timeoutRef.current = null;
+        }
+        setIsOpen(true);
+    };
+
+    const handleMouseLeave = () => {
+        // Small delay to allow moving to submenu
+        timeoutRef.current = setTimeout(() => {
+            setIsOpen(false);
+        }, 100);
+    };
+
+    useEffect(() => {
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current);
+            }
+        };
+    }, []);
 
     return (
-        <DropdownMenuSubContext.Provider value={{ isOpen, setIsOpen }}>
+        <DropdownMenuSubContext.Provider value={{ isOpen, setIsOpen, triggerRef }}>
             <div
                 className="relative"
-                onMouseEnter={() => setIsOpen(true)}
-                onMouseLeave={() => setIsOpen(false)}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
                 {...props}
             >
                 {children}
@@ -352,8 +378,11 @@ export function DropdownMenuSub({ children, ...props }) {
 }
 
 export function DropdownMenuSubTrigger({ children, className, disabled, ...props }) {
+    const context = useContext(DropdownMenuSubContext);
+
     return (
         <div
+            ref={context?.triggerRef}
             className={cn(
                 'flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground',
                 disabled && 'pointer-events-none opacity-50',
@@ -369,19 +398,50 @@ export function DropdownMenuSubTrigger({ children, className, disabled, ...props
 
 export function DropdownMenuSubContent({ children, className, ...props }) {
     const context = useContext(DropdownMenuSubContext);
+    const contentRef = useRef(null);
+    const [position, setPosition] = useState({ top: 0, left: 0 });
+
+    useEffect(() => {
+        if (!context?.isOpen || !context?.triggerRef?.current) return;
+
+        const updatePosition = () => {
+            const triggerRect = context.triggerRef.current.getBoundingClientRect();
+            let top = triggerRect.top;
+            let left = triggerRect.right + 4; // ml-1 equivalent
+
+            // Adjust if would overflow right edge
+            if (contentRef.current) {
+                const contentRect = contentRef.current.getBoundingClientRect();
+                if (left + contentRect.width > window.innerWidth - 8) {
+                    left = triggerRect.left - contentRect.width - 4;
+                }
+                // Adjust if would overflow bottom
+                if (top + contentRect.height > window.innerHeight - 8) {
+                    top = window.innerHeight - contentRect.height - 8;
+                }
+            }
+
+            setPosition({ top, left });
+        };
+
+        updatePosition();
+    }, [context?.isOpen, context?.triggerRef]);
 
     if (!context?.isOpen) return null;
 
-    return (
+    return createPortal(
         <div
+            ref={contentRef}
             className={cn(
-                'absolute left-full top-0 z-50 ml-1 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95',
+                'fixed z-50 min-w-[8rem] overflow-hidden rounded-md border border-border bg-popover p-1 text-popover-foreground shadow-md animate-in fade-in-80 zoom-in-95',
                 className
             )}
+            style={{ top: `${position.top}px`, left: `${position.left}px` }}
             {...props}
         >
             {children}
-        </div>
+        </div>,
+        document.body
     );
 }
 

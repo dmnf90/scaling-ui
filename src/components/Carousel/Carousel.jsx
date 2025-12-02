@@ -98,80 +98,157 @@ export function CarouselContent({
     const [isDragging, setIsDragging] = useState(false);
     const [dragOffset, setDragOffset] = useState(0);
     const startX = useRef(0);
+    const startY = useRef(0);
     const currentX = useRef(0);
+    const isHorizontalSwipe = useRef(null); // null = undetermined, true = horizontal, false = vertical
+    const isDraggingRef = useRef(false); // Ref version for event listeners
 
     useEffect(() => {
         setItemCount?.(items.length);
     }, [items.length, setItemCount]);
 
-    const handleDragStart = (clientX) => {
+    // Mouse events
+    const handleMouseDown = (e) => {
+        e.preventDefault();
         setIsDragging(true);
-        startX.current = clientX;
-        currentX.current = clientX;
+        isDraggingRef.current = true;
+        startX.current = e.clientX;
+        startY.current = e.clientY;
+        currentX.current = e.clientX;
+        isHorizontalSwipe.current = null;
     };
 
-    const handleDragMove = (clientX) => {
-        if (!isDragging) return;
-        currentX.current = clientX;
+    const handleMouseMove = (e) => {
+        if (!isDraggingRef.current) return;
+
+        // Determine swipe direction on first significant movement
+        if (isHorizontalSwipe.current === null) {
+            const deltaX = Math.abs(e.clientX - startX.current);
+            const deltaY = Math.abs(e.clientY - startY.current);
+            const threshold = 5;
+
+            if (deltaX > threshold || deltaY > threshold) {
+                isHorizontalSwipe.current = deltaX > deltaY;
+            }
+        }
+
+        if (isHorizontalSwipe.current === false) return;
+
+        currentX.current = e.clientX;
         const diff = currentX.current - startX.current;
         const containerWidth = containerRef.current?.offsetWidth || 1;
         const offsetPercent = (diff / containerWidth) * 100;
         setDragOffset(offsetPercent);
     };
 
-    const handleDragEnd = () => {
-        if (!isDragging) return;
+    const handleMouseUp = () => {
+        if (!isDraggingRef.current) return;
+        isDraggingRef.current = false;
         setIsDragging(false);
 
-        const threshold = 15; // percent of container width
+        if (isHorizontalSwipe.current !== false) {
+            const threshold = 15;
 
-        if (dragOffset < -threshold) {
-            // Swiped left - go to next
-            if (loop || currentIndex < itemCount - 1) {
-                onNext?.();
-            }
-        } else if (dragOffset > threshold) {
-            // Swiped right - go to previous
-            if (loop || currentIndex > 0) {
-                onPrevious?.();
+            if (dragOffset < -threshold) {
+                if (loop || currentIndex < itemCount - 1) {
+                    onNext?.();
+                }
+            } else if (dragOffset > threshold) {
+                if (loop || currentIndex > 0) {
+                    onPrevious?.();
+                }
             }
         }
 
         setDragOffset(0);
-    };
-
-    // Touch events
-    const handleTouchStart = (e) => {
-        handleDragStart(e.touches[0].clientX);
-    };
-
-    const handleTouchMove = (e) => {
-        handleDragMove(e.touches[0].clientX);
-    };
-
-    const handleTouchEnd = () => {
-        handleDragEnd();
-    };
-
-    // Mouse events
-    const handleMouseDown = (e) => {
-        e.preventDefault();
-        handleDragStart(e.clientX);
-    };
-
-    const handleMouseMove = (e) => {
-        handleDragMove(e.clientX);
-    };
-
-    const handleMouseUp = () => {
-        handleDragEnd();
+        isHorizontalSwipe.current = null;
     };
 
     const handleMouseLeave = () => {
-        if (isDragging) {
-            handleDragEnd();
+        if (isDraggingRef.current) {
+            handleMouseUp();
         }
     };
+
+    // Native touch event listeners with { passive: false } for touchmove
+    useEffect(() => {
+        const container = containerRef.current;
+        if (!container) return;
+
+        const handleTouchStart = (e) => {
+            isDraggingRef.current = true;
+            setIsDragging(true);
+            startX.current = e.touches[0].clientX;
+            startY.current = e.touches[0].clientY;
+            currentX.current = e.touches[0].clientX;
+            isHorizontalSwipe.current = null;
+        };
+
+        const handleTouchMove = (e) => {
+            if (!isDraggingRef.current) return;
+
+            const clientX = e.touches[0].clientX;
+            const clientY = e.touches[0].clientY;
+
+            // Determine swipe direction on first significant movement
+            if (isHorizontalSwipe.current === null) {
+                const deltaX = Math.abs(clientX - startX.current);
+                const deltaY = Math.abs(clientY - startY.current);
+                const threshold = 5;
+
+                if (deltaX > threshold || deltaY > threshold) {
+                    isHorizontalSwipe.current = deltaX > deltaY;
+                }
+            }
+
+            // Prevent vertical scrolling when swiping horizontally
+            if (isHorizontalSwipe.current === true) {
+                e.preventDefault();
+            }
+
+            if (isHorizontalSwipe.current === false) return;
+
+            currentX.current = clientX;
+            const diff = currentX.current - startX.current;
+            const containerWidth = container.offsetWidth || 1;
+            const offsetPercent = (diff / containerWidth) * 100;
+            setDragOffset(offsetPercent);
+        };
+
+        const handleTouchEnd = () => {
+            if (!isDraggingRef.current) return;
+            isDraggingRef.current = false;
+            setIsDragging(false);
+
+            if (isHorizontalSwipe.current !== false) {
+                const threshold = 15;
+                const currentDragOffset = ((currentX.current - startX.current) / (container.offsetWidth || 1)) * 100;
+
+                if (currentDragOffset < -threshold) {
+                    if (loop || currentIndex < itemCount - 1) {
+                        onNext?.();
+                    }
+                } else if (currentDragOffset > threshold) {
+                    if (loop || currentIndex > 0) {
+                        onPrevious?.();
+                    }
+                }
+            }
+
+            setDragOffset(0);
+            isHorizontalSwipe.current = null;
+        };
+
+        container.addEventListener('touchstart', handleTouchStart, { passive: true });
+        container.addEventListener('touchmove', handleTouchMove, { passive: false });
+        container.addEventListener('touchend', handleTouchEnd, { passive: true });
+
+        return () => {
+            container.removeEventListener('touchstart', handleTouchStart);
+            container.removeEventListener('touchmove', handleTouchMove);
+            container.removeEventListener('touchend', handleTouchEnd);
+        };
+    }, [loop, currentIndex, itemCount, onNext, onPrevious]);
 
     const translateX = -currentIndex * 100 + dragOffset;
 
@@ -179,9 +256,6 @@ export function CarouselContent({
         <div
             ref={containerRef}
             className={cn('overflow-hidden', className)}
-            onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove}
-            onTouchEnd={handleTouchEnd}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}

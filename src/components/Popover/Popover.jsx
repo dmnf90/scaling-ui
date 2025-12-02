@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '../../lib/utils';
 
+const PopoverContext = React.createContext();
+
 export function Popover({ children }) {
     const [open, setOpen] = useState(false);
     const containerRef = useRef(null);
+    const triggerRef = useRef(null);
 
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -19,7 +22,7 @@ export function Popover({ children }) {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, [open]);
 
-    const contextValue = { open, setOpen };
+    const contextValue = { open, setOpen, containerRef, triggerRef };
 
     return (
         <PopoverContext.Provider value={contextValue}>
@@ -29,8 +32,6 @@ export function Popover({ children }) {
         </PopoverContext.Provider>
     );
 }
-
-const PopoverContext = React.createContext();
 
 export function PopoverTrigger({ asChild, children, className, ...props }) {
     const { open, setOpen } = React.useContext(PopoverContext);
@@ -62,23 +63,66 @@ export function PopoverContent({
     children,
     ...props
 }) {
-    const { open } = React.useContext(PopoverContext);
+    const { open, containerRef } = React.useContext(PopoverContext);
+    const contentRef = useRef(null);
+    const [position, setPosition] = useState({ left: 0, adjustedAlign: align });
+
+    useEffect(() => {
+        if (!open || !contentRef.current || !containerRef?.current) return;
+
+        const updatePosition = () => {
+            const contentRect = contentRef.current.getBoundingClientRect();
+            const containerRect = containerRef.current.getBoundingClientRect();
+            const viewportWidth = window.innerWidth;
+            const padding = 8; // Minimum padding from viewport edges
+
+            let left = 0;
+            let adjustedAlign = align;
+
+            // Calculate initial position based on alignment
+            if (align === 'start') {
+                left = 0;
+            } else if (align === 'end') {
+                left = containerRect.width - contentRect.width;
+            } else {
+                left = (containerRect.width - contentRect.width) / 2;
+            }
+
+            // Check if content would overflow right edge
+            const rightOverflow = containerRect.left + left + contentRect.width - (viewportWidth - padding);
+            if (rightOverflow > 0) {
+                left -= rightOverflow;
+                adjustedAlign = 'end';
+            }
+
+            // Check if content would overflow left edge
+            const leftOverflow = padding - (containerRect.left + left);
+            if (leftOverflow > 0) {
+                left += leftOverflow;
+                adjustedAlign = 'start';
+            }
+
+            setPosition({ left, adjustedAlign });
+        };
+
+        // Initial position calculation
+        updatePosition();
+
+        // Recalculate on resize
+        window.addEventListener('resize', updatePosition);
+        return () => window.removeEventListener('resize', updatePosition);
+    }, [open, align, containerRef]);
 
     if (!open) return null;
 
-    const alignmentClasses = {
-        start: 'left-0',
-        center: 'left-1/2 -translate-x-1/2',
-        end: 'right-0',
-    };
-
     return (
         <div
+            ref={contentRef}
             className={cn(
                 'absolute z-50 mt-2 min-w-[8rem] rounded-md border border-border bg-popover p-4 text-popover-foreground shadow-md outline-none animate-in fade-in-0 zoom-in-95',
-                alignmentClasses[align],
                 className
             )}
+            style={{ left: `${position.left}px` }}
             {...props}
         >
             {children}

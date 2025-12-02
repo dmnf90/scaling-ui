@@ -177,6 +177,71 @@ export default function DrawerPage() {
 </DrawerContent>`}
                 />
             </Section>
+
+            <Section title="Responsive Drawer">
+                <p className="text-muted-foreground mb-4">
+                    Use <code className="text-sm bg-muted px-1 py-0.5 rounded">responsive</code> to automatically switch the drawer position on mobile. By default, right/left drawers become bottom drawers on mobile (under 640px).
+                </p>
+                <Example
+                    className="gap-2"
+                    preview={
+                        <>
+                            <Drawer>
+                                <DrawerTrigger asChild>
+                                    <Button variant="outline">Responsive (Right → Bottom)</Button>
+                                </DrawerTrigger>
+                                <DrawerContent side="right" responsive>
+                                    <DrawerClose />
+                                    <DrawerHeader>
+                                        <DrawerTitle>Responsive Drawer</DrawerTitle>
+                                        <DrawerDescription>
+                                            On desktop, this appears from the right. On mobile, it slides up from the bottom.
+                                        </DrawerDescription>
+                                    </DrawerHeader>
+                                    <div className="p-6">
+                                        <p className="text-sm text-muted-foreground">
+                                            Resize your browser to see the responsive behavior.
+                                        </p>
+                                    </div>
+                                    <DrawerFooter>
+                                        <DrawerClose asChild>
+                                            <Button>Got it</Button>
+                                        </DrawerClose>
+                                    </DrawerFooter>
+                                </DrawerContent>
+                            </Drawer>
+                            <Drawer>
+                                <DrawerTrigger asChild>
+                                    <Button variant="outline">Custom (Right → Top)</Button>
+                                </DrawerTrigger>
+                                <DrawerContent side="right" responsive responsiveSide="top">
+                                    <DrawerClose />
+                                    <DrawerHeader>
+                                        <DrawerTitle>Custom Responsive</DrawerTitle>
+                                        <DrawerDescription>
+                                            This drawer appears from right on desktop and top on mobile.
+                                        </DrawerDescription>
+                                    </DrawerHeader>
+                                    <div className="p-6">
+                                        <p className="text-sm text-muted-foreground">
+                                            Use responsiveSide to customize mobile behavior.
+                                        </p>
+                                    </div>
+                                </DrawerContent>
+                            </Drawer>
+                        </>
+                    }
+                    code={`// Default: right/left → bottom on mobile
+<DrawerContent side="right" responsive>
+    {/* ... */}
+</DrawerContent>
+
+// Custom: right → top on mobile
+<DrawerContent side="right" responsive responsiveSide="top">
+    {/* ... */}
+</DrawerContent>`}
+                />
+            </Section>
         </div>
     );
 }

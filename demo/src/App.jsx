@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, { useState, useEffect, Suspense, lazy, useContext } from 'react';
 import {BrowserRouter, Routes, Route, useLocation, Link} from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import logoScaling from '../logo-scaling.svg';
@@ -7,6 +7,17 @@ import ThemeToggle from './components/ThemeToggle';
 import packageJson from '../../package.json';
 // Eager load HomePage for faster initial load
 import HomePage from './pages/HomePage';
+
+// Scroll to top on route change
+function ScrollToTop() {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+}
 
 // Lazy load all component documentation pages
 const GettingStarted = lazy(() => import('./pages/GettingStarted'));
@@ -436,6 +447,7 @@ function App() {
     return (
         <HelmetProvider>
             <BrowserRouter>
+                <ScrollToTop />
                 <Layout>
                     <Suspense fallback={<LoadingFallback />}>
                         <Routes>

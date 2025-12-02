@@ -8,6 +8,8 @@ import {
     DialogDescription,
     DialogFooter,
     DialogClose,
+    DialogAction,
+    DialogCancel,
     Button,
     Tabs,
     TabsList,
@@ -169,6 +171,52 @@ export default function DialogPage() {
         </div>
         <DialogFooter>
             <Button type="submit">Save changes</Button>
+        </DialogFooter>
+    </DialogContent>
+</Dialog>`}
+                />
+            </Section>
+
+            <Section title="Alert Dialog (Delete Account)">
+                <p className="text-muted-foreground mb-4">
+                    Use <code className="text-sm bg-muted px-1 py-0.5 rounded">dismissible=&#123;false&#125;</code> on the Dialog component to create an alert dialog that requires explicit user action and cannot be dismissed by clicking outside or pressing Escape.
+                </p>
+                <Example
+                    preview={
+                        <Dialog dismissible={false}>
+                            <DialogTrigger asChild>
+                                <Button variant="destructive">Delete Account</Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>Are you absolutely sure?</DialogTitle>
+                                    <DialogDescription>
+                                        This action cannot be undone. This will permanently delete your
+                                        account and remove all of your data from our servers.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <DialogFooter>
+                                    <DialogCancel>Cancel</DialogCancel>
+                                    <DialogAction variant="destructive">Yes, delete my account</DialogAction>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    }
+                    code={`<Dialog dismissible={false}>
+    <DialogTrigger asChild>
+        <Button variant="destructive">Delete Account</Button>
+    </DialogTrigger>
+    <DialogContent>
+        <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+                This action cannot be undone. This will permanently delete your
+                account and remove all of your data from our servers.
+            </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+            <DialogCancel>Cancel</DialogCancel>
+            <DialogAction variant="destructive">Yes, delete my account</DialogAction>
         </DialogFooter>
     </DialogContent>
 </Dialog>`}

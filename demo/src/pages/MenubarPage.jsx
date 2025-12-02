@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { File, FolderOpen, Save, Printer, Copy, Scissors, Clipboard, Undo, Redo } from 'lucide-react';
 import {
     Menubar,
     MenubarMenu,
@@ -160,7 +161,9 @@ export default function MenubarPage() {
                             <MenubarMenu value="file">
                                 <MenubarTrigger>File</MenubarTrigger>
                                 <MenubarContent>
-                                    <MenubarItem>New Tab</MenubarItem>
+                                    <MenubarItem>
+                                        New Tab <MenubarShortcut>⌘T</MenubarShortcut>
+                                    </MenubarItem>
                                     <MenubarSub>
                                         <MenubarSubTrigger>New Window</MenubarSubTrigger>
                                         <MenubarSubContent>
@@ -169,8 +172,48 @@ export default function MenubarPage() {
                                             <MenubarItem>Guest Window</MenubarItem>
                                         </MenubarSubContent>
                                     </MenubarSub>
+                                    <MenubarSub>
+                                        <MenubarSubTrigger>Share</MenubarSubTrigger>
+                                        <MenubarSubContent>
+                                            <MenubarItem>Email Link</MenubarItem>
+                                            <MenubarItem>Messages</MenubarItem>
+                                            <MenubarItem>AirDrop</MenubarItem>
+                                            <MenubarSeparator />
+                                            <MenubarItem>Notes</MenubarItem>
+                                        </MenubarSubContent>
+                                    </MenubarSub>
                                     <MenubarSeparator />
-                                    <MenubarItem>Close Window</MenubarItem>
+                                    <MenubarItem>
+                                        Print <MenubarShortcut>⌘P</MenubarShortcut>
+                                    </MenubarItem>
+                                </MenubarContent>
+                            </MenubarMenu>
+                            <MenubarMenu value="edit">
+                                <MenubarTrigger>Edit</MenubarTrigger>
+                                <MenubarContent>
+                                    <MenubarItem>
+                                        Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarSeparator />
+                                    <MenubarSub>
+                                        <MenubarSubTrigger>Find</MenubarSubTrigger>
+                                        <MenubarSubContent>
+                                            <MenubarItem>
+                                                Search the web <MenubarShortcut>⌘⇧F</MenubarShortcut>
+                                            </MenubarItem>
+                                            <MenubarSeparator />
+                                            <MenubarItem>Find...</MenubarItem>
+                                            <MenubarItem>Find Next</MenubarItem>
+                                            <MenubarItem>Find Previous</MenubarItem>
+                                        </MenubarSubContent>
+                                    </MenubarSub>
+                                    <MenubarSeparator />
+                                    <MenubarItem>Cut</MenubarItem>
+                                    <MenubarItem>Copy</MenubarItem>
+                                    <MenubarItem>Paste</MenubarItem>
                                 </MenubarContent>
                             </MenubarMenu>
                         </Menubar>
@@ -179,16 +222,173 @@ export default function MenubarPage() {
     <MenubarMenu value="file">
         <MenubarTrigger>File</MenubarTrigger>
         <MenubarContent>
-            <MenubarItem>New Tab</MenubarItem>
+            <MenubarItem>New Tab <MenubarShortcut>⌘T</MenubarShortcut></MenubarItem>
             <MenubarSub>
                 <MenubarSubTrigger>New Window</MenubarSubTrigger>
                 <MenubarSubContent>
                     <MenubarItem>Default Window</MenubarItem>
                     <MenubarItem>Incognito Window</MenubarItem>
+                    <MenubarItem>Guest Window</MenubarItem>
+                </MenubarSubContent>
+            </MenubarSub>
+            <MenubarSub>
+                <MenubarSubTrigger>Share</MenubarSubTrigger>
+                <MenubarSubContent>
+                    <MenubarItem>Email Link</MenubarItem>
+                    <MenubarItem>Messages</MenubarItem>
+                    <MenubarItem>AirDrop</MenubarItem>
+                    <MenubarSeparator />
+                    <MenubarItem>Notes</MenubarItem>
                 </MenubarSubContent>
             </MenubarSub>
             <MenubarSeparator />
-            <MenubarItem>Close Window</MenubarItem>
+            <MenubarItem>Print <MenubarShortcut>⌘P</MenubarShortcut></MenubarItem>
+        </MenubarContent>
+    </MenubarMenu>
+    <MenubarMenu value="edit">
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+            <MenubarItem>Undo <MenubarShortcut>⌘Z</MenubarShortcut></MenubarItem>
+            <MenubarItem>Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut></MenubarItem>
+            <MenubarSeparator />
+            <MenubarSub>
+                <MenubarSubTrigger>Find</MenubarSubTrigger>
+                <MenubarSubContent>
+                    <MenubarItem>Search the web <MenubarShortcut>⌘⇧F</MenubarShortcut></MenubarItem>
+                    <MenubarSeparator />
+                    <MenubarItem>Find...</MenubarItem>
+                    <MenubarItem>Find Next</MenubarItem>
+                    <MenubarItem>Find Previous</MenubarItem>
+                </MenubarSubContent>
+            </MenubarSub>
+            <MenubarSeparator />
+            <MenubarItem>Cut</MenubarItem>
+            <MenubarItem>Copy</MenubarItem>
+            <MenubarItem>Paste</MenubarItem>
+        </MenubarContent>
+    </MenubarMenu>
+</Menubar>`}
+                />
+            </Section>
+
+            <Section title="With Icons">
+                <p className="text-muted-foreground mb-4">
+                    Menu items can include icons. Use the <code className="text-sm bg-muted px-1 py-0.5 rounded">inset</code> prop on items without icons to align text with items that have icons.
+                </p>
+                <Example
+                    className="justify-start"
+                    preview={
+                        <Menubar>
+                            <MenubarMenu value="file">
+                                <MenubarTrigger>File</MenubarTrigger>
+                                <MenubarContent>
+                                    <MenubarItem>
+                                        <File className="mr-2 h-4 w-4" />
+                                        New File <MenubarShortcut>⌘N</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        <FolderOpen className="mr-2 h-4 w-4" />
+                                        Open <MenubarShortcut>⌘O</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarSeparator />
+                                    <MenubarItem>
+                                        <Save className="mr-2 h-4 w-4" />
+                                        Save <MenubarShortcut>⌘S</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarItem inset>
+                                        Save As... <MenubarShortcut>⇧⌘S</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarSeparator />
+                                    <MenubarItem>
+                                        <Printer className="mr-2 h-4 w-4" />
+                                        Print <MenubarShortcut>⌘P</MenubarShortcut>
+                                    </MenubarItem>
+                                </MenubarContent>
+                            </MenubarMenu>
+                            <MenubarMenu value="edit">
+                                <MenubarTrigger>Edit</MenubarTrigger>
+                                <MenubarContent>
+                                    <MenubarItem>
+                                        <Undo className="mr-2 h-4 w-4" />
+                                        Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        <Redo className="mr-2 h-4 w-4" />
+                                        Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarSeparator />
+                                    <MenubarItem>
+                                        <Scissors className="mr-2 h-4 w-4" />
+                                        Cut <MenubarShortcut>⌘X</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        <Copy className="mr-2 h-4 w-4" />
+                                        Copy <MenubarShortcut>⌘C</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        <Clipboard className="mr-2 h-4 w-4" />
+                                        Paste <MenubarShortcut>⌘V</MenubarShortcut>
+                                    </MenubarItem>
+                                    <MenubarSeparator />
+                                    <MenubarItem inset>Select All <MenubarShortcut>⌘A</MenubarShortcut></MenubarItem>
+                                </MenubarContent>
+                            </MenubarMenu>
+                        </Menubar>
+                    }
+                    code={`<Menubar>
+    <MenubarMenu value="file">
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+            <MenubarItem>
+                <File className="mr-2 h-4 w-4" />
+                New File <MenubarShortcut>⌘N</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem>
+                <FolderOpen className="mr-2 h-4 w-4" />
+                Open <MenubarShortcut>⌘O</MenubarShortcut>
+            </MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem>
+                <Save className="mr-2 h-4 w-4" />
+                Save <MenubarShortcut>⌘S</MenubarShortcut>
+            </MenubarItem>
+            {/* Use inset to align with icon-bearing items */}
+            <MenubarItem inset>
+                Save As... <MenubarShortcut>⇧⌘S</MenubarShortcut>
+            </MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem>
+                <Printer className="mr-2 h-4 w-4" />
+                Print <MenubarShortcut>⌘P</MenubarShortcut>
+            </MenubarItem>
+        </MenubarContent>
+    </MenubarMenu>
+    <MenubarMenu value="edit">
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+            <MenubarItem>
+                <Undo className="mr-2 h-4 w-4" />
+                Undo <MenubarShortcut>⌘Z</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem>
+                <Redo className="mr-2 h-4 w-4" />
+                Redo <MenubarShortcut>⇧⌘Z</MenubarShortcut>
+            </MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem>
+                <Scissors className="mr-2 h-4 w-4" />
+                Cut <MenubarShortcut>⌘X</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem>
+                <Copy className="mr-2 h-4 w-4" />
+                Copy <MenubarShortcut>⌘C</MenubarShortcut>
+            </MenubarItem>
+            <MenubarItem>
+                <Clipboard className="mr-2 h-4 w-4" />
+                Paste <MenubarShortcut>⌘V</MenubarShortcut>
+            </MenubarItem>
+            <MenubarSeparator />
+            <MenubarItem inset>Select All <MenubarShortcut>⌘A</MenubarShortcut></MenubarItem>
         </MenubarContent>
     </MenubarMenu>
 </Menubar>`}
