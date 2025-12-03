@@ -19,9 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-
-      - name: Configure npm registry
-        run: echo "registry=https://registry.npmjs.org/" > ~/.npmrc
+          registry-url: 'https://registry.npmjs.org'
       - run: npm ci
       - run: npm run build --if-present
       - run: npm publish --provenance --access public
