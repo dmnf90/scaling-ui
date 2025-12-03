@@ -85,23 +85,20 @@ app.get('/sse', async (request, reply) => {
     const mcpServer = createMcpServer();
     const transport = new SSEServerTransport('/messages', res);
 
+    // Store transport IMMEDIATELY - sessionId is available from constructor
+    // This prevents race condition where client POSTs before we store the transport
+    transports.set(transport.sessionId, transport);
+    console.log(`SSE session registered: ${transport.sessionId}`);
+
     // Handle connection close
     request.raw.on('close', () => {
         console.log('SSE connection closed');
-        // Remove from transports map using sessionId if available
-        if (transport.sessionId) {
-            transports.delete(transport.sessionId);
-        }
+        transports.delete(transport.sessionId);
     });
 
-    // Connect MCP server to transport (this starts the transport)
+    // Connect MCP server to transport
     await mcpServer.connect(transport);
-
-    // Store transport with its session ID after connection
-    if (transport.sessionId) {
-        transports.set(transport.sessionId, transport);
-        console.log(`SSE session started: ${transport.sessionId}`);
-    }
+    console.log(`SSE session connected: ${transport.sessionId}`);
 });
 
 // Messages endpoint for MCP communication
