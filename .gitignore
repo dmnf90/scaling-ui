@@ -39,8 +39,3 @@ coverage
 
 # Vercel
 .vercel
-
-# Package manager
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
