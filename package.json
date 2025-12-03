@@ -18,7 +18,8 @@
     "dev": "cd demo && vite",
     "build": "vite build",
     "build:demo": "cd demo && vite build",
-    "preview": "cd demo && vite preview"
+    "preview": "cd demo && vite preview",
+    "release": "npm version patch && git push && git push --tags"
   },
   "peerDependencies": {
     "react": "^18.0.0",
