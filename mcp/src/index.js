@@ -116,8 +116,9 @@ app.post('/messages', async (request, reply) => {
     const transport = transports.get(sessionId);
 
     try {
-        await transport.handlePostMessage(request.body);
-        return { success: true };
+        // handlePostMessage needs the response object to send replies
+        await transport.handlePostMessage(request.body, reply.raw);
+        reply.hijack(); // Let the transport handle the response
     } catch (error) {
         console.error('Error handling message:', error);
         reply.code(500);
