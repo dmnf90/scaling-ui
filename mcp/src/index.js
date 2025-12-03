@@ -105,21 +105,29 @@ app.get('/sse', async (request, reply) => {
 app.post('/messages', async (request, reply) => {
     const sessionId = request.query.sessionId;
 
+    // Debug logging
+    console.log('POST /messages received');
+    console.log('Query params:', JSON.stringify(request.query));
+    console.log('Session ID from query:', sessionId);
+    console.log('Stored sessions:', Array.from(transports.keys()));
+    console.log('Has session:', transports.has(sessionId));
+
     if (!sessionId || !transports.has(sessionId)) {
+        console.log('Session not found - returning 400');
         reply.code(400);
         return { error: 'Invalid or missing session ID' };
     }
 
     const transport = transports.get(sessionId);
 
+    // Hijack BEFORE handlePostMessage so transport can write to raw response
+    reply.hijack();
+
     try {
-        // handlePostMessage needs the response object to send replies
-        await transport.handlePostMessage(request.body, reply.raw);
-        reply.hijack(); // Let the transport handle the response
+        // Pass raw request, raw response, and pre-parsed body
+        await transport.handlePostMessage(request.raw, reply.raw, request.body);
     } catch (error) {
         console.error('Error handling message:', error);
-        reply.code(500);
-        return { error: error.message };
     }
 });
 
