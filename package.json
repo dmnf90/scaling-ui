@@ -31,6 +31,8 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.1.1",
     "tailwindcss": "^4.1.17",
+    "react-helmet-async": "^2.0.5",
+    "react-syntax-highlighter": "^16.1.0",
     "vite": "^7.2.2"
   },
   "dependencies": {
@@ -38,8 +40,6 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.554.0",
-    "react-helmet-async": "^2.0.5",
-    "react-syntax-highlighter": "^16.1.0",
     "recharts": "^3.5.1",
     "sonner": "^2.0.7"
   },
@@ -50,6 +50,13 @@
     "tailwind",
     "component-library"
   ],
-  "author": "",
-  "license": "MIT"
+  "author": "Scaling.pt",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dmnf90/scaling-ui"
+  },
+  "bugs": {
+    "url": "https://github.com/dmnf90/scaling-ui/issues"
+  }
 }
