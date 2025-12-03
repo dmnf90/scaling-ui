@@ -21,6 +21,7 @@ function ScrollToTop() {
 
 // Lazy load all component documentation pages
 const GettingStarted = lazy(() => import('./pages/GettingStarted'));
+const MCPPage = lazy(() => import('./pages/MCPPage'));
 const ButtonPage = lazy(() => import('./pages/ButtonPage'));
 const TabsPage = lazy(() => import('./pages/TabsPage'));
 const SpinnerPage = lazy(() => import('./pages/SpinnerPage'));
@@ -95,6 +96,7 @@ import {
 import {
     Home,
     BookOpen,
+    Bot,
     User,
     Tag,
     MousePointerClick,
@@ -263,6 +265,15 @@ function NavigationSidebar() {
                         active={location.pathname === '/getting-started'}
                     >
                         Getting Started
+                    </SidebarNavItem>
+
+                    <SidebarNavItem
+                        as={Link}
+                        href="/mcp"
+                        icon={Bot}
+                        active={location.pathname === '/mcp'}
+                    >
+                        MCP Integration
                     </SidebarNavItem>
 
                     <div className="mt-4">
@@ -454,6 +465,7 @@ function App() {
                         <Routes>
                         <Route path="/" element={<><SEO title="Home" description="A minimal, clean React component library built with Tailwind CSS. Browse 35+ production-ready components including buttons, forms, navigation, and overlays." path="/" /><HomePage/></>}/>
                         <Route path="/getting-started" element={<><SEO title="Getting Started" description="Learn how to install and use Scaling UI in your React project. Quick setup guide with examples." path="/getting-started" /><GettingStarted/></>}/>
+                        <Route path="/mcp" element={<><SEO title="MCP Integration" description="Use AI assistants to help you build with Scaling UI through the Model Context Protocol. Configure Claude, Cursor, and other MCP clients." path="/mcp" /><MCPPage/></>}/>
                         <Route path="/avatar" element={<><SEO title="Avatar" description="Avatar component for React - Display user profile pictures and initials with customizable sizes and fallbacks. Built with Tailwind CSS." path="/avatar" /><AvatarPage/></>}/>
                         <Route path="/badge" element={<><SEO title="Badge" description="Badge component for React - Display small status indicators and labels with multiple variants. Built with Tailwind CSS." path="/badge" /><BadgePage/></>}/>
                         <Route path="/breadcrumb" element={<><SEO title="Breadcrumb" description="Breadcrumb component for React - Show navigation hierarchy and help users understand their location. Built with Tailwind CSS." path="/breadcrumb" /><BreadcrumbPage/></>}/>

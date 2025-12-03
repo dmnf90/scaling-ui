@@ -1,0 +1,38 @@
+name: Deploy MCP Server
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Copy MCP files to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.MCP_SSH_HOST }}
+          username: ${{ secrets.MCP_SSH_USER }}
+          key: ${{ secrets.MCP_SSH_KEY }}
+          port: ${{ secrets.MCP_SSH_PORT || 22 }}
+          source: "mcp/*"
+          target: "/data/mcp.ui.scaling.pt"
+          strip_components: 1
+
+      - name: Deploy MCP server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.MCP_SSH_HOST }}
+          username: ${{ secrets.MCP_SSH_USER }}
+          key: ${{ secrets.MCP_SSH_KEY }}
+          port: ${{ secrets.MCP_SSH_PORT || 22 }}
+          script: |
+            cd /data/mcp.ui.scaling.pt
+            npm install --production
+            npm run build:data
+            sudo systemctl restart scaling-ui-mcp
+            echo "MCP server deployed successfully"

@@ -1,0 +1,22 @@
+{
+    "name": "scaling-ui-mcp-server",
+    "version": "1.0.0",
+    "description": "MCP server for scaling-ui React component library documentation",
+    "type": "module",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "node src/index.js",
+        "dev": "node --watch src/index.js",
+        "build:data": "node scripts/buildComponentData.js"
+    },
+    "dependencies": {
+        "@modelcontextprotocol/sdk": "^1.10.0",
+        "fastify": "^5.2.0",
+        "zod": "^3.25.0"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "author": "",
+    "license": "MIT"
+}
