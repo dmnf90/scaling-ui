@@ -9,7 +9,7 @@
     ".": {
       "import": "./dist/scaling-ui.js"
     },
-    "./styles.css": "./dist/style.css"
+    "./styles.css": "./dist/scaling-ui.css"
   },
   "files": [
     "dist"
