@@ -2,6 +2,33 @@ import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '../../lib/utils';
 import { Check, ChevronDown } from 'lucide-react';
 
+/**
+ * Combobox - A searchable dropdown select component
+ *
+ * @param {Object} props - Component props
+ * @param {Array<{value: string, label: string}>} [props.options=[]] - Array of options to display
+ * @param {string} [props.value] - Currently selected value
+ * @param {function} [props.onValueChange] - Callback when selection changes, receives the new value
+ * @param {string} [props.placeholder='Select option...'] - Placeholder when no option is selected
+ * @param {string} [props.searchPlaceholder='Search...'] - Placeholder for the search input
+ * @param {boolean} [props.disabled=false] - Whether the combobox is disabled
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * const frameworks = [
+ *     { value: 'react', label: 'React' },
+ *     { value: 'vue', label: 'Vue' },
+ *     { value: 'angular', label: 'Angular' },
+ * ];
+ *
+ * <Combobox
+ *     options={frameworks}
+ *     value={selected}
+ *     onValueChange={setSelected}
+ *     placeholder="Select a framework..."
+ * />
+ */
 export function Combobox({
     options = [],
     value,

@@ -1,6 +1,24 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
 
+/**
+ * Progress - A progress bar component showing completion status
+ *
+ * @param {Object} props - Component props
+ * @param {number} [props.value] - Current progress value (null for indeterminate state)
+ * @param {number} [props.max=100] - Maximum value for the progress bar
+ * @param {string} [props.className] - Additional CSS classes for the track
+ * @param {string} [props.indicatorClassName] - Additional CSS classes for the indicator
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * // Determinate progress
+ * <Progress value={60} max={100} />
+ *
+ * @example
+ * // Indeterminate loading state
+ * <Progress />
+ */
 export function Progress({
     value,
     max = 100,

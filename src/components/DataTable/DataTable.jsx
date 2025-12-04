@@ -21,6 +21,36 @@ import {
     DropdownMenuSeparator,
 } from '../DropdownMenu/DropdownMenu';
 
+/**
+ * DataTable - A feature-rich data table with sorting, filtering, pagination, and column visibility
+ *
+ * @param {Object} props - Component props
+ * @param {Array} [props.data=[]] - Array of data objects to display
+ * @param {Array} [props.columns=[]] - Column definitions with id/accessor, header, cell, sortable properties
+ * @param {boolean} [props.pagination=true] - Enable pagination
+ * @param {number} [props.pageSize=10] - Initial number of rows per page
+ * @param {boolean} [props.filterable=true] - Enable global filter input
+ * @param {boolean} [props.columnVisibility=true] - Enable column visibility toggle
+ * @param {React.ReactNode} [props.toolbar] - Custom toolbar content (replaces default toolbar)
+ * @param {React.ReactNode} [props.emptyState] - Custom empty state content
+ * @param {boolean} [props.hideToolbar=false] - Hide the toolbar completely
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * const columns = [
+ *     { accessor: 'name', header: 'Name' },
+ *     { accessor: 'email', header: 'Email' },
+ *     { accessor: 'status', header: 'Status', cell: ({ value }) => <Badge>{value}</Badge> }
+ * ];
+ *
+ * <DataTable
+ *     data={users}
+ *     columns={columns}
+ *     pageSize={10}
+ *     filterable
+ * />
+ */
 export function DataTable({
     data = [],
     columns = [],
@@ -28,6 +58,9 @@ export function DataTable({
     pageSize: initialPageSize = 10,
     filterable = true,
     columnVisibility: enableColumnVisibility = true,
+    toolbar,
+    emptyState,
+    hideToolbar = false,
     className,
     ...props
 }) {
@@ -123,49 +156,55 @@ export function DataTable({
     return (
         <div className={cn('space-y-4', className)} {...props}>
             {/* Toolbar */}
-            {(filterable || enableColumnVisibility) && (
+            {!hideToolbar && (toolbar || filterable || enableColumnVisibility) && (
                 <div className="flex items-center justify-between gap-4">
-                    {filterable && (
-                        <div className="relative flex-1 max-w-sm">
-                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                placeholder="Filter..."
-                                value={filter}
-                                onChange={(e) => {
-                                    setFilter(e.target.value);
-                                    setCurrentPage(1);
-                                }}
-                                className="pl-9"
-                            />
-                        </div>
-                    )}
-                    {enableColumnVisibility && (
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button variant="outline" size="sm">
-                                    <Settings2 className="mr-2 h-4 w-4" />
-                                    Columns
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
-                                <DropdownMenuSeparator />
-                                {columns.map((col) => {
-                                    const key = col.id || col.accessor;
-                                    return (
-                                        <DropdownMenuCheckboxItem
-                                            key={key}
-                                            checked={visibleColumns[key]}
-                                            onCheckedChange={() =>
-                                                toggleColumnVisibility(key)
-                                            }
-                                        >
-                                            {col.header || key}
-                                        </DropdownMenuCheckboxItem>
-                                    );
-                                })}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                    {toolbar ? (
+                        toolbar
+                    ) : (
+                        <>
+                            {filterable && (
+                                <div className="relative flex-1 max-w-sm">
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                    <Input
+                                        placeholder="Filter..."
+                                        value={filter}
+                                        onChange={(e) => {
+                                            setFilter(e.target.value);
+                                            setCurrentPage(1);
+                                        }}
+                                        className="pl-9"
+                                    />
+                                </div>
+                            )}
+                            {enableColumnVisibility && (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="outline" size="sm">
+                                            <Settings2 className="mr-2 h-4 w-4" />
+                                            Columns
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
+                                        <DropdownMenuSeparator />
+                                        {columns.map((col) => {
+                                            const key = col.id || col.accessor;
+                                            return (
+                                                <DropdownMenuCheckboxItem
+                                                    key={key}
+                                                    checked={visibleColumns[key]}
+                                                    onCheckedChange={() =>
+                                                        toggleColumnVisibility(key)
+                                                    }
+                                                >
+                                                    {col.header || key}
+                                                </DropdownMenuCheckboxItem>
+                                            );
+                                        })}
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            )}
+                        </>
                     )}
                 </div>
             )}
@@ -202,9 +241,11 @@ export function DataTable({
                             <TableRow>
                                 <TableCell
                                     colSpan={visibleColumnsList.length}
-                                    className="h-24 text-center text-muted-foreground"
+                                    className="h-24 text-center"
                                 >
-                                    No results found.
+                                    {emptyState || (
+                                        <span className="text-muted-foreground">No results found.</span>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ) : (

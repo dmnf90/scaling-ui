@@ -2,6 +2,35 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
+/**
+ * Carousel - A slideshow component with touch/drag support
+ *
+ * Sub-components:
+ * - CarouselContent: Container for carousel items
+ * - CarouselItem: Individual slide
+ * - CarouselPrevious: Previous slide button
+ * - CarouselNext: Next slide button
+ * - CarouselDots: Dot navigation indicators
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.autoPlay=false] - Auto-advance slides
+ * @param {number} [props.interval=5000] - Auto-play interval in ms
+ * @param {boolean} [props.loop=true] - Loop back to start/end
+ * @param {React.ReactNode} [props.children] - Carousel sub-components
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Carousel autoPlay interval={3000}>
+ *     <CarouselContent>
+ *         <CarouselItem><img src="/slide1.jpg" /></CarouselItem>
+ *         <CarouselItem><img src="/slide2.jpg" /></CarouselItem>
+ *     </CarouselContent>
+ *     <CarouselPrevious />
+ *     <CarouselNext />
+ *     <CarouselDots />
+ * </Carousel>
+ */
 export function Carousel({
     autoPlay = false,
     interval = 5000,
@@ -82,6 +111,9 @@ export function Carousel({
     );
 }
 
+/**
+ * CarouselContent - Container for carousel items with drag support
+ */
 export function CarouselContent({
     currentIndex = 0,
     setItemCount,
@@ -282,6 +314,9 @@ export function CarouselContent({
     );
 }
 
+/**
+ * CarouselItem - Individual carousel slide
+ */
 export function CarouselItem({ className, children, ...props }) {
     return (
         <div className={cn('', className)} {...props}>
@@ -290,6 +325,9 @@ export function CarouselItem({ className, children, ...props }) {
     );
 }
 
+/**
+ * CarouselPrevious - Previous slide navigation button
+ */
 export function CarouselPrevious({
     onClick,
     disabled,
@@ -314,6 +352,9 @@ export function CarouselPrevious({
     );
 }
 
+/**
+ * CarouselNext - Next slide navigation button
+ */
 export function CarouselNext({
     onClick,
     disabled,
@@ -338,6 +379,9 @@ export function CarouselNext({
     );
 }
 
+/**
+ * CarouselDots - Dot navigation indicators for carousel slides
+ */
 export function CarouselDots({
     currentIndex = 0,
     itemCount = 0,

@@ -153,9 +153,13 @@ export function registerTools(server, componentData) {
             const propsStr = propsList.length > 0 ? ' ' + propsList.join(' ') : '';
             const childContent = children || 'Content';
 
-            // Determine if component is self-closing or has children
-            const selfClosingComponents = ['Input', 'Separator', 'Spinner', 'Progress', 'Skeleton', 'Switch', 'Checkbox', 'Slider'];
-            const isSelfClosing = selfClosingComponents.includes(component.name);
+            // Dynamically determine if component is self-closing
+            // A component is self-closing if:
+            // 1. It has no children prop, OR
+            // 2. Its children prop is not required AND no children are provided
+            const childrenProp = component.props.find(p => p.name === 'children');
+            const hasMandatoryChildren = childrenProp?.required === true;
+            const isSelfClosing = !hasMandatoryChildren && !children;
 
             let snippet;
             if (isSelfClosing) {

@@ -7,6 +7,46 @@ import { useControllableState } from '../../lib/hooks/useControllableState.js';
 import { useEscapeKey } from '../../lib/hooks/useEscapeKey.js';
 import { useBodyScrollLock } from '../../lib/hooks/useBodyScrollLock.js';
 
+/**
+ * Dialog - A modal dialog component (also works as AlertDialog with dismissible=false)
+ *
+ * Sub-components:
+ * - DialogTrigger: Button to open the dialog
+ * - DialogContent: The modal content container
+ * - DialogHeader/DialogFooter: Layout sections
+ * - DialogTitle/DialogDescription: Accessible title and description
+ * - DialogClose: Button to close the dialog
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.open] - Controlled open state
+ * @param {boolean} [props.defaultOpen=false] - Initial open state
+ * @param {function} [props.onOpenChange] - Callback when open state changes
+ * @param {boolean} [props.dismissible=true] - If false, prevents closing via overlay/ESC (AlertDialog behavior)
+ * @param {'first' | 'cancel'} [props.initialFocus='first'] - Where to focus when dialog opens
+ * @param {React.ReactNode} [props.children] - Dialog sub-components
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Dialog>
+ *     <DialogTrigger asChild>
+ *         <Button>Open Dialog</Button>
+ *     </DialogTrigger>
+ *     <DialogContent>
+ *         <DialogHeader>
+ *             <DialogTitle>Dialog Title</DialogTitle>
+ *             <DialogDescription>Dialog description here.</DialogDescription>
+ *         </DialogHeader>
+ *         <p>Content goes here</p>
+ *         <DialogFooter>
+ *             <DialogClose asChild>
+ *                 <Button variant="outline">Cancel</Button>
+ *             </DialogClose>
+ *             <Button>Save</Button>
+ *         </DialogFooter>
+ *     </DialogContent>
+ * </Dialog>
+ */
+
 // Context for managing dialog state
 const DialogContext = createContext();
 

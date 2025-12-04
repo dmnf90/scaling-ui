@@ -4,6 +4,41 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { usePositioning } from '../../lib/hooks/usePositioning.js';
 
+/**
+ * Tooltip - A floating label that appears on hover (also works as HoverCard with variant="rich")
+ *
+ * Sub-components:
+ * - TooltipTrigger: Element that triggers the tooltip on hover
+ * - TooltipContent: The floating tooltip content
+ *
+ * @param {Object} props - Component props
+ * @param {number} [props.openDelay=700] - Delay in ms before showing tooltip
+ * @param {number} [props.closeDelay] - Delay before hiding (default: 0 for tooltip, 300 for rich)
+ * @param {'default' | 'rich'} [props.variant='default'] - 'rich' creates a HoverCard style
+ * @param {React.ReactNode} [props.children] - TooltipTrigger and TooltipContent
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * // Simple tooltip
+ * <Tooltip>
+ *     <TooltipTrigger asChild>
+ *         <Button>Hover me</Button>
+ *     </TooltipTrigger>
+ *     <TooltipContent>Tooltip text</TooltipContent>
+ * </Tooltip>
+ *
+ * @example
+ * // Rich tooltip (HoverCard)
+ * <Tooltip variant="rich">
+ *     <TooltipTrigger asChild>
+ *         <span>@username</span>
+ *     </TooltipTrigger>
+ *     <TooltipContent>
+ *         <div>User profile card content</div>
+ *     </TooltipContent>
+ * </Tooltip>
+ */
+
 // Context for managing tooltip state
 const TooltipContext = createContext();
 

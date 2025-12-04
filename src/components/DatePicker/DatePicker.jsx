@@ -6,6 +6,30 @@ import { Popover, PopoverTrigger, PopoverContent } from '../Popover/Popover';
 import { Calendar } from '../Calendar/Calendar';
 import { Button } from '../Button/Button';
 
+/**
+ * DatePicker - A date selection component with popover calendar
+ *
+ * @param {Object} props - Component props
+ * @param {Date} [props.selected] - Currently selected date
+ * @param {function} [props.onSelect] - Callback when date is selected, receives the Date object
+ * @param {string} [props.placeholder='Pick a date'] - Placeholder text when no date is selected
+ * @param {string} [props.dateFormat='PPP'] - Date-fns format string for displaying the date
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * const [date, setDate] = useState(null);
+ *
+ * <DatePicker
+ *     selected={date}
+ *     onSelect={setDate}
+ *     placeholder="Select a date"
+ * />
+ *
+ * @example
+ * // Custom date format
+ * <DatePicker selected={date} onSelect={setDate} dateFormat="MM/dd/yyyy" />
+ */
 export function DatePicker({
     selected,
     onSelect,

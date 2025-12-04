@@ -2,6 +2,30 @@ import React from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
+/**
+ * Switch - A toggle switch component for boolean on/off states
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.checked=false] - Whether the switch is on
+ * @param {boolean} [props.disabled=false] - Whether the switch is disabled
+ * @param {function} [props.onClick] - Click handler to toggle state
+ * @param {function} [props.onChange] - Change handler
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref to the button element
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * // Basic usage
+ * const [enabled, setEnabled] = useState(false);
+ * <Switch checked={enabled} onClick={() => setEnabled(!enabled)} />
+ *
+ * @example
+ * // With label
+ * <div className="flex items-center gap-2">
+ *     <Switch id="notifications" checked={enabled} onClick={() => setEnabled(!enabled)} />
+ *     <Label htmlFor="notifications">Enable notifications</Label>
+ * </div>
+ */
 const switchVariants = cva(
     'peer inline-flex h-6 w-11 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50',
     {

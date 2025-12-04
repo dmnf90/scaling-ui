@@ -1,6 +1,28 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '../../lib/utils';
 
+/**
+ * Popover - A floating panel that appears on click
+ *
+ * Sub-components:
+ * - PopoverTrigger: Element that triggers the popover
+ * - PopoverContent: The floating panel content
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.children] - PopoverTrigger and PopoverContent
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Popover>
+ *     <PopoverTrigger asChild>
+ *         <Button>Open Popover</Button>
+ *     </PopoverTrigger>
+ *     <PopoverContent>
+ *         <p>Popover content here</p>
+ *     </PopoverContent>
+ * </Popover>
+ */
+
 const PopoverContext = React.createContext();
 
 export function Popover({ children }) {
@@ -33,6 +55,14 @@ export function Popover({ children }) {
     );
 }
 
+/**
+ * PopoverTrigger - Element that toggles the popover
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.asChild] - Merge props onto child element instead of wrapping
+ * @param {React.ReactNode} [props.children] - Trigger content
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function PopoverTrigger({ asChild, children, className, ...props }) {
     const { open, setOpen } = React.useContext(PopoverContext);
 
@@ -57,6 +87,14 @@ export function PopoverTrigger({ asChild, children, className, ...props }) {
     );
 }
 
+/**
+ * PopoverContent - The floating panel content
+ *
+ * @param {Object} props - Component props
+ * @param {'start' | 'center' | 'end'} [props.align='center'] - Horizontal alignment
+ * @param {React.ReactNode} [props.children] - Panel content
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function PopoverContent({
     align = 'center',
     className,

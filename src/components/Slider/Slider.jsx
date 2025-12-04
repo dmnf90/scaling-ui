@@ -1,6 +1,33 @@
 import React, { useState } from 'react';
 import { cn } from '../../lib/utils';
 
+/**
+ * Slider - A range slider component supporting single or dual handles
+ *
+ * @param {Object} props - Component props
+ * @param {number} [props.min=0] - Minimum value
+ * @param {number} [props.max=100] - Maximum value
+ * @param {number} [props.step=1] - Step increment
+ * @param {number[]} [props.value=[50]] - Current value(s). Array with 1 element for single slider, 2 for range
+ * @param {function} [props.onValueChange] - Callback when value changes, receives array of values
+ * @param {boolean} [props.disabled=false] - Whether the slider is disabled
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * // Single value slider
+ * const [value, setValue] = useState([50]);
+ * <Slider value={value} onValueChange={setValue} />
+ *
+ * @example
+ * // Range slider with two handles
+ * const [range, setRange] = useState([20, 80]);
+ * <Slider value={range} onValueChange={setRange} />
+ *
+ * @example
+ * // Custom range
+ * <Slider min={0} max={1000} step={10} value={[500]} onValueChange={setValue} />
+ */
 export function Slider({
     min = 0,
     max = 100,

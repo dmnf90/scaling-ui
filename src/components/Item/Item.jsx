@@ -1,6 +1,36 @@
 import React from 'react';
 import { cn } from '../../lib/utils';
 
+/**
+ * Item - A flexible list item component with composable sub-components
+ *
+ * Sub-components:
+ * - ItemIcon: Icon container with border
+ * - ItemContent: Main content container
+ * - ItemTitle: Title text
+ * - ItemDescription: Description text
+ * - ItemActions: Right-side actions container
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.as='div'] - Element type to render as
+ * @param {boolean} [props.interactive=false] - Add hover state
+ * @param {boolean} [props.selected=false] - Selected state styling
+ * @param {React.ReactNode} [props.children] - Item content
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Item interactive>
+ *     <ItemIcon><FileIcon /></ItemIcon>
+ *     <ItemContent>
+ *         <ItemTitle>Document.pdf</ItemTitle>
+ *         <ItemDescription>2.5 MB • Updated today</ItemDescription>
+ *     </ItemContent>
+ *     <ItemActions>
+ *         <Button variant="ghost" size="sm">View</Button>
+ *     </ItemActions>
+ * </Item>
+ */
 export function Item({
     as: Component = 'div',
     interactive = false,
@@ -25,6 +55,9 @@ export function Item({
     );
 }
 
+/**
+ * ItemIcon - Icon container with border styling
+ */
 export function ItemIcon({ className, children, ...props }) {
     return (
         <div
@@ -39,6 +72,9 @@ export function ItemIcon({ className, children, ...props }) {
     );
 }
 
+/**
+ * ItemContent - Main content wrapper with flex-1 and overflow handling
+ */
 export function ItemContent({ className, children, ...props }) {
     return (
         <div className={cn('flex-1 min-w-0', className)} {...props}>
@@ -47,6 +83,9 @@ export function ItemContent({ className, children, ...props }) {
     );
 }
 
+/**
+ * ItemTitle - Title text with truncation
+ */
 export function ItemTitle({ className, children, ...props }) {
     return (
         <div
@@ -58,6 +97,9 @@ export function ItemTitle({ className, children, ...props }) {
     );
 }
 
+/**
+ * ItemDescription - Description text with muted styling
+ */
 export function ItemDescription({ className, children, ...props }) {
     return (
         <div
@@ -72,6 +114,9 @@ export function ItemDescription({ className, children, ...props }) {
     );
 }
 
+/**
+ * ItemActions - Right-side container for action buttons
+ */
 export function ItemActions({ className, children, ...props }) {
     return (
         <div

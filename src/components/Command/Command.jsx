@@ -3,6 +3,43 @@ import { createPortal } from 'react-dom';
 import { cn } from '../../lib/utils';
 import { Search } from 'lucide-react';
 
+/**
+ * Command - A command palette/menu component with search and keyboard navigation
+ *
+ * Sub-components:
+ * - CommandInput: Search input field
+ * - CommandList: Container for items
+ * - CommandEmpty: Shown when no results
+ * - CommandGroup: Group of related items with optional heading
+ * - CommandItem: Individual selectable item
+ * - CommandSeparator: Visual divider
+ * - CommandShortcut: Keyboard shortcut indicator
+ * - CommandDialog: Command wrapped in a dialog
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.value] - Controlled search value
+ * @param {function} [props.onValueChange] - Callback when search changes
+ * @param {function} [props.filter] - Custom filter function for items
+ * @param {boolean} [props.shouldFilter=true] - Enable/disable built-in filtering
+ * @param {React.ReactNode} [props.children] - Command sub-components
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Command>
+ *     <CommandInput placeholder="Search..." />
+ *     <CommandList>
+ *         <CommandEmpty>No results found.</CommandEmpty>
+ *         <CommandGroup heading="Suggestions">
+ *             <CommandItem onSelect={() => console.log('Calendar')}>
+ *                 Calendar
+ *                 <CommandShortcut>⌘K</CommandShortcut>
+ *             </CommandItem>
+ *         </CommandGroup>
+ *     </CommandList>
+ * </Command>
+ */
+
 // Context for managing command state
 const CommandContext = createContext();
 

@@ -3,6 +3,31 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { User } from 'lucide-react';
 
+/**
+ * Avatar - User avatar with image, fallback, and status indicator
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.src] - Image source URL
+ * @param {string} [props.alt=''] - Alt text for the image
+ * @param {string | React.ReactNode} [props.fallback] - Fallback content (initials string or custom element)
+ * @param {'sm' | 'md' | 'lg' | 'xl'} [props.size='md'] - Avatar size
+ * @param {'circular' | 'square'} [props.variant='circular'] - Avatar shape
+ * @param {'online' | 'offline' | 'away' | 'busy'} [props.status] - Status indicator type
+ * @param {boolean} [props.showStatus=false] - Show status indicator
+ * @param {boolean} [props.loading=false] - Show loading state
+ * @param {string} [props.className] - Additional CSS classes
+ * @param {React.Ref} ref - Forwarded ref
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * // With image
+ * <Avatar src="/avatar.jpg" alt="John Doe" />
+ *
+ * @example
+ * // With initials fallback and status
+ * <Avatar fallback="JD" status="online" showStatus />
+ */
+
 const avatarVariants = cva(
     'relative inline-flex items-center justify-center overflow-hidden bg-muted',
     {

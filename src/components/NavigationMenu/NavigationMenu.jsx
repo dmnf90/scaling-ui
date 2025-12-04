@@ -3,6 +3,35 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { ChevronDown } from 'lucide-react';
 
+/**
+ * NavigationMenu - A navigation component with dropdown menus and hover interactions
+ *
+ * @param {Object} props - Component props
+ * @param {'horizontal' | 'vertical'} [props.orientation='horizontal'] - Menu orientation
+ * @param {string} [props.defaultValue] - Initially active item value
+ * @param {string} [props.value] - Controlled active value
+ * @param {function} [props.onValueChange] - Callback when active item changes
+ * @param {React.ReactNode} [props.children] - NavigationMenuItem children
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <NavigationMenu>
+ *     <NavigationMenuItem value="products">
+ *         {({ isOpen }) => (
+ *             <>
+ *                 <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+ *                 {isOpen && (
+ *                     <NavigationMenuContent>
+ *                         <NavigationMenuLink href="/product-1">Product 1</NavigationMenuLink>
+ *                     </NavigationMenuContent>
+ *                 )}
+ *             </>
+ *         )}
+ *     </NavigationMenuItem>
+ * </NavigationMenu>
+ */
+
 // Context for managing navigation menu state
 const NavigationMenuContext = createContext();
 
@@ -58,6 +87,14 @@ export function NavigationMenu({
     );
 }
 
+/**
+ * NavigationMenuItem - Container for a navigation item with optional dropdown
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.value - Unique value for this menu item
+ * @param {React.ReactNode | function} props.children - Content or render function receiving { isOpen, isActive }
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function NavigationMenuItem({ children, value, className, ...props }) {
     const context = useContext(NavigationMenuContext);
     const [isOpen, setIsOpen] = useState(false);
@@ -105,6 +142,13 @@ export function NavigationMenuItem({ children, value, className, ...props }) {
     );
 }
 
+/**
+ * NavigationMenuTrigger - Button that triggers a dropdown menu
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Button text
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function NavigationMenuTrigger({ children, className, asChild, ...props }) {
     return (
         <button
@@ -123,6 +167,13 @@ export function NavigationMenuTrigger({ children, className, asChild, ...props }
     );
 }
 
+/**
+ * NavigationMenuContent - Dropdown content container
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} props.children - Dropdown content
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function NavigationMenuContent({ children, className, ...props }) {
     const context = useContext(NavigationMenuContext);
     const orientation = context?.orientation || 'horizontal';
@@ -143,6 +194,15 @@ export function NavigationMenuContent({ children, className, ...props }) {
     );
 }
 
+/**
+ * NavigationMenuLink - A link item within navigation menu
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.href] - URL to navigate to
+ * @param {boolean} [props.active] - Whether this link is currently active
+ * @param {React.ReactNode} props.children - Link content
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function NavigationMenuLink({
     children,
     className,

@@ -2,6 +2,33 @@ import React from 'react';
 import { Toaster as SonnerToaster, toast } from 'sonner';
 import { CheckCircle, XCircle, AlertTriangle, Info } from 'lucide-react';
 
+/**
+ * Toaster - Toast notification container using Sonner library
+ *
+ * Place this component once in your app layout to enable toast notifications.
+ * Use the exported `toast` function to trigger notifications.
+ *
+ * @param {Object} props - Component props
+ * @param {'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'} [props.position='bottom-right'] - Toast position
+ * @param {boolean} [props.expand=false] - Expand toasts by default
+ * @param {boolean} [props.richColors=false] - Use rich colors for different toast types
+ * @param {boolean} [props.closeButton=false] - Show close button on toasts
+ * @param {Object} [props.theme] - Custom theme overrides for toast type classes
+ * @param {Object} [props.icons] - Custom icons for toast types (success, error, warning, info)
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * // In your App layout:
+ * <Toaster position="top-right" closeButton />
+ *
+ * // To show toasts:
+ * import { toast } from '@/components/Sonner';
+ * toast.success('Changes saved!');
+ * toast.error('Something went wrong');
+ * toast.warning('Please check your input');
+ * toast.info('New features available');
+ */
+
 // Default theme with left border accent (! prefix required to override sonner defaults)
 const defaultTheme = {
     success: '!border-l-4 !border-l-green-500 dark:!border-l-green-400',

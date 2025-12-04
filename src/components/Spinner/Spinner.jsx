@@ -2,6 +2,31 @@ import React from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
+/**
+ * Spinner - A loading indicator with animation
+ *
+ * @param {Object} props - Component props
+ * @param {'sm' | 'md' | 'lg' | 'xl'} [props.size='md'] - Size of the spinner
+ * @param {'default' | 'secondary' | 'muted'} [props.variant='default'] - Color variant
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * // Basic spinner
+ * <Spinner />
+ *
+ * @example
+ * // Different sizes
+ * <Spinner size="sm" />
+ * <Spinner size="lg" />
+ *
+ * @example
+ * // In a button
+ * <Button disabled>
+ *     <Spinner size="sm" className="mr-2" />
+ *     Loading...
+ * </Button>
+ */
 const spinnerVariants = cva(
     'inline-block animate-spin rounded-full border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]',
     {

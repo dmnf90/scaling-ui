@@ -1,6 +1,26 @@
 import React, { useRef, useState } from 'react';
 import { cn } from '../../lib/utils';
 
+/**
+ * InputOTP - A one-time password input with auto-focus and paste support
+ *
+ * @param {Object} props - Component props
+ * @param {number} [props.length=6] - Number of OTP digits
+ * @param {string} [props.value=''] - Initial OTP value
+ * @param {function} [props.onChange] - Callback when OTP changes, receives the current OTP string
+ * @param {function} [props.onComplete] - Callback when all digits are filled, receives the complete OTP
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * // Basic usage
+ * const [otp, setOtp] = useState('');
+ * <InputOTP value={otp} onChange={setOtp} onComplete={handleVerify} />
+ *
+ * @example
+ * // Custom length
+ * <InputOTP length={4} onChange={setOtp} />
+ */
 export function InputOTP({
     length = 6,
     value = '',

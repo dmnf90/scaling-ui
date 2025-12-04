@@ -2,6 +2,35 @@ import React, { createContext, useContext, useId, useMemo } from 'react';
 import { ResponsiveContainer, Tooltip, Legend } from 'recharts';
 import { cn } from '../../lib/utils';
 
+/**
+ * Chart - Wrapper components for Recharts with theming support
+ *
+ * Components:
+ * - ChartContainer: Responsive wrapper with config context
+ * - ChartTooltip: Themed tooltip wrapper
+ * - ChartTooltipContent: Custom tooltip content
+ * - ChartLegend: Themed legend wrapper
+ * - ChartLegendContent: Custom legend content
+ *
+ * Also re-exports Recharts components: LineChart, Line, BarChart, Bar, AreaChart, Area, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid
+ *
+ * @example
+ * const config = {
+ *     revenue: { label: 'Revenue', color: 'hsl(var(--chart-1))' },
+ *     profit: { label: 'Profit', color: 'hsl(var(--chart-2))' }
+ * };
+ *
+ * <ChartContainer config={config}>
+ *     <BarChart data={data}>
+ *         <CartesianGrid strokeDasharray="3 3" />
+ *         <XAxis dataKey="month" />
+ *         <YAxis />
+ *         <ChartTooltip content={<ChartTooltipContent />} />
+ *         <Bar dataKey="revenue" fill="var(--color-revenue)" />
+ *     </BarChart>
+ * </ChartContainer>
+ */
+
 // Re-export recharts components for convenience
 export {
     LineChart,

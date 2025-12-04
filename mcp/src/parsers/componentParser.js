@@ -117,14 +117,28 @@ function extractSubComponents(content, mainComponentName) {
 }
 
 /**
+ * Escape special regex characters in a string
+ * @param {string} str - String to escape
+ * @returns {string}
+ */
+function escapeRegex(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
  * Find default value in function destructuring
  * @param {string} content - File content
  * @param {string} paramName - Parameter name to find
  * @returns {string | undefined}
  */
 function findDefaultInDestructuring(content, paramName) {
+    // Skip invalid param names
+    if (!paramName || !/^\w+$/.test(paramName)) {
+        return undefined;
+    }
+
     // Pattern: paramName = 'value' or paramName = value
-    const pattern = new RegExp(`${paramName}\\s*=\\s*(['"\`]?)([^,}\\n]+)\\1`);
+    const pattern = new RegExp(`${escapeRegex(paramName)}\\s*=\\s*(['"\`]?)([^,}\\n]+)\\1`);
     const match = content.match(pattern);
 
     if (match) {
@@ -137,6 +151,130 @@ function findDefaultInDestructuring(content, paramName) {
     }
 
     return undefined;
+}
+
+/**
+ * Infer type from prop name and default value
+ * @param {string} name - Prop name
+ * @param {string | undefined} defaultValue - Default value if present
+ * @returns {string}
+ */
+function inferType(name, defaultValue) {
+    // Common prop name patterns
+    const typeMap = {
+        className: 'string',
+        children: 'React.ReactNode',
+        onClick: 'function',
+        onChange: 'function',
+        onSubmit: 'function',
+        onClose: 'function',
+        onOpen: 'function',
+        onSelect: 'function',
+        disabled: 'boolean',
+        open: 'boolean',
+        checked: 'boolean',
+        required: 'boolean',
+        loading: 'boolean',
+        asChild: 'boolean',
+        value: 'string',
+        defaultValue: 'string',
+        placeholder: 'string',
+        label: 'string',
+        title: 'string',
+        description: 'string',
+        id: 'string',
+        name: 'string',
+        type: 'string',
+        variant: 'string',
+        size: 'string',
+        side: "'top' | 'right' | 'bottom' | 'left'",
+        align: "'start' | 'center' | 'end'",
+        orientation: "'horizontal' | 'vertical'",
+    };
+
+    if (typeMap[name]) {
+        return typeMap[name];
+    }
+
+    // Infer from default value
+    if (defaultValue !== undefined) {
+        if (defaultValue === 'true' || defaultValue === 'false') {
+            return 'boolean';
+        }
+        if (defaultValue.startsWith("'") || defaultValue.startsWith('"')) {
+            return 'string';
+        }
+        if (!isNaN(Number(defaultValue))) {
+            return 'number';
+        }
+    }
+
+    return 'any';
+}
+
+/**
+ * Extract props from function parameter destructuring
+ * @param {string} content - File content
+ * @param {string} componentName - Component/function name
+ * @returns {Array<{name: string, type: string, default?: string, required: boolean}>}
+ */
+function extractPropsFromDestructuring(content, componentName) {
+    const props = [];
+
+    // Pattern variations for finding function parameters
+    const patterns = [
+        // export function ComponentName({ prop1, prop2 = 'default' })
+        new RegExp(`export\\s+function\\s+${componentName}\\s*\\(\\s*\\{([^}]+)\\}`, 's'),
+        // export const ComponentName = function({ prop1, prop2 })
+        new RegExp(`export\\s+const\\s+${componentName}\\s*=\\s*function\\s*\\(\\s*\\{([^}]+)\\}`, 's'),
+        // export const ComponentName = React.forwardRef(({ prop1, prop2 }, ref)
+        new RegExp(`export\\s+const\\s+${componentName}\\s*=\\s*(?:React\\.)?forwardRef\\s*\\(\\s*\\(\\s*\\{([^}]+)\\}`, 's'),
+        // function ComponentName({ prop1, prop2 })
+        new RegExp(`function\\s+${componentName}\\s*\\(\\s*\\{([^}]+)\\}`, 's'),
+        // const ComponentName = ({ prop1, prop2 }) =>
+        new RegExp(`const\\s+${componentName}\\s*=\\s*\\(\\s*\\{([^}]+)\\}\\s*\\)\\s*=>`, 's'),
+    ];
+
+    let paramsStr = null;
+
+    for (const pattern of patterns) {
+        const match = content.match(pattern);
+        if (match) {
+            paramsStr = match[1];
+            break;
+        }
+    }
+
+    if (!paramsStr) return props;
+
+    // Parse individual parameters
+    // Handle: prop, prop = 'default', prop = true, ...rest
+    const paramPattern = /(\w+)(?:\s*=\s*(['"`]?)([^,}\n]+?)\2)?(?:,|$)/g;
+    let paramMatch;
+
+    while ((paramMatch = paramPattern.exec(paramsStr)) !== null) {
+        const name = paramMatch[1].trim();
+
+        // Skip spread operator and common non-prop names
+        if (name === 'props' || name === 'ref' || name === 'rest' || name.startsWith('...')) {
+            continue;
+        }
+
+        let defaultValue = paramMatch[3]?.trim();
+        if (paramMatch[2] && defaultValue) {
+            defaultValue = `'${defaultValue}'`;
+        }
+
+        props.push({
+            name,
+            type: inferType(name, defaultValue),
+            default: defaultValue,
+            required: !defaultValue,
+            description: `${name.charAt(0).toUpperCase() + name.slice(1).replace(/([A-Z])/g, ' $1').trim()}`
+        });
+    }
+
+    return props;
 }
 
 /**
@@ -196,7 +334,8 @@ export function parseCompoundComponent(content, mainComponentName) {
 
         // Try to find JSDoc params for sub-component
         const jsdoc = findJsDocForFunction(content, sub.name);
-        if (jsdoc) {
+        if (jsdoc && jsdoc.params.length > 0) {
+            subDoc.description = jsdoc.description || sub.description;
             subDoc.props = jsdoc.params.map(param => ({
                 name: param.name,
                 type: param.type,
@@ -204,6 +343,33 @@ export function parseCompoundComponent(content, mainComponentName) {
                 default: param.default || findDefaultInDestructuring(content, param.name),
                 required: !param.optional
             }));
+        } else {
+            // Fallback: extract props from function parameter destructuring
+            const extractedProps = extractPropsFromDestructuring(content, sub.name);
+            if (extractedProps.length > 0) {
+                subDoc.props = extractedProps;
+            }
+        }
+
+        // Add common props if not present
+        const hasClassName = subDoc.props.some(p => p.name === 'className');
+        const hasChildren = subDoc.props.some(p => p.name === 'children');
+
+        if (!hasClassName) {
+            subDoc.props.push({
+                name: 'className',
+                type: 'string',
+                description: 'Additional CSS classes',
+                required: false
+            });
+        }
+        if (!hasChildren) {
+            subDoc.props.push({
+                name: 'children',
+                type: 'React.ReactNode',
+                description: 'Content',
+                required: false
+            });
         }
 
         subComponentDocs.push(subDoc);

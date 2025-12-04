@@ -5,6 +5,42 @@ import { cn } from '../../lib/utils.js';
 import { ChevronRight, ChevronLeft, Check } from 'lucide-react';
 import { useControllableState, useClickOutside, useEscapeKey } from '../../lib/hooks/index.js';
 
+/**
+ * DropdownMenu - A dropdown menu triggered by a button click
+ *
+ * Also includes MenubarRoot for horizontal menu bars.
+ *
+ * Sub-components:
+ * - DropdownMenuTrigger: Button that opens the menu
+ * - DropdownMenuContent: The menu panel
+ * - DropdownMenuItem: Clickable menu item
+ * - DropdownMenuCheckboxItem/DropdownMenuRadioItem: Selection items
+ * - DropdownMenuSub/DropdownMenuSubTrigger/DropdownMenuSubContent: Nested submenus
+ * - DropdownMenuSeparator: Visual divider
+ * - DropdownMenuLabel: Non-interactive label
+ * - DropdownMenuShortcut: Keyboard shortcut indicator
+ * - MenubarRoot: Container for multiple horizontal menu triggers
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.open] - Controlled open state
+ * @param {boolean} [props.defaultOpen=false] - Initial open state
+ * @param {function} [props.onOpenChange] - Callback when open state changes
+ * @param {React.ReactNode} [props.children] - DropdownMenuTrigger and DropdownMenuContent
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <DropdownMenu>
+ *     <DropdownMenuTrigger asChild>
+ *         <Button>Open Menu</Button>
+ *     </DropdownMenuTrigger>
+ *     <DropdownMenuContent>
+ *         <DropdownMenuItem onSelect={() => console.log('Profile')}>Profile</DropdownMenuItem>
+ *         <DropdownMenuSeparator />
+ *         <DropdownMenuItem onSelect={() => console.log('Logout')}>Logout</DropdownMenuItem>
+ *     </DropdownMenuContent>
+ * </DropdownMenu>
+ */
+
 // Mobile detection hook
 const useIsMobile = () => {
     const [isMobile, setIsMobile] = useState(false);

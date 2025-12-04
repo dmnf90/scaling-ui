@@ -3,6 +3,26 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from 'lucide-react';
 
+/**
+ * Pagination - A pagination component for navigating through pages
+ *
+ * @param {Object} props - Component props
+ * @param {number} [props.currentPage=1] - Current active page
+ * @param {number} [props.totalPages=1] - Total number of pages
+ * @param {function} [props.onPageChange] - Callback when page changes, receives the new page number
+ * @param {'simple' | 'full'} [props.variant='full'] - Simple shows prev/next, full shows all page numbers
+ * @param {boolean} [props.showFirstLast=true] - Show first/last page buttons
+ * @param {number} [props.siblingCount=1] - Number of sibling pages to show on each side
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Pagination
+ *     currentPage={page}
+ *     totalPages={10}
+ *     onPageChange={setPage}
+ * />
+ */
 const paginationVariants = cva(
     'mx-auto flex w-full justify-center',
     {

@@ -57,7 +57,7 @@ export function getComponentByName(name) {
 }
 
 /**
- * Search components by name or description
+ * Search components by name, description, or prop names/descriptions
  * @param {string} query
  * @returns {Array}
  */
@@ -68,7 +68,14 @@ export function searchComponents(query) {
     return components.filter(c =>
         c.name.toLowerCase().includes(queryLower) ||
         c.description?.toLowerCase().includes(queryLower) ||
-        c.props?.some(p => p.description?.toLowerCase().includes(queryLower))
+        c.props?.some(p =>
+            p.name?.toLowerCase().includes(queryLower) ||
+            p.description?.toLowerCase().includes(queryLower)
+        ) ||
+        c.subComponents?.some(s =>
+            s.name?.toLowerCase().includes(queryLower) ||
+            s.description?.toLowerCase().includes(queryLower)
+        )
     );
 }
 

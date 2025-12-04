@@ -2,6 +2,27 @@ import React from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
+/**
+ * Alert - A callout component for displaying important messages
+ *
+ * Sub-components:
+ * - AlertTitle: Title text for the alert
+ * - AlertDescription: Description text for the alert
+ *
+ * @param {Object} props - Component props
+ * @param {'default' | 'destructive' | 'success' | 'warning' | 'info'} [props.variant='default'] - Visual style variant
+ * @param {React.ReactNode} [props.children] - Alert content (typically AlertTitle and AlertDescription)
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Alert variant="success">
+ *     <CheckCircle className="h-4 w-4" />
+ *     <AlertTitle>Success!</AlertTitle>
+ *     <AlertDescription>Your changes have been saved.</AlertDescription>
+ * </Alert>
+ */
+
 const alertVariants = cva(
     'relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground',
     {
@@ -36,6 +57,14 @@ export function Alert({ className, variant, children, ...props }) {
     );
 }
 
+/**
+ * AlertTitle - Title text for the Alert component
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.children] - Title text content
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ */
 export function AlertTitle({ className, children, ...props }) {
     return (
         <h5
@@ -47,6 +76,14 @@ export function AlertTitle({ className, children, ...props }) {
     );
 }
 
+/**
+ * AlertDescription - Description text for the Alert component
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.children] - Description text content
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ */
 export function AlertDescription({ className, children, ...props }) {
     return (
         <div

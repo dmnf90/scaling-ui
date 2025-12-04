@@ -16,6 +16,27 @@ import {
     isToday,
 } from 'date-fns';
 
+/**
+ * Calendar - A date calendar component with month/year navigation
+ *
+ * @param {Object} props - Component props
+ * @param {Date} [props.selected] - Currently selected date
+ * @param {function} [props.onSelect] - Callback when a date is clicked, receives the Date object
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * const [date, setDate] = useState(null);
+ *
+ * <Calendar selected={date} onSelect={setDate} />
+ *
+ * @example
+ * // Usually used inside DatePicker, but can be standalone
+ * <Calendar
+ *     selected={selectedDate}
+ *     onSelect={(date) => console.log('Selected:', date)}
+ * />
+ */
 export function Calendar({
     selected,
     onSelect,

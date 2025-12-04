@@ -3,6 +3,28 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { ChevronRight, Slash, MoreHorizontal } from 'lucide-react';
 
+/**
+ * Breadcrumb - A navigation breadcrumb trail showing page hierarchy
+ *
+ * @param {Object} props - Component props
+ * @param {'chevron' | 'slash' | 'dot'} [props.separator='chevron'] - Separator style between items
+ * @param {React.ReactNode} [props.children] - BreadcrumbItem children
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Breadcrumb>
+ *     <BreadcrumbItem>
+ *         <BreadcrumbLink href="/">Home</BreadcrumbLink>
+ *     </BreadcrumbItem>
+ *     <BreadcrumbItem>
+ *         <BreadcrumbLink href="/products">Products</BreadcrumbLink>
+ *     </BreadcrumbItem>
+ *     <BreadcrumbItem active>
+ *         <BreadcrumbPage>Current Page</BreadcrumbPage>
+ *     </BreadcrumbItem>
+ * </Breadcrumb>
+ */
 const breadcrumbVariants = cva(
     'flex flex-wrap items-center gap-1.5 break-words text-sm text-muted-foreground'
 );
@@ -39,6 +61,14 @@ export function Breadcrumb({ children, className, separator = 'chevron', ...prop
     );
 }
 
+/**
+ * BreadcrumbItem - Container for a single breadcrumb item
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.active] - Whether this is the current/active item
+ * @param {React.ReactNode} [props.children] - Item content (BreadcrumbLink or BreadcrumbPage)
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function BreadcrumbItem({ children, className, active, ...props }) {
     return (
         <li
@@ -54,6 +84,14 @@ export function BreadcrumbItem({ children, className, active, ...props }) {
     );
 }
 
+/**
+ * BreadcrumbLink - A clickable link in the breadcrumb trail
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.href] - URL to navigate to
+ * @param {React.ReactNode} [props.children] - Link text
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function BreadcrumbLink({
     children,
     className,
@@ -78,6 +116,14 @@ export function BreadcrumbLink({
     );
 }
 
+/**
+ * BreadcrumbSeparator - Visual separator between breadcrumb items
+ *
+ * @param {Object} props - Component props
+ * @param {'chevron' | 'slash' | 'dot'} [props.separator='chevron'] - Separator icon type
+ * @param {React.ReactNode} [props.children] - Custom separator content (overrides separator prop)
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function BreadcrumbSeparator({ separator = 'chevron', children, className, ...props }) {
     // Custom separator via children takes priority
     if (children) {
@@ -112,6 +158,12 @@ export function BreadcrumbSeparator({ separator = 'chevron', children, className
     );
 }
 
+/**
+ * BreadcrumbEllipsis - Ellipsis indicator for collapsed breadcrumb items
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function BreadcrumbEllipsis({ className, ...props }) {
     return (
         <li
@@ -126,6 +178,13 @@ export function BreadcrumbEllipsis({ className, ...props }) {
     );
 }
 
+/**
+ * BreadcrumbPage - The current page indicator (non-clickable)
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.children] - Page name
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function BreadcrumbPage({ children, className, ...props }) {
     return (
         <span

@@ -1,6 +1,32 @@
 import React, { useState, createContext, useContext } from 'react';
 import { cn } from '../../lib/utils';
 
+/**
+ * Collapsible - A simple collapsible container component
+ *
+ * Sub-components:
+ * - CollapsibleTrigger: Element that toggles the content
+ * - CollapsibleContent: The collapsible content area
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.open] - Controlled open state
+ * @param {boolean} [props.defaultOpen=false] - Initial open state (uncontrolled)
+ * @param {function} [props.onOpenChange] - Callback when open state changes
+ * @param {React.ReactNode} [props.children] - Collapsible sub-components
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Collapsible defaultOpen>
+ *     <CollapsibleTrigger asChild>
+ *         <Button variant="outline">Toggle</Button>
+ *     </CollapsibleTrigger>
+ *     <CollapsibleContent>
+ *         <p>Collapsible content here</p>
+ *     </CollapsibleContent>
+ * </Collapsible>
+ */
+
 const CollapsibleContext = createContext();
 
 export function Collapsible({
@@ -36,6 +62,14 @@ export function Collapsible({
     );
 }
 
+/**
+ * CollapsibleTrigger - Element that toggles the collapsible content
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.asChild] - Merge props onto child element
+ * @param {React.ReactNode} [props.children] - Trigger content
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function CollapsibleTrigger({ asChild, className, children, onClick, ...props }) {
     const context = useContext(CollapsibleContext);
 
@@ -69,6 +103,13 @@ export function CollapsibleTrigger({ asChild, className, children, onClick, ...p
     );
 }
 
+/**
+ * CollapsibleContent - The collapsible content area with animation
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.children] - Content to display when expanded
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function CollapsibleContent({ className, children, ...props }) {
     const context = useContext(CollapsibleContext);
     const isOpen = context?.isOpen;

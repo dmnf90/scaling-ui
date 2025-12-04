@@ -120,27 +120,45 @@ function findSectionTitle(content, position) {
 export function extractPropsTable(content) {
     const props = [];
 
-    // Find table rows in Props section
-    const propsSection = content.match(/<Section[^>]*title=["']Props["'][^>]*>[\s\S]*?<\/Section>/);
-    if (!propsSection) {
-        return props;
-    }
+    // Find Props section more reliably
+    const propsSectionMatch = content.match(
+        /<Section[^>]*title=["']Props["'][^>]*>([\s\S]*?)<\/Section>/
+    );
+    if (!propsSectionMatch) return props;
 
-    const tableContent = propsSection[0];
+    // Extract tbody content
+    const tbodyMatch = propsSectionMatch[1].match(/<tbody>([\s\S]*?)<\/tbody>/);
+    if (!tbodyMatch) return props;
 
-    // Extract table rows
-    // Pattern for: <td ...>propName</td><td ...>type</td><td ...>default</td><td ...>description</td>
-    const rowPattern = /<tr[^>]*class[^>]*border[^>]*>[\s\S]*?<td[^>]*>([^<]+)<\/td>[\s\S]*?<td[^>]*>([^<]+)<\/td>[\s\S]*?<td[^>]*>([^<]+)<\/td>[\s\S]*?<td[^>]*>([^<]+)<\/td>/g;
+    // Match each table row
+    const rowPattern = /<tr[^>]*>([\s\S]*?)<\/tr>/g;
+    let rowMatch;
 
-    let match;
-    while ((match = rowPattern.exec(tableContent)) !== null) {
-        const [, name, type, defaultVal, description] = match;
-        props.push({
-            name: name.trim(),
-            type: type.trim(),
-            default: defaultVal.trim(),
-            description: description.trim()
-        });
+    while ((rowMatch = rowPattern.exec(tbodyMatch[1])) !== null) {
+        const rowContent = rowMatch[1];
+
+        // Extract all td contents
+        const tdPattern = /<td[^>]*>([\s\S]*?)<\/td>/g;
+        const cells = [];
+        let tdMatch;
+
+        while ((tdMatch = tdPattern.exec(rowContent)) !== null) {
+            // Clean up: remove tags, normalize whitespace
+            const cellContent = tdMatch[1]
+                .replace(/<[^>]*>/g, '')
+                .replace(/\s+/g, ' ')
+                .trim();
+            cells.push(cellContent);
+        }
+
+        if (cells.length >= 4) {
+            props.push({
+                name: cells[0],
+                type: cells[1],
+                default: cells[2] === '-' ? undefined : cells[2],
+                description: cells[3]
+            });
+        }
     }
 
     return props;

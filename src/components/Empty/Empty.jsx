@@ -2,6 +2,25 @@ import React from 'react';
 import { Search } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
+/**
+ * Empty - An empty state component for when there's no data to display
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.icon] - Custom icon element (defaults to Search icon)
+ * @param {string} [props.title] - Title text for the empty state
+ * @param {string} [props.description] - Description text explaining the empty state
+ * @param {React.ReactNode} [props.action] - Action element (e.g., a Button to create new item)
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Empty
+ *     icon={<Inbox className="w-12 h-12" />}
+ *     title="No messages"
+ *     description="You don't have any messages yet."
+ *     action={<Button>Compose message</Button>}
+ * />
+ */
 export function Empty({
     icon,
     title,

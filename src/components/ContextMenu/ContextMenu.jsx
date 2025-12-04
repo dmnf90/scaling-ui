@@ -5,6 +5,36 @@ import { Check, ChevronRight, Circle } from 'lucide-react';
 import { useClickOutside } from '../../lib/hooks/useClickOutside.js';
 import { useEscapeKey } from '../../lib/hooks/useEscapeKey.js';
 
+/**
+ * ContextMenu - A right-click context menu component
+ *
+ * Sub-components:
+ * - ContextMenuTrigger: Area where right-click triggers the menu
+ * - ContextMenuContent: The menu panel
+ * - ContextMenuItem: Clickable menu item
+ * - ContextMenuCheckboxItem/ContextMenuRadioItem: Selection items
+ * - ContextMenuSub/ContextMenuSubTrigger/ContextMenuSubContent: Nested submenus
+ * - ContextMenuSeparator: Visual divider
+ * - ContextMenuLabel: Non-interactive label
+ * - ContextMenuShortcut: Keyboard shortcut indicator
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.children] - ContextMenuTrigger and ContextMenuContent
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <ContextMenu>
+ *     <ContextMenuTrigger>
+ *         <div className="border p-4">Right-click me</div>
+ *     </ContextMenuTrigger>
+ *     <ContextMenuContent>
+ *         <ContextMenuItem onSelect={() => console.log('Edit')}>Edit</ContextMenuItem>
+ *         <ContextMenuSeparator />
+ *         <ContextMenuItem onSelect={() => console.log('Delete')}>Delete</ContextMenuItem>
+ *     </ContextMenuContent>
+ * </ContextMenu>
+ */
+
 // Context for managing context menu state
 const ContextMenuContext = createContext();
 const ContextMenuSubContext = createContext();

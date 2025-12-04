@@ -2,6 +2,28 @@ import React, { createContext, useContext, useState } from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
+/**
+ * Tabs - A tabbed interface for switching between content sections
+ *
+ * @param {Object} props - Component props
+ * @param {string} [props.defaultValue] - Initially active tab value (uncontrolled)
+ * @param {string} [props.value] - Active tab value (controlled)
+ * @param {function} [props.onValueChange] - Callback when active tab changes
+ * @param {React.ReactNode} [props.children] - TabsList and TabsContent children
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Tabs defaultValue="tab1">
+ *     <TabsList>
+ *         <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+ *         <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+ *     </TabsList>
+ *     <TabsContent value="tab1">Content for tab 1</TabsContent>
+ *     <TabsContent value="tab2">Content for tab 2</TabsContent>
+ * </Tabs>
+ */
+
 // Context for managing tab state
 const TabsContext = createContext();
 
@@ -53,6 +75,14 @@ const tabsListVariants = cva(
     }
 );
 
+/**
+ * TabsList - Container for tab triggers
+ *
+ * @param {Object} props - Component props
+ * @param {'default' | 'pills' | 'underline'} [props.variant='default'] - Visual style variant
+ * @param {React.ReactNode} [props.children] - TabsTrigger children
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function TabsList({ className, variant = 'default', children, ...props }) {
     return (
         <div
@@ -82,6 +112,16 @@ const tabsTriggerVariants = cva(
     }
 );
 
+/**
+ * TabsTrigger - A tab button that switches content
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.value - Unique value for this tab (required)
+ * @param {'default' | 'pills' | 'underline'} [props.variant='default'] - Visual style variant
+ * @param {boolean} [props.disabled=false] - Whether the tab is disabled
+ * @param {React.ReactNode} [props.children] - Tab label
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function TabsTrigger({ value, className, variant = 'default', children, disabled, ...props }) {
     const context = useContext(TabsContext);
     const isActive = context?.value === value;
@@ -102,7 +142,14 @@ export function TabsTrigger({ value, className, variant = 'default', children, d
     );
 }
 
-// Tab Content - Content for each tab
+/**
+ * TabsContent - Content panel for a tab
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.value - Value matching the corresponding TabsTrigger (required)
+ * @param {React.ReactNode} [props.children] - Tab content
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function TabsContent({ value, className, children, ...props }) {
     const context = useContext(TabsContext);
     const isActive = context?.value === value;

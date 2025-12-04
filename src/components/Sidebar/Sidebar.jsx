@@ -3,13 +3,54 @@ import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils.js';
 import { Menu, X, ChevronLeft, ChevronDown } from 'lucide-react';
 
+/**
+ * Sidebar Components - A collapsible sidebar navigation system
+ *
+ * Main components:
+ * - SidebarProvider: Context provider for sidebar state
+ * - SidebarLayout: Container for sidebar + content layout
+ * - Sidebar: The sidebar panel itself
+ * - SidebarHeader/SidebarContent/SidebarFooter: Sidebar sections
+ * - SidebarGroup/SidebarGroupLabel/SidebarGroupContent: Grouping
+ * - SidebarMenu/SidebarMenuItem/SidebarMenuButton: Navigation items
+ * - SidebarTrigger: Button to toggle sidebar
+ *
+ * @example
+ * <SidebarProvider>
+ *     <SidebarLayout>
+ *         <Sidebar>
+ *             <SidebarHeader>Logo</SidebarHeader>
+ *             <SidebarContent>
+ *                 <SidebarMenu>
+ *                     <SidebarMenuItem>
+ *                         <SidebarMenuButton>Dashboard</SidebarMenuButton>
+ *                     </SidebarMenuItem>
+ *                 </SidebarMenu>
+ *             </SidebarContent>
+ *         </Sidebar>
+ *         <SidebarInset>
+ *             <SidebarTrigger />
+ *             Main content here
+ *         </SidebarInset>
+ *     </SidebarLayout>
+ * </SidebarProvider>
+ */
+
 // Context for managing sidebar state
 const SidebarContext = createContext();
 
 // Context for managing sidebar group state
 const SidebarGroupContext = createContext();
 
-// SidebarProvider - Top-level provider for sidebar layout
+/**
+ * SidebarProvider - Top-level provider for sidebar state management
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.defaultOpen=true] - Initial open state
+ * @param {boolean} [props.open] - Controlled open state
+ * @param {function} [props.onOpenChange] - Callback when open state changes
+ * @param {React.ReactNode} [props.children] - Child components
+ */
 export function SidebarProvider({
     children,
     defaultOpen = true,

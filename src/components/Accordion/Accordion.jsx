@@ -2,6 +2,34 @@ import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
+/**
+ * Accordion - A collapsible content container
+ *
+ * Sub-components:
+ * - AccordionItem: Individual collapsible section
+ * - AccordionTrigger: Clickable header to toggle content
+ * - AccordionContent: Collapsible content area
+ *
+ * @param {Object} props - Component props
+ * @param {'single' | 'multiple'} [props.type='single'] - Allow single or multiple open items
+ * @param {string | string[]} [props.defaultValue] - Initially open item(s)
+ * @param {boolean} [props.collapsible=false] - Allow all items to be closed (single mode only)
+ * @param {React.ReactNode} [props.children] - AccordionItem children
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Accordion type="single" collapsible defaultValue="item-1">
+ *     <AccordionItem value="item-1">
+ *         <AccordionTrigger>Section 1</AccordionTrigger>
+ *         <AccordionContent>Content for section 1</AccordionContent>
+ *     </AccordionItem>
+ *     <AccordionItem value="item-2">
+ *         <AccordionTrigger>Section 2</AccordionTrigger>
+ *         <AccordionContent>Content for section 2</AccordionContent>
+ *     </AccordionItem>
+ * </Accordion>
+ */
 export function Accordion({
     type = 'single',
     defaultValue,
@@ -48,6 +76,14 @@ export function Accordion({
     );
 }
 
+/**
+ * AccordionItem - Individual collapsible section within an Accordion
+ *
+ * @param {Object} props - Component props
+ * @param {string} props.value - Unique identifier for this item
+ * @param {React.ReactNode} [props.children] - AccordionTrigger and AccordionContent
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function AccordionItem({
     value,
     isOpen,
@@ -82,6 +118,13 @@ export function AccordionItem({
     );
 }
 
+/**
+ * AccordionTrigger - Clickable header that toggles the accordion content
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.children] - Trigger label content
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function AccordionTrigger({
     isOpen,
     onClick,
@@ -106,6 +149,13 @@ export function AccordionTrigger({
     );
 }
 
+/**
+ * AccordionContent - Collapsible content area within an AccordionItem
+ *
+ * @param {Object} props - Component props
+ * @param {React.ReactNode} [props.children] - Content to display when expanded
+ * @param {string} [props.className] - Additional CSS classes
+ */
 export function AccordionContent({ isOpen, className, children, ...props }) {
     return (
         <div

@@ -7,6 +7,37 @@ import { useControllableState } from '../../lib/hooks/useControllableState.js';
 import { useEscapeKey } from '../../lib/hooks/useEscapeKey.js';
 import { useBodyScrollLock } from '../../lib/hooks/useBodyScrollLock.js';
 
+/**
+ * Drawer - A slide-out panel from any edge of the screen
+ *
+ * Sub-components:
+ * - DrawerTrigger: Button to open the drawer
+ * - DrawerContent: The drawer panel
+ * - DrawerHeader/DrawerFooter: Layout sections
+ * - DrawerTitle/DrawerDescription: Accessible title and description
+ * - DrawerClose: Button to close the drawer
+ *
+ * @param {Object} props - Component props
+ * @param {boolean} [props.open] - Controlled open state
+ * @param {boolean} [props.defaultOpen=false] - Initial open state
+ * @param {function} [props.onOpenChange] - Callback when open state changes
+ * @param {React.ReactNode} [props.children] - Drawer sub-components
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * <Drawer>
+ *     <DrawerTrigger asChild>
+ *         <Button>Open Drawer</Button>
+ *     </DrawerTrigger>
+ *     <DrawerContent side="right">
+ *         <DrawerHeader>
+ *             <DrawerTitle>Drawer Title</DrawerTitle>
+ *         </DrawerHeader>
+ *         <p>Content here</p>
+ *     </DrawerContent>
+ * </Drawer>
+ */
+
 const DrawerContext = createContext();
 
 // Hook to detect mobile viewport

@@ -2,6 +2,29 @@ import React from 'react';
 import { cva } from 'class-variance-authority';
 import { cn } from '../../lib/utils';
 
+/**
+ * Badge - A small status indicator or label component
+ *
+ * @param {Object} props - Component props
+ * @param {'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning'} [props.variant='default'] - Visual style variant
+ * @param {React.ReactNode} [props.children] - Badge content
+ * @param {string} [props.className] - Additional CSS classes
+ * @returns {React.ReactElement}
+ *
+ * @example
+ * // Default badge
+ * <Badge>New</Badge>
+ *
+ * @example
+ * // Status badges
+ * <Badge variant="success">Active</Badge>
+ * <Badge variant="warning">Pending</Badge>
+ * <Badge variant="destructive">Error</Badge>
+ *
+ * @example
+ * // Outline style
+ * <Badge variant="outline">v1.0.0</Badge>
+ */
 const badgeVariants = cva(
     'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
     {
